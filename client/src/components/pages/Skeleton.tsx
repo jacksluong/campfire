@@ -1,23 +1,18 @@
-import React, { Component } from "react";
-import GoogleLogin, { GoogleLogout } from "react-google-login";
-
-import "../../utilities.css";
+import React, { Component } from 'react';
+import { RouteComponentProps } from "@reach/router";
+import GoogleLogin, {  GoogleLoginResponse, GoogleLoginResponseOffline, GoogleLogout} from 'react-google-login';
 import "./Skeleton.css";
-
-//TODO: REPLACE WITH YOUR OWN CLIENT_ID
+//TODO(weblab student): REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
-
-class Skeleton extends Component {
-  constructor(props) {
-    super(props);
-    // Initialize Default State
-    this.state = {};
-  }
-
-  componentDidMount() {
-    // remember -- api calls go here!
-  }
-
+type Props = {
+  userId: String;
+  handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
+  handleLogout: () => void;
+}
+type State = {
+  loggedIn: boolean;
+}
+class Skeleton extends Component<Props & RouteComponentProps, State> {
   render() {
     return (
       <>
@@ -26,7 +21,7 @@ class Skeleton extends Component {
             clientId={GOOGLE_CLIENT_ID}
             buttonText="Logout"
             onLogoutSuccess={this.props.handleLogout}
-            onFailure={(err) => console.log(err)}
+            onFailure={() => console.log(`Failed to logout.`)}
           />
         ) : (
           <GoogleLogin
@@ -54,7 +49,7 @@ class Skeleton extends Component {
           <li>Update website title in client/dist/index.html</li>
         </ul>
       </>
-    );
+    )
   }
 }
 
