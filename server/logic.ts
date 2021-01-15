@@ -1,6 +1,8 @@
 import User from "./models/User"
 import Story from "./models/Story"
 
+/** Interfaces */
+
 export interface Player {
     userId: string;
     name: string;
@@ -16,8 +18,6 @@ interface GameState {
 }
 
 /** Utils */
-
-/** Constants */
 
 /** Game State */
 const gameState: GameState = {

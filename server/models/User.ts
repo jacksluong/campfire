@@ -6,7 +6,7 @@ const UserSchema = new Schema({
   wordsTyped: Number,
   storiesWorkedOn: [String], // story IDs
   storiesLiked: [String], // story IDs
-  wordFrequences: {String: Number}
+  wordFrequencies: {String: Number}
 });
 
 export interface User extends Document {
@@ -16,7 +16,7 @@ export interface User extends Document {
   wordsTyped: number;
   storiesWorkedOn: string[];
   storiesLiked: string[]; 
-  wordFrequencies: Record<string, number>; // might be incorrect type annotation
+  wordFrequencies: Record<string, number>; // functions like a dictionary
 }
 
 const UserModel = model<User>("User", UserSchema);
