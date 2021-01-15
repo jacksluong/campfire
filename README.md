@@ -14,6 +14,7 @@
 - Change the Frontend CLIENT_ID for Google Auth (Skeleton.js) (we'll talk about it at the end of week 2)
 - Change the Server CLIENT_ID for Google Auth (auth.js) (we'll talk about it at the end of week 2)
 - Change the Database SRV for Atlas (server.js)
+  - Add Database SRV to .env for security
 - Change the Database Name for MongoDB (server.js)
 - Add a favicon to your website at the path client/dist/favicon.ico
 - Update website title in client/dist/index.html

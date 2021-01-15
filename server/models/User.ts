@@ -14,8 +14,8 @@ export interface User extends Document {
   googleid: string;
   _id: string;
   wordsTyped: number;
-  storiesWorkedOn: [string];
-  storiesLiked: [string]; 
+  storiesWorkedOn: string[];
+  storiesLiked: string[]; 
   wordFrequencies: Record<string, number>; // might be incorrect type annotation
 }
 
