@@ -18,7 +18,7 @@ class App extends Component<{}, State> {
     this.state = {
       userId: undefined,
     }
-  }
+  }//test
 
   componentDidMount() {
     get('/api/whoami').then((user: User) => {
