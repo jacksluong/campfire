@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import StoryText from "./StoryText";
 import Gathering from "./Gathering";
 import GameInputField from "./GameInputField";
-import { Player } from "../../../pages/GameRoom";
+import Player from "../../../../../../shared/Player";
 
 interface Props {
   players: Player[];

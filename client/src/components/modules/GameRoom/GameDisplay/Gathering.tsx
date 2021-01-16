@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Player } from "../../../pages/GameRoom";
+import Player from "../../../../../../shared/Player";
 
 interface Props {
   players: Player[];
