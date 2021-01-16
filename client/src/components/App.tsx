@@ -9,6 +9,7 @@ import User from "../../../shared/User";
 import "../utilities.css";
 import GameRoom from "./pages/GameRoom";
 import LandingPage from "./pages/LandingPage";
+import ProfilePage from "./pages/ProfilePage"
 
 type State = {
   userId: String;
@@ -72,6 +73,7 @@ class App extends Component<{}, State> {
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         />
+        <ProfilePage path = "/profile"/>
       </Router>
     );
   }

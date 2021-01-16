@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import "./ProfilePage.css"
 
 class ProfileSection extends Component{
     constructor(props){
@@ -6,9 +7,10 @@ class ProfileSection extends Component{
     }
     render(){
         return(
-            null
+            <span className="ProfileSection-container">
+                profile
+            </span>
         );
     }
 }
 export default ProfileSection;
-
