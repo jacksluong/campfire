@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RouteComponentProps } from "@reach/router";
+import { RouteComponentProps, Link } from "@reach/router";
 import GoogleLogin, {
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
@@ -7,7 +7,7 @@ import GoogleLogin, {
 } from "react-google-login";
 import "./Skeleton.css";
 //TODO(weblab student): REPLACE WITH YOUR OWN CLIENT_ID
-const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
 
 type Props = {
   userId: String;
@@ -54,6 +54,7 @@ class Skeleton extends Component<Props & RouteComponentProps, State> {
           <li>Add a favicon to your website at the path client/dist/favicon.ico</li>
           <li>Update website title in client/dist/index.html</li>
         </ul>
+        <Link to="/gameroom/">Testing</Link>
       </>
     );
   }

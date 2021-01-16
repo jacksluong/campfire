@@ -2,10 +2,11 @@ import { OAuth2Client, TokenPayload } from "google-auth-library";
 import { NextFunction, Request, Response } from "express";
 import User from "./models/User";
 import UserInterface from "../shared/User";
+import session from "express-session";
 
 // create a new OAuth client used to verify google sign-in
 //    TODO: replace with your own CLIENT_ID
-const CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
+const CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
 const client = new OAuth2Client(CLIENT_ID);
 
 const verify = (token: string) => {
@@ -40,6 +41,7 @@ const login = (req: Request, res: Response) => {
       if (user === null || user === undefined) {
         throw new Error("Unable to retrieve user.");
       }
+      // if (!(req.session instanceof session.Session))
       req.session.user = user;
       res.send(user);
     })
