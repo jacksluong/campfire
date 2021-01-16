@@ -9,7 +9,6 @@ import User from "../../../shared/User";
 import "../utilities.css";
 import GameRoom from "./pages/GameRoom";
 import LandingPage from "./pages/LandingPage";
-import "../styles/output.css";
 
 type State = {
   userId: String;
