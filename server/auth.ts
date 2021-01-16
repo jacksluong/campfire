@@ -41,7 +41,6 @@ const login = (req: Request, res: Response) => {
       if (user === null || user === undefined) {
         throw new Error("Unable to retrieve user.");
       }
-      // if (!(req.session instanceof session.Session))
       req.session.user = user;
       res.send(user);
     })
