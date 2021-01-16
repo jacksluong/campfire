@@ -8,6 +8,7 @@ import { socket } from "../client-socket";
 import User from "../../../shared/User";
 import "../utilities.css";
 import GameRoom from "./pages/GameRoom";
+import LandingPage from "./pages/LandingPage";
 
 type State = {
   userId: String;
@@ -64,6 +65,7 @@ class App extends Component<{}, State> {
         />
         <GameRoom path="/gameroom/" />
         <NotFound default={true} />
+        <LandingPage path="/landingpage/"/>
       </Router>
     );
   }
