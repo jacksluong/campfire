@@ -67,7 +67,7 @@ class App extends Component<{}, State> {
         {/* <LandingPage path="/landing" /> */}
         <NotFound default={true} />
         <LandingPage 
-          path="/landingpage/"
+          path="/"
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
           userId={this.state.userId}
