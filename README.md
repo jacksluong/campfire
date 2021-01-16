@@ -13,16 +13,15 @@
 - Change the font in utilities.css
 - Change the Frontend CLIENT_ID for Google Auth (Skeleton.js) (we'll talk about it at the end of week 2)
 - Change the Server CLIENT_ID for Google Auth (auth.js) (we'll talk about it at the end of week 2)
-- Change the Database SRV for Atlas (server.js)
-  - Add Database SRV to .env for security
-- Change the Database Name for MongoDB (server.js)
+- Change the Database SRV for Atlas (server.js) DONE (untested)
+  - Add Database SRV to .env for security DONE
+- Change the Database Name for MongoDB (server.js) DONE (untested)
 - Add a favicon to your website at the path client/dist/favicon.ico
 - Update website title in client/dist/index.html
 - Update this README file ;)
 - Update the package.json file with your app name :) (line 2)
 
 ## Socket stuff
-Note: we'll be getting to this in lecture in week 2, so don't worry if you don't know it yet
 
 - If you're not using realtime updating or don't need server->client communication, you can remove socket entirely! (server-socket.js, client-socket.js, and anything that imports them)
 - If you are using socket, consider what you want to do with the FIXME in server-socket.js
