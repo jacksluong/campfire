@@ -62,7 +62,7 @@ class App extends Component<{}, State> {
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         />
-        <GameRoom path="/gameroom" />
+        <GameRoom path="/gameroom/" />
         <NotFound default={true} />
       </Router>
     );
