@@ -7,7 +7,7 @@ class ChatInputField extends Component {
   }
 
   render() {
-    return <div className="ChatInputField-container"></div>;
+    return <div className="ChatInputField-container">This is the Chat Input Field</div>;
   }
 }
 

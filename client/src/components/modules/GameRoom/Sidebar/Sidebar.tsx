@@ -19,8 +19,8 @@ class Sidebar extends Component<Props, State> {
   render() {
     return (
       <div className="Sidebar-container">
-        <Chat />
-        <PlayerDisplay />
+        <Chat players={this.props.players} />
+        <PlayerDisplay players={this.props.players} currentChef={this.props.currentChef} />
       </div>
     );
   }

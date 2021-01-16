@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import Chat from "./Chat";
+import { Player } from "../../../pages/GameRoom";
+import PlayerRow from "./PlayerRow";
 
-interface Props {}
+interface Props {
+  players: Player[];
+  currentChef: string;
+}
 
 interface State {}
 
@@ -14,8 +19,9 @@ class PlayerDisplay extends Component<Props, State> {
   render() {
     return (
       <div className="PlayerDisplay-container">
-        <Chat />
-        <PlayerDisplay />
+        {this.props.players.map((player) => (
+          <PlayerRow userId={player.userId} name={player.name} health={player.health} />
+        ))}
       </div>
     );
   }

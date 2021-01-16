@@ -14,11 +14,17 @@ interface State {
   winner: string | undefined; // player ID
 }
 
+let testingPlayers: Player[] = [
+  { userId: "p1", name: "TTT", health: 100 },
+  { userId: "p1", name: "JJJ", health: 100 },
+];
+
+//todo: replace players state with those from database
 class GameRoom extends Component<RouteComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      players: [],
+      players: testingPlayers,
       currentStory: "",
       currentChef: "",
       storyInput: "",
