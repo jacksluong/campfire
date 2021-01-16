@@ -3,6 +3,7 @@ import StoryText from "./StoryText";
 import Gathering from "./Gathering";
 import GameInputField from "./GameInputField";
 import Player from "../../../../../../shared/Player";
+import "./GameDisplay.scss";
 
 interface Props {
   players: Player[];

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import "./ChatInputField.scss";
 class ChatInputField extends Component {
   constructor(props) {
     super(props);

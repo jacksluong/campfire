@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Player from "../../../../../../shared/Player";
+import "./Gathering.scss";
 
 interface Props {
   players: Player[];

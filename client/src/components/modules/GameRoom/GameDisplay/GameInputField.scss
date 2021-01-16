@@ -1,0 +1,39 @@
+.GameInputField-container {
+  flex-grow: 1;
+  background-color: var(--paleCerulean);
+  margin: var(--l) var(--xs);
+  border-radius: var(--m);
+  padding: var(--s);
+}
+
+.GameInputField-textbox,
+.GameInputField-button {
+  font-family: "Open Sans";
+  font-size: 14px;
+  padding: var(--s) var(--m);
+}
+
+.GameInputField-textbox {
+  flex-grow: 1;
+  border: var(--darkgrey) 1px solid;
+  border-radius: var(--xs) 0 0 var(--xs);
+  transition: box-shadow 0.1s;
+}
+
+.GameInputField-textbox:focus-within {
+  border-color: var(--primary--dim);
+  box-shadow: 0 0 0 var(--xs) rgba(0, 123, 255, 0.25);
+}
+
+.GameInputField-button {
+  color: var(--primary);
+  border: var(--primary) 1px solid;
+  border-radius: 0 var(--xs) var(--xs) 0;
+  background: none;
+  transition: color 0.1s, background 0.1s;
+}
+
+.GameInputField-button:hover {
+  color: var(--white);
+  background-color: var(--primary);
+}

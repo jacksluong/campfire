@@ -1,0 +1,8 @@
+.Sidebar-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: var(--paleCerulean);
+  margin: var(--l) var(--m);
+  border-radius: var(--m);
+}

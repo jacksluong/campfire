@@ -1,16 +1,53 @@
 import React, { Component } from "react";
+import "./GameInputField.scss";
 
 interface Props {}
 
-interface State {}
+interface State {
+  value: string;
+}
 
 class GameInputField extends Component<Props, State> {
   constructor(props) {
     super(props);
+    this.state = {
+      value: "",
+    };
   }
 
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      value: event.target.value,
+    });
+  };
+
+  handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    this.setState({
+      value: "",
+    });
+  };
+
   render() {
-    return <div className="GameInputField-container">Input Field</div>;
+    return (
+      <div className="GameInputField-container">
+        <input
+          type="text"
+          placeholder="Craft Your Sentence"
+          value={this.state.value}
+          onChange={this.handleChange}
+          className="GameInputField-textbox"
+        />
+        <button
+          type="submit"
+          className="GameInputField-button u-pointer"
+          value="Submit"
+          onClick={this.handleSubmit}
+        >
+          Submit
+        </button>
+      </div>
+    );
   }
 }
 

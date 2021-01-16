@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import Sidebar from "../modules/GameRoom/Sidebar/Sidebar";
 import GameDisplay from "../modules/GameRoom/GameDisplay/GameDisplay";
 import { RouteComponentProps } from "@reach/router";
-import Player from "../../../../shared/Player"
+import Player from "../../../../shared/Player";
+import "../../../src/components/modules/GameRoom/GameRoom.scss";
+import "../../../src/components/modules/GameRoom/Sidebar/Sidebar.scss";
+import "../../../src/components/modules/GameRoom/GameDisplay/GameDisplay.scss";
 
 // interface Props {} replaced "Props & RouteComponentProps" with "RouteComponentProps" because that's the primary way we are receiving props for this component
 
@@ -15,8 +18,9 @@ interface State {
 }
 
 let testingPlayers: Player[] = [
-  { userId: "p1", name: "TTT", health: 100 },
-  { userId: "p1", name: "JJJ", health: 100 },
+  { userId: "p1", name: "Tony Cui", health: 100 },
+  { userId: "p2", name: "Jacky Luong", health: 100 },
+  { userId: "p3", name: "Brandon Lei", health: 100 },
 ];
 
 //todo: replace players state with those from database
@@ -34,7 +38,7 @@ class GameRoom extends Component<RouteComponentProps, State> {
 
   render() {
     return (
-      <>
+      <div className="GameRoom-container">
         <div className="Sidebar-container">
           <Sidebar players={this.state.players} currentChef={this.state.currentChef} />
         </div>
@@ -46,7 +50,7 @@ class GameRoom extends Component<RouteComponentProps, State> {
             storyInput={this.state.storyInput}
           />
         </div>
-      </>
+      </div>
     );
   }
 }

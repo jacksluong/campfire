@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-
+import "./SideBar.scss";
+import "../../../../utilities.css";
+import "./PlayerRow.scss";
 interface Props {
   userId: string;
   name: string;
@@ -17,8 +19,10 @@ class PlayerDisplay extends Component<Props, State> {
   render() {
     return (
       <div className="PlayerRow-container">
-        <h1>{this.props.name}</h1>
-        <p>{this.props.health}</p>
+        <span>
+          <b>{this.props.name + " | "}</b>
+        </span>
+        <span>{this.props.health}</span>
       </div>
     );
   }

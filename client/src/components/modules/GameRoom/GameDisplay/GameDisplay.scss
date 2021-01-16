@@ -1,0 +1,8 @@
+.GameDisplay-container {
+  flex-grow: 4;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--celadon);
+  margin: var(--l) var(--m);
+  border-radius: var(--m);
+}

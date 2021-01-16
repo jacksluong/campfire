@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Chat from "./Chat";
 import Player from "../../../../../../shared/Player";
 import PlayerRow from "./PlayerRow";
-
+import "./SideBar.scss";
+import "./PlayerDisplay.scss";
 interface Props {
   players: Player[];
   currentChef: string;
@@ -19,6 +20,7 @@ class PlayerDisplay extends Component<Props, State> {
   render() {
     return (
       <div className="PlayerDisplay-container">
+        <h2>Players</h2>
         {this.props.players.map((player) => (
           <PlayerRow userId={player.userId} name={player.name} health={player.health} />
         ))}

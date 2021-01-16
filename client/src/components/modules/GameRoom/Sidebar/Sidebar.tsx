@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Chat from "./Chat";
 import PlayerDisplay from "./PlayerDisplay";
 import Player from "../../../../../../shared/Player";
+import "./Sidebar.scss";
 
 interface Props {
   players: Player[];
@@ -19,8 +20,8 @@ class Sidebar extends Component<Props, State> {
   render() {
     return (
       <div className="Sidebar-container">
-        <Chat players={this.props.players} />
         <PlayerDisplay players={this.props.players} currentChef={this.props.currentChef} />
+        <Chat players={this.props.players} />
       </div>
     );
   }
