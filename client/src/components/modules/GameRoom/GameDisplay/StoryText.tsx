@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 
-class StoryText extends Component {
+interface Props {
+  currentStory: string;
+  storyInput: string;
+}
+class StoryText extends Component<Props, {}> {
   constructor(props) {
     super(props);
     this.state = {};

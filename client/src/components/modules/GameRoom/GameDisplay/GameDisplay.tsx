@@ -22,8 +22,8 @@ class GameDisplay extends Component<Props, State> {
   render() {
     return (
       <div className="GameDisplay-container">
-        <StoryText />
-        <Gathering />
+        <StoryText currentStory={this.props.currentStory} storyInput={this.props.storyInput} />
+        <Gathering players={this.props.players} currentChef={this.props.currentChef} />
         <GameInputField />
       </div>
     );
