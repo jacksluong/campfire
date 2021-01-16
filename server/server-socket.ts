@@ -9,8 +9,6 @@ const logic = require("./logic");
 const gameState: GameState = logic.gameState;
 let io: Server;
 
-console.log("hi!")
-
 const userToSocketMap: Map<string, Socket> = new Map<string, Socket>(); // maps user ID to socket object
 const socketToUserMap: Map<string, User> = new Map<string, User>(); // maps socket ID to user object
 
@@ -60,7 +58,7 @@ export const init = (server: http.Server): void => {
         // TODO: handle game full
         console.log("Game full");
       } else {
-        UserModel.findById(data).then((user: any) => {
+        UserModel.findById(data).then((user: User) => {
           logic.addPlayer(user);
         })
         // at this point, the user jumps over to /gameroom/:gameId and will call socket.emit("join", req.user._id) to get room information
