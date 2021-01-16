@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Chat from "./Chat";
-import { Player } from "../../../pages/GameRoom";
+import Player from "../../../../../../shared/Player";
 import PlayerRow from "./PlayerRow";
 
 interface Props {

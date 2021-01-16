@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ChatInputField from "./ChatInputField";
-import { Player } from "../../../pages/GameRoom";
+import Player from "../../../../../../shared/Player";
 
 interface Props {
   players: Player[];
