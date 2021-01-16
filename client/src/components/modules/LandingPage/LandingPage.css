@@ -16,11 +16,20 @@
 }
 .Buttons-container{
     margin: auto;
-    display: flex;
-    justify-content: space-between;
     text-align: center;
+    display:flex;
+    justify-content: space-around;
+    border-style: solid;
 }
+
+Button{
+    width: 12%;
+    height:10%;
+    font-size: 24px;
+}
+
 .Title-container{
-    margin: auto;
+    margin: 10% auto;
     text-align: center;
+    font-size: 80px;
 }
