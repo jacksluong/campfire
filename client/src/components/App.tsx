@@ -6,7 +6,7 @@ import Skeleton from "./pages/Skeleton";
 import { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login";
 import { socket } from "../client-socket";
 import User from "../../../shared/User";
-import "../utilities.css";
+import "../utilities.scss";
 import GameRoom from "./pages/GameRoom";
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage"

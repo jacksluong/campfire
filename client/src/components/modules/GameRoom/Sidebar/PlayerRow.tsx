@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./SideBar.scss";
+// import "./SideBar.scss";
 import "../../../../utilities.scss";
 import "./PlayerRow.scss";
 interface Props {

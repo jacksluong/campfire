@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Chat from "./Chat";
 import Player from "../../../../../../shared/Player";
 import PlayerRow from "./PlayerRow";
-import "./SideBar.scss";
+// import "./SideBar.scss";
 import "./PlayerDisplay.scss";
 interface Props {
   players: Player[];
