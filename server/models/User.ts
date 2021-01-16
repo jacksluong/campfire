@@ -1,12 +1,17 @@
 import { Schema, model, Document } from "mongoose";
 
+const FrequentWord = new Schema({
+  word: String,
+  frequency: Number
+})
+
 const UserSchema = new Schema({
   name: String,
   googleid: String,
   wordsTyped: Number,
   storiesWorkedOn: [String], // story IDs
   storiesLiked: [String], // story IDs
-  wordFrequencies: {String: Number}
+  wordFrequencies: [FrequentWord]
 });
 
 export interface User extends Document {
