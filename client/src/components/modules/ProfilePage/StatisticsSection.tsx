@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import "./ProfilePage.css"
 
 class StastiticsSection extends Component{
     constructor(props){
@@ -6,7 +7,9 @@ class StastiticsSection extends Component{
     }
     render(){
         return(
-            null
+            <div className="StatisticsSection-container">
+                stats
+            </div>
         );
     }
 }
