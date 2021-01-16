@@ -58,7 +58,7 @@ export const init = (server: http.Server): void => {
         // TODO: handle game full
         console.log("Game full");
       } else {
-        UserModel.findById(data).then((user: User) => {
+        UserModel.findById(data).then((user: User) => { // NOTE: idk if type casting will fail here, switch to type any if it doesn't
           logic.addPlayer(user);
         })
         // at this point, the user jumps over to /gameroom/:gameId and will call socket.emit("join", req.user._id) to get room information
