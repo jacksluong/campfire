@@ -46,4 +46,5 @@ const addPlayer = (user: User): void => {
 
 export {
     gameState,
+    addPlayer
 }
