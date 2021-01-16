@@ -1,4 +1,5 @@
 import React,{Component} from "react"
+import "./LandingPage.css"
 
 class NavBar extends Component{
     constructor(props){
@@ -7,8 +8,9 @@ class NavBar extends Component{
 
     render(){
         return(
-            <div>
-                
+            <div className = "NavBar-container">
+                <span className="NavBar-link">Login</span>
+                <span className="NavBar-link">Explore</span>
             </div>
         );
     }

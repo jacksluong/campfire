@@ -7,8 +7,9 @@ class MainPage extends Component{
 
     render(){
         return(
-            <div>
-                
+            <div className="MainPage Container">
+                <div className="Title-container"> Title</div>
+                <div className="Buttons-container"> Buttons Container</div>
             </div>
         );
     }

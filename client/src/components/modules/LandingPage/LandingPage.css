@@ -1,9 +1,26 @@
 .NavBar-container{
-    margin:0%;
-    border-style: solid;
+    margin:0% auto;
+    /* border-style: solid; */
+    width:100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+}
+.NavBar-link{
+    margin: 1%;
 }
 .LandingPage-container{
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+}
+.Buttons-container{
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+.Title-container{
+    margin: auto;
+    text-align: center;
 }
