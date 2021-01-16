@@ -9,6 +9,8 @@ const logic = require("./logic");
 const gameState: GameState = logic.gameState;
 let io: Server;
 
+console.log("hi!")
+
 const userToSocketMap: Map<string, Socket> = new Map<string, Socket>(); // maps user ID to socket object
 const socketToUserMap: Map<string, User> = new Map<string, User>(); // maps socket ID to user object
 
@@ -66,6 +68,9 @@ export const init = (server: http.Server): void => {
     }) 
 
     // TODO: socket.on("join") 
+    socket.on("join", (data: string) => { // userId: string
+      io.emit("playerjoined", gameState);
+    })
 
     /* In a game: inputchange, inputsubmit, update */
     // Actions that require synchronization amongst all players in a room include: input change ("inputchange" -> "input changed"), input submit ("inputsubmit" -> "inputsubmitted"), next person chosen ("choose" -> "personchosen")
