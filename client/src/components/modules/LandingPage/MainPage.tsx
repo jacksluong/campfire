@@ -1,4 +1,5 @@
 import React,{Component} from "react"
+import { RouteComponentProps, Link } from "@reach/router";
 
 class MainPage extends Component{
     constructor(props){
@@ -29,12 +30,14 @@ class MainPage extends Component{
                         onClick={this.handleQuickPlayClick}>
                         Quick play
                     </button>
-                    <button
-                        type="submit"
-                        className="Button"
-                        onClick={this.handlePrivateGameClick}>
-                        Private Game
-                    </button>
+                    <Link to = "/gameroom/1234">
+                        <button
+                            type="submit"
+                            className="Button"
+                            onClick={this.handlePrivateGameClick}>
+                            Private Game
+                        </button>
+                    </Link>
                 </div>
                 <div className = "Help-container" >
 
