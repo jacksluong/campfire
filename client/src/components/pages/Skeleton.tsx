@@ -54,7 +54,7 @@ class Skeleton extends Component<Props & RouteComponentProps, State> {
           <li>Add a favicon to your website at the path client/dist/favicon.ico</li>
           <li>Update website title in client/dist/index.html</li>
         </ul>
-        <Link to="/gameroom/">Testing</Link>
+        <Link to="/gameroom/">Testing mmmm botatoes</Link>
       </>
     );
   }
