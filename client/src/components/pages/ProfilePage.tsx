@@ -12,7 +12,7 @@ class ProfilePage extends Component<RouteComponentProps, State> {
     }
     render(){
         return(
-            <div>
+            <div className="ProfilePage-container">
                 <ProfileSection/>
                 <StastiticsSection/>
             </div>
