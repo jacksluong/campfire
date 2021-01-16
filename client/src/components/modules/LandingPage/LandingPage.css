@@ -15,24 +15,42 @@
     overflow-y: scroll;
 }
 .Buttons-container{
-    margin: auto;
+    margin: auto auto 18% auto;
     text-align: center;
     display:flex;
     justify-content: space-between;
     /* border-style: solid; */
     width: 50%;
+    height: 40%;
+    
     
 }
 
 Button{
-    width: 120px;
-    height:10%;
+    /* width: 120px; */
+    /* height:10%; */
     font-size: 24px;
     border-radius: 8px;
 }
 
 .Title-container{
-    margin: 10% auto 4% auto;
+    margin: 10% auto 2.5% auto;
     text-align: center;
     font-size: 80px;
 }
+.Space{
+    height:20%
+    
+}
+
+.u-small-radius{
+    border-radius: 16px;
+    
+}
+.Help-container{
+    display:flex;
+    justify-content: flex-end;
+    width: 98%;
+    margin:auto;
+}
+

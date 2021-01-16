@@ -4,6 +4,7 @@ class MainPage extends Component{
     constructor(props){
         super(props);
     }
+    
 
     render(){
         return(
@@ -22,6 +23,13 @@ class MainPage extends Component{
                         Private Game
                     </button>
                 </div>
+                <div className = "Help-container">
+
+                    <button className="u-small-radius">
+                        ?
+                    </button>
+                </div>
+                
             </div>
         );
     }
