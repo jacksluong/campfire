@@ -2,24 +2,19 @@ import React, { Component } from "react";
 import Sidebar from "../modules/GameRoom/Sidebar/Sidebar";
 import GameDisplay from "../modules/GameRoom/GameDisplay/GameDisplay";
 import { RouteComponentProps } from "@reach/router";
+import Player from "../../../../shared/Player"
 
-export interface Player {
-  userId: string;
-  name: string;
-  health: number;
-}
-
-interface Props {}
+// interface Props {} replaced "Props & RouteComponentProps" with "RouteComponentProps" because that's the primary way we are receiving props for this component
 
 interface State {
   players: Player[];
   currentStory: string;
   currentChef: string;
   storyInput: string;
-  winner: Player | undefined;
+  winner: string | undefined; // player ID
 }
 
-class GameRoom extends Component<Props & RouteComponentProps, State> {
+class GameRoom extends Component<RouteComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {

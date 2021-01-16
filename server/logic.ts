@@ -1,13 +1,8 @@
 import User from "./models/User"
 import Story from "./models/Story"
+import Player from "../shared/Player"
 
 /** Interfaces */
-
-export interface Player {
-    userId: string;
-    name: string;
-    health: number;
-}
 
 interface GameState {
     gameId: string;
