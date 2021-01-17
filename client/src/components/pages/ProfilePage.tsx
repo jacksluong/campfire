@@ -1,22 +1,22 @@
-import React, {Component} from "react"
-import StastiticsSection from "../modules/ProfilePage/StatisticsSection";
+import React, { Component } from "react";
+import StatisticsSection from "../modules/ProfilePage/StatisticsSection";
 import ProfileSection from "../modules/ProfilePage/ProfileSection";
 import { RouteComponentProps } from "@reach/router";
-type State = {
 
-}
+interface State {}
 
 class ProfilePage extends Component<RouteComponentProps, State> {
-    constructor(props){
-        super(props);
-    }
-    render(){
-        return(
-            <div className="ProfilePage-container">
-                <ProfileSection/>
-                <StastiticsSection/>
-            </div>
-        );
-    }
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="ProfilePage-container">
+        <ProfileSection />
+        <StatisticsSection />
+      </div>
+    );
+  }
 }
 export default ProfilePage;

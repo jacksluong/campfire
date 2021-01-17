@@ -8,13 +8,10 @@ import GoogleLogin, {
   GoogleLogout,
 } from "react-google-login";
 
-import "../../utilities.ts";
 import MainPage from "../modules/LandingPage/MainPage";
 import NavBar from "../modules/LandingPage/NavBar";
 import Story from "../../../../shared/Story";
 import { get } from "../../utilities";
-
-const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
 
 type Props = {
   userId: String;
@@ -39,6 +36,7 @@ class LandingPage extends Component<Props & RouteComponentProps, State> {
       });
     });
   }
+
   render() {
     return (
       <div>

@@ -9,7 +9,7 @@ import User from "../../../shared/User";
 import "../utilities.scss";
 import GameRoom from "./pages/GameRoom";
 import LandingPage from "./pages/LandingPage";
-import ProfilePage from "./pages/ProfilePage"
+import ProfilePage from "./pages/ProfilePage";
 import EndPage from "./pages/EndPage";
 
 type State = {
@@ -74,7 +74,7 @@ class App extends Component<{}, State> {
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         />
-        <ProfilePage path = "/profile"/>
+        <ProfilePage path="/profile" />
         <EndPage path="/endpage/:gameId" />
         <NotFound default={true} />
       </Router>
