@@ -35,7 +35,7 @@ class GameRoom extends Component<Props & RouteComponentProps, State> {
   }
 
   componentDidMount() {
-    socket.on("playerjoined", (gameState: GameState) => {
+    socket.on("playersupdate", (gameState: GameState) => { // on player join or leave
       this.setState({
         players: gameState.players
       });

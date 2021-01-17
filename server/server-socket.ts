@@ -44,9 +44,12 @@ export const init = (server: http.Server): void => {
       console.log(`socket has disconnected ${socket.id}`);
 
       // TODO: (handle it if they are in a game -> "playerleft")
+      logic.disconnectPlayer(socketToUserMap[socket.id]);
 
       const user = getUserFromSocketID(socket.id);
       if (user !== undefined) removeUser(user, socket);
+      
+      io.emit("playersupdate", gameState);
     });
 
     /* Joining a game: matchmaking, join*/
@@ -66,10 +69,10 @@ export const init = (server: http.Server): void => {
 
     // TODO: socket.on("join") 
     socket.on("join", (data: string) => { // userId: string
-      UserModel.findById(data).then((user: User) => { // NOTE: idk if type casting will fail here, switch to type any if it doesn't
+      UserModel.findById(data).then((user: User) => {
         logic.addPlayer(user);
-        io.emit("playerjoined", gameState); // everyone in this game room updates local game state and rerenders
-      })
+        io.emit("playersupdate", gameState);
+      });
     })
 
     /* In a game: inputchange, inputsubmit, update */

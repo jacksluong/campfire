@@ -15,7 +15,7 @@ export interface GameState {
 
 /** Utils */
 
-let testingPlayers: Player[] = [
+let testingInitialPlayers: Player[] = [
   { userId: "p1", name: "Tony Cui", health: 100 },
   { userId: "p2", name: "Jacky Luong", health: 100 },
   { userId: "p3", name: "Brandon Lei", health: 100 },
@@ -24,7 +24,7 @@ let testingPlayers: Player[] = [
 /** Game State */
 const gameState: GameState = {
     gameId: "",
-    players: testingPlayers,
+    players: testingInitialPlayers,
     currentStory: "",
     currentTurn: { userId: "", name: "", health: 100 },
     currentInput: "",
@@ -41,7 +41,11 @@ const addPlayer = (user: User): void => {
         })
         return;
     }
-    if (gameState.players.find(player => player.userId === user._id)) return;
+    let existingPlayer: Player = gameState.players.find(player => player.userId === user._id)
+    if (existingPlayer) {
+        existingPlayer.disconnected = false;
+        return;
+    };
     if (gameState.started) {
         let average = 0;
         for (let player of gameState.players) average += player.health;
@@ -60,7 +64,13 @@ const addPlayer = (user: User): void => {
     }
 }
 
+const disconnectPlayer = (userId: string): void => {
+    const disconnectedPlayer = gameState.players.filter(player => player.userId === userId)[0];
+    disconnectedPlayer.disconnected = true;
+}
+
 export {
     gameState,
-    addPlayer
+    addPlayer,
+    disconnectPlayer
 }
