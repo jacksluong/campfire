@@ -41,7 +41,7 @@ const addPlayer = (user: User): void => {
         })
         return;
     }
-    let existingPlayer: Player = gameState.players.find(player => player.userId === user._id)
+    let existingPlayer: Player | undefined = gameState.players.find(player => player.userId === user._id) 
     if (existingPlayer) {
         existingPlayer.disconnected = false;
         return;
@@ -65,6 +65,8 @@ const addPlayer = (user: User): void => {
 }
 
 const disconnectPlayer = (userId: string): void => {
+    console.log(gameState.players);
+    console.log(userId);
     const disconnectedPlayer = gameState.players.filter(player => player.userId === userId)[0];
     disconnectedPlayer.disconnected = true;
 }

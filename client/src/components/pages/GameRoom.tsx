@@ -54,8 +54,8 @@ class GameRoom extends Component<Props & RouteComponentProps, State> {
           <GameDisplay
             players={this.state.players}
             currentStory={this.state.currentStory}
-            currentChef={this.state.currentTurn}
-            storyInput={this.state.currentInput}
+            currentTurn={this.state.currentTurn}
+            currentInput={this.state.currentInput}
           />
         </div>
       </div>

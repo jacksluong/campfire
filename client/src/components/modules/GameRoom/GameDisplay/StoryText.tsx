@@ -3,7 +3,7 @@ import "./StoryText.scss";
 
 interface Props {
   currentStory: string;
-  storyInput: string;
+  currentInput: string;
 }
 class StoryText extends Component<Props, {}> {
   constructor(props) {
