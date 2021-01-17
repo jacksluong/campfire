@@ -7,9 +7,9 @@ class ProfileSection extends Component{
     }
     render(){
         return(
-            <span className="ProfileSection-container">
+            <div className="ProfileSection-container">
                 profile
-            </span>
+            </div>
         );
     }
 }
