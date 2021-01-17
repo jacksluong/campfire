@@ -1,5 +1,4 @@
 import User from "../shared/User"
-import Story from "../shared/Story"
 import Player from "../shared/Player"
 
 /** Interfaces */
@@ -65,8 +64,6 @@ const addPlayer = (user: User): void => {
 }
 
 const disconnectPlayer = (userId: string): void => {
-    console.log(gameState.players);
-    console.log(userId);
     const disconnectedPlayer = gameState.players.filter(player => player.userId === userId)[0];
     disconnectedPlayer.disconnected = true;
 }
