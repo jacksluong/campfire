@@ -68,8 +68,8 @@ export const init = (server: http.Server): void => {
     socket.on("join", (data: string) => { // userId: string
       UserModel.findById(data).then((user: User) => { // NOTE: idk if type casting will fail here, switch to type any if it doesn't
         logic.addPlayer(user);
+        io.emit("playerjoined", gameState); // everyone in this game room updates local game state and rerenders
       })
-      io.emit("playerjoined", gameState); // everyone in this game room updates local game state and rerenders
     })
 
     /* In a game: inputchange, inputsubmit, update */

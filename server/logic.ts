@@ -32,6 +32,16 @@ const gameState: GameState = {
 }
 
 const addPlayer = (user: User): void => {
+    if (!user) { // NOTE: this is temporary; ideally, user will never be null, but currently that is not how it works, so adding this here to prevent the server crashing every time we join game room without being signed in
+        const random = Math.ceil(Math.random() * 999) + 1
+        gameState.players.push({
+            userId: `${random}`,
+            name: `guest${random}`,
+            health: 50,
+        })
+        return;
+    }
+    if (gameState.players.find(player => player.userId === user._id)) return;
     if (gameState.started) {
         let average = 0;
         for (let player of gameState.players) average += player.health;
