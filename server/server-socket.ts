@@ -11,12 +11,14 @@ let io: Server;
 
 const userToSocketMap: Map<string, Socket> = new Map<string, Socket>(); // maps user ID to socket object
 const socketToUserMap: Map<string, User> = new Map<string, User>(); // maps socket ID to user object
+const ROOM_CAPACITY: number = 8;
 
 export const getSocketFromUserID = (userid: string) => userToSocketMap.get(userid);
 export const getUserFromSocketID = (socketid: string) => socketToUserMap.get(socketid);
 export const getSocketFromSocketID = (socketid: string) => io.sockets.sockets.get(socketid);
 
 export const addUser = (user: User, socket: Socket): void => {
+  console.log("got here");
   const oldSocket = userToSocketMap.get(user._id);
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
@@ -27,6 +29,7 @@ export const addUser = (user: User, socket: Socket): void => {
   }
   userToSocketMap.set(user._id, socket);
   socketToUserMap.set(socket.id, user);
+  console.log(socketToUserMap);
 };
 
 export const removeUser = (user: User, socket: Socket): void => {
@@ -44,30 +47,37 @@ export const init = (server: http.Server): void => {
       console.log(`socket has disconnected ${socket.id}`);
 
       // TODO: (handle it if they are in a game -> "playerleft")
-
       const user = getUserFromSocketID(socket.id);
-      if (user !== undefined) removeUser(user, socket);
+      
+      if (user !== undefined) {
+        logic.disconnectPlayer(user._id);
+        removeUser(user, socket);
+      }
+      
+      io.emit("playersupdate", gameState);
     });
 
     /* Joining a game: matchmaking, join*/
     // ("matchmaking" -> "matched") Landing handles adding user to a game in gameState, sends user over to game room page (passing gameId through URL), ("join" -> "playerjoined") user prompts (via socket) server to provide all information about this game (this is the step), then render, and the server lets the other players in the room know
 
     // TODO: socket.on("matchmaking")
-    socket.on("matchmaking", (data: string) => { // userId: string
-      if (gameState.players.length === 10) {
+    socket.on("matchmaking", (userId: string) => {
+      if (gameState.players.length === ROOM_CAPACITY) {
         // TODO: handle game full
         console.log("Game full");
       } else {
-        UserModel.findById(data).then((user: User) => {
-          logic.addPlayer(user);
-        })
-        // at this point, the user jumps over to /gameroom/:gameId and will call socket.emit("join", req.user._id) to get room information
+        // NOTE: matchmaking happens here but for now, we only have one room so nothing needs to be done
+        socket.emit("matched", "gameIdGoesHere"); // not io because we only want to let this person know
+        // on "matched", the user is redirected to /gameroom/:gameId and will call socket.emit("join", req.user._id) to get room information
       }
     }) 
 
     // TODO: socket.on("join") 
     socket.on("join", (data: string) => { // userId: string
-      io.emit("playerjoined", gameState);
+      UserModel.findById(data).then((user: User) => {
+        logic.addPlayer(user);
+        io.emit("playersupdate", gameState);
+      });
     })
 
     /* In a game: inputchange, inputsubmit, update */

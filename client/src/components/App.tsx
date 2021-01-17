@@ -10,9 +10,10 @@ import "../utilities.scss";
 import GameRoom from "./pages/GameRoom";
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage"
+import EndPage from "./pages/EndPage";
 
 type State = {
-  userId: String;
+  userId: string;
 };
 
 class App extends Component<{}, State> {
@@ -27,7 +28,7 @@ class App extends Component<{}, State> {
     get("/api/whoami")
       .then((user: User) => {
         if (user._id) {
-          // TRhey are registed in the database and currently logged in.
+          // They are registered in the database and currently logged in.
           this.setState({ userId: user._id });
         }
       })
@@ -44,6 +45,7 @@ class App extends Component<{}, State> {
       const userToken = res.tokenObj.id_token;
       post("/api/login", { token: userToken }).then((user: User) => {
         this.setState({ userId: user._id });
+        post("/api/initsocket", { socketid: socket.id });
       });
     }
   };
@@ -64,16 +66,17 @@ class App extends Component<{}, State> {
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         /> */}
-        <GameRoom path="/gameroom/:gameId" />
+        <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
         {/* <LandingPage path="/landing" /> */}
         <NotFound default={true} />
-        <LandingPage 
+        <LandingPage
           path="/"
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         />
         <ProfilePage path = "/profile"/>
+        <EndPage path="/endpage" story="This is the story text in Endpage." />
       </Router>
     );
   }

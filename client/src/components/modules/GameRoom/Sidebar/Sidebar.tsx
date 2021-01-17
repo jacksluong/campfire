@@ -6,7 +6,7 @@ import "./Sidebar.scss";
 
 interface Props {
   players: Player[];
-  currentChef: string;
+  currentTurn: string;
 }
 
 interface State {}
@@ -20,7 +20,7 @@ class Sidebar extends Component<Props, State> {
   render() {
     return (
       <div className="Sidebar-container">
-        <PlayerDisplay players={this.props.players} currentChef={this.props.currentChef} />
+        <PlayerDisplay players={this.props.players} currentTurn={this.props.currentTurn} />
         <Chat players={this.props.players} />
       </div>
     );

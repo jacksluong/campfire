@@ -6,6 +6,7 @@ interface Props {
   userId: string;
   name: string;
   health: number;
+  disconnected: boolean;
 }
 
 interface State {}
@@ -18,7 +19,7 @@ class PlayerDisplay extends Component<Props, State> {
 
   render() {
     return (
-      <div className="PlayerRow-container">
+      <div className={this.props.disconnected ? "PlayerRow-container disconnected" : "PlayerRow-container"}>
         <span>
           <b>{this.props.name + " | "}</b>
         </span>

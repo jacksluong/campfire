@@ -8,8 +8,8 @@ import "./GameDisplay.scss";
 interface Props {
   players: Player[];
   currentStory: string;
-  currentChef: string;
-  storyInput: string;
+  currentTurn: string;
+  currentInput: string;
 }
 
 interface State {}
@@ -23,8 +23,8 @@ class GameDisplay extends Component<Props, State> {
   render() {
     return (
       <div className="GameDisplay-container">
-        <StoryText currentStory={this.props.currentStory} storyInput={this.props.storyInput} />
-        <Gathering players={this.props.players} currentChef={this.props.currentChef} />
+        <StoryText currentStory={this.props.currentStory} currentInput={this.props.currentInput} />
+        <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
         <GameInputField />
       </div>
     );

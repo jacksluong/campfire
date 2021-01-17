@@ -8,9 +8,11 @@ import GoogleLogin, {
   GoogleLogout,
 } from "react-google-login";
 
-import "../../utilities.ts"
-import MainPage from "../modules/LandingPage/MainPage"
-import NavBar from "../modules/LandingPage/NavBar"
+import "../../utilities.ts";
+import MainPage from "../modules/LandingPage/MainPage";
+import NavBar from "../modules/LandingPage/NavBar";
+import Story from "../../../../shared/Story";
+import { get } from "../../utilities";
 
 const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
 
@@ -22,24 +24,32 @@ type Props = {
 
 type State = {
   loggedIn: boolean;
+  stories: Story[];
 };
 
-class LandingPage extends Component<Props & RouteComponentProps, State>{
-    constructor(props){
-        super(props);
-    }
-    render(){
-        return(
-            <div>
-                <NavBar
-                    handleLogin={this.props.handleLogin}
-                    handleLogout={this.props.handleLogout}
-                    userId={this.props.userId}
-                />
-                <MainPage/>
-            </div>
-        );
-    }
+class LandingPage extends Component<Props & RouteComponentProps, State> {
+  constructor(props) {
+    super(props);
+  }
 
+  componentDidMount() {
+    get("/api/stories").then((stories) => {
+      this.setState({
+        stories: stories,
+      });
+    });
+  }
+  render() {
+    return (
+      <div>
+        <NavBar
+          handleLogin={this.props.handleLogin}
+          handleLogout={this.props.handleLogout}
+          userId={this.props.userId}
+        />
+        <MainPage />
+      </div>
+    );
+  }
 }
 export default LandingPage;

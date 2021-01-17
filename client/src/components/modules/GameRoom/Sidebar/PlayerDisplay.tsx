@@ -6,7 +6,7 @@ import PlayerRow from "./PlayerRow";
 import "./PlayerDisplay.scss";
 interface Props {
   players: Player[];
-  currentChef: string;
+  currentTurn: string;
 }
 
 interface State {}
@@ -22,7 +22,7 @@ class PlayerDisplay extends Component<Props, State> {
       <div className="PlayerDisplay-container">
         <h2>Players</h2>
         {this.props.players.map((player) => (
-          <PlayerRow userId={player.userId} name={player.name} health={player.health} />
+          <PlayerRow userId={player.userId} name={player.name} health={player.health} disconnected={player.disconnected ?? false} />
         ))}
       </div>
     );
