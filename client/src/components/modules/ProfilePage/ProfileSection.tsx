@@ -1,6 +1,6 @@
-import React, {Component} from "react"
-import "./ProfilePage.css"
-import blankpfp from "../../../assets/blankpfp.png"
+import React, {Component} from "react";
+import "./ProfilePage.css";
+
 class ProfileSection extends Component{
     constructor(props){
         super(props);
@@ -8,8 +8,15 @@ class ProfileSection extends Component{
     render(){
         return(
             <div className="ProfileSection-container">
-                profile
-                <img src={blankpfp}/>
+                <div className="ProfilePicture-container">
+                    <div className="ProfilePicture-avatar"/>
+                </div>
+                <div className="AboutMe-container">
+                    About me
+                </div>
+                <div className="AboutMeDescription-container">
+                    AboutMeDescription
+                </div>
             </div>
         );
     }
