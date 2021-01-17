@@ -44,7 +44,7 @@ export const init = (server: http.Server): void => {
       console.log(`socket has disconnected ${socket.id}`);
 
       // TODO: (handle it if they are in a game -> "playerleft")
-      logic.disconnectPlayer(socketToUserMap[socket.id]);
+      logic.disconnectPlayer(socketToUserMap.get(socket.id));
 
       const user = getUserFromSocketID(socket.id);
       if (user !== undefined) removeUser(user, socket);
