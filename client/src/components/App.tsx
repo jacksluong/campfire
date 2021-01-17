@@ -10,6 +10,7 @@ import "../utilities.scss";
 import GameRoom from "./pages/GameRoom";
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage"
+import EndPage from "./pages/EndPage";
 
 type State = {
   userId: string;
@@ -67,13 +68,14 @@ class App extends Component<{}, State> {
         <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
         {/* <LandingPage path="/landing" /> */}
         <NotFound default={true} />
-        <LandingPage 
+        <LandingPage
           path="/"
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         />
         <ProfilePage path = "/profile"/>
+        <EndPage path="/endpage" story="This is the story text in Endpage." />
       </Router>
     );
   }
