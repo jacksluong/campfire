@@ -1,15 +1,35 @@
 import React,{Component} from "react"
-import { RouteComponentProps, Link } from "@reach/router";
+import { RouteComponentProps, Link, Redirect } from "@reach/router";
+import { socket } from "../../../client-socket";
 
-class MainPage extends Component{
+import { get } from "../../../utilities";
+
+interface Props { }
+interface State {
+    redirect: string
+}
+
+class MainPage extends Component<Props, State> {
     constructor(props){
         super(props);
+        this.state = {
+            redirect: null
+        }
     }
     handleQuickPlayClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        alert("click")
+        console.log("abc");
+        get("/api/whoami").then((user) => {
+            if (!user) return;
+            socket.on("matched", (gameId: string) => {
+                console.log("gameId received is", gameId);
+                this.setState({ redirect: `/gameroom/${gameId}`});
+                console.log("redirect to", this.state.redirect);
+            });
+            socket.emit("matchmaking", user._id);
+        });
     }
     handlePrivateGameClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-
+        alert("click");
     }
 
     handleQuestionClick = (event: React.MouseEvent<HTMLButtonElement,MouseEvent>) => {
@@ -18,7 +38,11 @@ class MainPage extends Component{
     
     
 
-    render(){
+    render() {
+        if (this.state.redirect) {
+            console.log("redirected to", this.state.redirect);
+            return <Redirect to={this.state.redirect} />
+        }
         return(
             <div className="MainPage Container">
                 <div className="Title-container"> Campfire</div>
@@ -30,7 +54,7 @@ class MainPage extends Component{
                         onClick={this.handleQuickPlayClick}>
                         Quick play
                     </button>
-                    <Link to = "/gameroom/1234">
+                    <Link to="/">
                         <button
                             type="submit"
                             className="Button"
@@ -39,7 +63,7 @@ class MainPage extends Component{
                         </button>
                     </Link>
                 </div>
-                <div className = "Help-container" >
+                <div className="Help-container" >
 
                     <button className="u-small-radius" onClick={this.handleQuestionClick}>
                         ?

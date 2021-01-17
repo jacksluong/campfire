@@ -53,21 +53,23 @@ export const init = (server: http.Server): void => {
     // ("matchmaking" -> "matched") Landing handles adding user to a game in gameState, sends user over to game room page (passing gameId through URL), ("join" -> "playerjoined") user prompts (via socket) server to provide all information about this game (this is the step), then render, and the server lets the other players in the room know
 
     // TODO: socket.on("matchmaking")
-    socket.on("matchmaking", (data: string) => { // userId: string
+    socket.on("matchmaking", (userId: string) => {
       if (gameState.players.length === 10) {
         // TODO: handle game full
         console.log("Game full");
       } else {
-        UserModel.findById(data).then((user: User) => { // NOTE: idk if type casting will fail here, switch to type any if it doesn't
-          logic.addPlayer(user);
-        })
-        // at this point, the user jumps over to /gameroom/:gameId and will call socket.emit("join", req.user._id) to get room information
+        // NOTE: matchmaking happens here but for now, we only have one room so nothing needs to be done
+        socket.emit("matched", "gameIdGoesHere"); // not io because we only want to let this person know
+        // on "matched", the user is redirected to /gameroom/:gameId and will call socket.emit("join", req.user._id) to get room information
       }
     }) 
 
     // TODO: socket.on("join") 
     socket.on("join", (data: string) => { // userId: string
-      io.emit("playerjoined", gameState);
+      UserModel.findById(data).then((user: User) => { // NOTE: idk if type casting will fail here, switch to type any if it doesn't
+        logic.addPlayer(user);
+      })
+      io.emit("playerjoined", gameState); // everyone in this game room updates local game state and rerenders
     })
 
     /* In a game: inputchange, inputsubmit, update */

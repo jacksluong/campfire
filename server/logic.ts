@@ -8,20 +8,26 @@ export interface GameState {
     gameId: string;
     players: Player[],
     currentStory: string,
-    inputText: string,
-    storyInput: string, // userId of the player who's turn is rn
+    currentTurn: Player,
+    currentInput: string,
     started: boolean
 }
 
 /** Utils */
 
+let testingPlayers: Player[] = [
+  { userId: "p1", name: "Tony Cui", health: 100 },
+  { userId: "p2", name: "Jacky Luong", health: 100 },
+  { userId: "p3", name: "Brandon Lei", health: 100 },
+];
+
 /** Game State */
 const gameState: GameState = {
     gameId: "",
-    players: [],
+    players: testingPlayers,
     currentStory: "",
-    inputText: "",
-    storyInput: "",
+    currentTurn: { userId: "", name: "", health: 100 },
+    currentInput: "",
     started: false
 }
 

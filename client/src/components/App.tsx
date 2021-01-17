@@ -12,7 +12,7 @@ import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage"
 
 type State = {
-  userId: String;
+  userId: string;
 };
 
 class App extends Component<{}, State> {
@@ -27,7 +27,7 @@ class App extends Component<{}, State> {
     get("/api/whoami")
       .then((user: User) => {
         if (user._id) {
-          // TRhey are registed in the database and currently logged in.
+          // They are registered in the database and currently logged in.
           this.setState({ userId: user._id });
         }
       })
@@ -64,7 +64,7 @@ class App extends Component<{}, State> {
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         /> */}
-        <GameRoom path="/gameroom/:gameId" />
+        <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
         {/* <LandingPage path="/landing" /> */}
         <NotFound default={true} />
         <LandingPage 
