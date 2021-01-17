@@ -68,7 +68,6 @@ class App extends Component<{}, State> {
         /> */}
         <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
         {/* <LandingPage path="/landing" /> */}
-        <NotFound default={true} />
         <LandingPage
           path="/"
           handleLogin={this.handleLogin}
@@ -76,7 +75,8 @@ class App extends Component<{}, State> {
           userId={this.state.userId}
         />
         <ProfilePage path = "/profile"/>
-        <EndPage path="/endpage" story="This is the story text in Endpage." />
+        <EndPage path="/endpage/:gameId" />
+        <NotFound default={true} />
       </Router>
     );
   }
