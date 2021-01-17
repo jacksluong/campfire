@@ -1,6 +1,9 @@
 import express from "express";
 import auth from "./auth";
+import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
+import Story from "../shared/Story";
+
 const router = express.Router();
 
 router.post("/login", auth.login);
@@ -24,6 +27,10 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+router.get("/stories", (req, res) => {
+  StoryModel.find({}).then((stories: Story[]) => res.send(stories));
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
