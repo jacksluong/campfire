@@ -18,6 +18,7 @@ export const getUserFromSocketID = (socketid: string) => socketToUserMap.get(soc
 export const getSocketFromSocketID = (socketid: string) => io.sockets.sockets.get(socketid);
 
 export const addUser = (user: User, socket: Socket): void => {
+  console.log("got here");
   const oldSocket = userToSocketMap.get(user._id);
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
@@ -28,6 +29,7 @@ export const addUser = (user: User, socket: Socket): void => {
   }
   userToSocketMap.set(user._id, socket);
   socketToUserMap.set(socket.id, user);
+  console.log(socketToUserMap);
 };
 
 export const removeUser = (user: User, socket: Socket): void => {
@@ -45,10 +47,12 @@ export const init = (server: http.Server): void => {
       console.log(`socket has disconnected ${socket.id}`);
 
       // TODO: (handle it if they are in a game -> "playerleft")
-      logic.disconnectPlayer(socketToUserMap.get(socket));
-
       const user = getUserFromSocketID(socket.id);
-      if (user !== undefined) removeUser(user, socket);
+      
+      if (user !== undefined) {
+        logic.disconnectPlayer(user._id);
+        removeUser(user, socket);
+      }
       
       io.emit("playersupdate", gameState);
     });
