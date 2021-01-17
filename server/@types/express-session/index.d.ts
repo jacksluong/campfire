@@ -1,6 +1,8 @@
 import { User } from "../../models/User";
 declare module "express-session" {
-  interface Session {
-    user?: User;
+  namespace Express {
+    interface Session {
+      user?: User;
+    }
   }
 }
