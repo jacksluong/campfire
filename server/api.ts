@@ -3,7 +3,7 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-import { gameState, addToStory } from "./logic";
+import { gameState, addToStory, resetGameState } from "./logic";
 
 const router = express.Router();
 
@@ -42,8 +42,11 @@ router.post("/publishStory", (req, res) => {
     keywords: req.body.keywords,
   });
   socketManager.getIo().emit("publishStory", newStory);
-  // console.log(`"Reached publishStory API endpoint: ${newStory}`);
-  // newStory.save().then((story) => res.send(story));
+  console.log(`"Reached publishStory API endpoint: ${newStory}`);
+  newStory.save().then((story) => {
+    resetGameState();
+    res.send(story);
+  });
 });
 
 router.post("/inputSubmit", (req, res) => {

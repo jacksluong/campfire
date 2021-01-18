@@ -9,7 +9,6 @@ export interface GameState {
   currentStory: string;
   currentTurn: number;
   currentInput: string;
-  started: boolean;
 }
 
 /** Utils */
@@ -27,7 +26,6 @@ const gameState: GameState = {
   currentStory: "",
   currentTurn: -1,
   currentInput: "",
-  started: false,
 };
 
 const addPlayer = (user: User): void => {
@@ -47,7 +45,7 @@ const addPlayer = (user: User): void => {
       existingPlayer.disconnected = false;
       return;
     }
-    if (gameState.started) {
+    if (gameState.currentTurn !== -1) {
       let average = 0;
       for (let player of gameState.players) average += player.health;
       average = Math.ceil(average / gameState.players.length);
@@ -64,10 +62,8 @@ const addPlayer = (user: User): void => {
       });
     }
   }
-  if (gameState.currentTurn == -1 && gameState.players.length >= 5) {
-    // gameState.currentTurn = Math.ceil(Math.random() * (gameState.players.length - 1) + 1);
-    console.log(" b");
-    gameState.currentTurn = 3;
+  if (gameState.currentTurn == -1 && gameState.players.length >= 3) {
+    gameState.currentTurn = Math.ceil(Math.random() * (gameState.players.length - 1) + 1);
   }
 };
 //>>>>>>> Stashed changes
@@ -83,4 +79,12 @@ const addToStory = (text: string): void => {
   gameState.currentTurn = (gameState.currentTurn + 1) % gameState.players.length;
 }
 
-export { gameState, addPlayer, disconnectPlayer, addToStory };
+const resetGameState = (): void => {
+  gameState.gameId = "";
+  gameState.players = [];
+  gameState.currentStory = "";
+  gameState.currentTurn = -1;
+  gameState.currentInput = "";
+}
+
+export { gameState, addPlayer, disconnectPlayer, addToStory, resetGameState };
