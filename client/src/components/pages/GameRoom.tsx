@@ -45,7 +45,6 @@ class GameRoom extends Component<Props & RouteComponentProps, State> {
   }
 
   render() {
-    console.log("Game room rendered with players list", this.state.players);
     return (
       <div className="GameRoom-container">
         <div className="Sidebar-container">
