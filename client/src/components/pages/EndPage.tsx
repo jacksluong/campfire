@@ -8,7 +8,7 @@ import BottomPanel from "../modules/EndPage/BottomPanel";
 interface Props {}
 interface State {}
 
-class Endpage extends Component<Props & RouteComponentProps, State> {
+class EndPage extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
   }
@@ -24,4 +24,4 @@ class Endpage extends Component<Props & RouteComponentProps, State> {
     );
   }
 }
-export default Endpage;
+export default EndPage;
