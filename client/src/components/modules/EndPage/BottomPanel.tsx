@@ -3,10 +3,9 @@ import { socket } from "../../../client-socket";
 import { post } from "../../../utilities";
 import "./BottomPanel.scss";
 
-class BottomPanel extends Component<{}, {}> {
+class BottomPanel extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   componentDidMount() {

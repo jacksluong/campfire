@@ -16,6 +16,7 @@ interface Props {
 } // replaced "Props & RouteComponentProps" with "RouteComponentProps" because that's the primary way we are receiving props for this component
 
 interface State {
+  gameId: string;
   players: Player[];
   currentStory: string;
   currentTurn: string;
@@ -27,6 +28,7 @@ class GameRoom extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
+      gameId: "",
       players: [],
       currentStory: "",
       currentTurn: "",
@@ -42,6 +44,11 @@ class GameRoom extends Component<Props & RouteComponentProps, State> {
       });
     });
     socket.emit("join", this.props.userId);
+    socket.on("storyUpdate", (updatedStory: string) => {
+      this.setState({
+        currentStory: updatedStory,
+      });
+    });
   }
 
   render() {
@@ -56,6 +63,8 @@ class GameRoom extends Component<Props & RouteComponentProps, State> {
             currentStory={this.state.currentStory}
             currentTurn={this.state.currentTurn}
             currentInput={this.state.currentInput}
+            gameId={this.state.gameId}
+            userId={this.props.userId}
           />
         </div>
       </div>

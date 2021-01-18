@@ -14,7 +14,7 @@ import Story from "../../../../shared/Story";
 import { get } from "../../utilities";
 
 type Props = {
-  userId: String;
+  userId: string;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
   handleLogout: () => void;
 };

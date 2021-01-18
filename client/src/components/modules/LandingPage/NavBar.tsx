@@ -6,10 +6,11 @@ import GoogleLogin, {
   GoogleLoginResponseOffline,
   GoogleLogout,
 } from "react-google-login";
+import ProfileButton from "./ProfileButton";
 const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
 
 type Props = {
-    userId: String;
+    userId: string;
     handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
     handleLogout: () => void;
   };
@@ -27,11 +28,10 @@ class NavBar extends Component<Props & RouteComponentProps, State>{
         return(
             <div className = "NavBar-container">
                 <span className="NavBar-link">{this.props.userId ? (
-                    <GoogleLogout
-                        clientId={GOOGLE_CLIENT_ID}
-                        buttonText="Logout"
-                        onLogoutSuccess={this.props.handleLogout}
-                        onFailure={() => console.log(`Failed to logout.`)}
+                    <ProfileButton
+                        userId={this.props.userId}
+                        imageUrl="check this out https://developers.google.com/identity/sign-in/web/people"
+                        handleLogout={this.props.handleLogout}
                     />
                     ) : (
                     <GoogleLogin

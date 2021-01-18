@@ -3,6 +3,7 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
+import { gameState } from "./logic";
 
 const router = express.Router();
 
@@ -43,6 +44,16 @@ router.post("/publishStory", (req, res) => {
   socketManager.getIo().emit("publishStory", newStory);
   // console.log(`"Reached publishStory API endpoint: ${newStory}`);
   // newStory.save().then((story) => res.send(story));
+});
+
+router.post("/inputSubmit", (req, res) => {
+  let newInput = {
+    contributor: req.body.contributor,
+    content: req.body.content,
+    gameId: req.body.gameId,
+  };
+  gameState.currentStory = gameState.currentStory + newInput.content;
+  socketManager.getIo().emit("storyUpdate", gameState.currentStory);
 });
 
 // anything else falls to this "not found" case
