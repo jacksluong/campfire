@@ -45,7 +45,7 @@ class LandingPage extends Component<Props & RouteComponentProps, State> {
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}
         />
-        <MainPage />
+        <MainPage userId={this.props.userId} />
       </div>
     );
   }
