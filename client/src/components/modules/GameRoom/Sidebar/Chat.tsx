@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ChatInputField from "./ChatInputField";
 import Player from "../../../../../../shared/Player";
-// import "./SideBar.scss";
 import "./Chat.scss";
+
 interface Props {
   players: Player[];
 }
