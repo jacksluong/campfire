@@ -5,16 +5,16 @@ const StorySchema = new Schema({
   contributors: [String], // user IDs
   content: String,
   usersThatLiked: [String],
-  keywords: [String]
+  keywords: [String],
 });
 
 export interface Story extends Document {
   name: string;
   _id: string;
-  contributors: [string];
+  contributors: string[];
   content: string;
-  usersThatLiked: [string]; // story IDs
-  keywords: [string]; 
+  usersThatLiked: string[]; // story IDs
+  keywords: string[];
 }
 
 const StoryModel = model<Story>("Story", StorySchema);

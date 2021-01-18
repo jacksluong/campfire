@@ -1,15 +1,34 @@
 import React, { Component } from "react";
-import Story from "../../../../../server/models/Story";
+import Story from "../../../../../shared/Story";
 
+interface State {
+  storyList: Story[];
+}
 class Gallery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stories: [],
+      storyList: [],
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    let dummyStory1: Story = {
+      name: "dummyName",
+      contributors: ["dummyNames", "Dummyname2"],
+      content: "This is a story!",
+      usersThatLiked: ["player1", "player2,"],
+    };
+
+    let newStoriesList = this.state.storyList.slice();
+
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+      };
+    });
+  }
+
   render() {
     return <div className="Gallery-container"></div>;
   }
