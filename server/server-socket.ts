@@ -48,12 +48,12 @@ export const init = (server: http.Server): void => {
 
       // TODO: (handle it if they are in a game -> "playerleft")
       const user = getUserFromSocketID(socket.id);
-      
+
       if (user !== undefined) {
         logic.disconnectPlayer(user._id);
         removeUser(user, socket);
       }
-      
+
       io.emit("playersupdate", gameState);
     });
 
@@ -70,15 +70,16 @@ export const init = (server: http.Server): void => {
         socket.emit("matched", "gameIdGoesHere"); // not io because we only want to let this person know
         // on "matched", the user is redirected to /gameroom/:gameId and will call socket.emit("join", req.user._id) to get room information
       }
-    }) 
+    });
 
-    // TODO: socket.on("join") 
-    socket.on("join", (data: string) => { // userId: string
+    // TODO: socket.on("join")
+    socket.on("join", (data: string) => {
+      // userId: string
       UserModel.findById(data).then((user: User) => {
         logic.addPlayer(user);
         io.emit("playersupdate", gameState);
       });
-    })
+    });
 
     /* In a game: inputchange, inputsubmit, update */
     // Actions that require synchronization amongst all players in a room include: input change ("inputchange" -> "input changed"), input submit ("inputsubmit" -> "inputsubmitted"), next person chosen ("choose" -> "personchosen")
@@ -90,6 +91,17 @@ export const init = (server: http.Server): void => {
     // TODO: socket.on("update")
 
     // TODO: socket.on("choose")
+
+    // When players end game
+    socket.on("endgameRequest", (gameId: string) => {
+      gameState.endVotes++;
+      //TODO: take out later, want to emit only when majority want to end game
+      // io.emit("gameOver", gameId);
+      if (gameState.endVotes > Math.ceil(gameState.players.length / 2)) {
+        gameState.gameOver = true;
+        io.emit("gameOver", gameId);
+      }
+    });
   });
 };
 

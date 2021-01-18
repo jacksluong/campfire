@@ -10,6 +10,8 @@ export interface GameState {
   currentTurn: number;
   currentInput: string;
   started: boolean;
+  endVotes: number;
+  gameOver: boolean;
 }
 
 /** Utils */
@@ -28,6 +30,8 @@ const gameState: GameState = {
   currentTurn: -1,
   currentInput: "",
   started: false,
+  endVotes: 0,
+  gameOver: false,
 };
 
 const addPlayer = (user: User): void => {
@@ -64,7 +68,7 @@ const addPlayer = (user: User): void => {
       });
     }
   }
-  if (gameState.currentTurn == -1 && gameState.players.length >= 5) {
+  if (gameState.currentTurn == -1 && gameState.players.length >= 4) {
     // gameState.currentTurn = Math.ceil(Math.random() * (gameState.players.length - 1) + 1);
     console.log(" b");
     gameState.currentTurn = 3;
@@ -81,6 +85,6 @@ const addToStory = (text: string): void => {
   // format text (remove whitespace, add period if necessary) here
   gameState.currentStory += text;
   gameState.currentTurn = (gameState.currentTurn + 1) % gameState.players.length;
-}
+};
 
 export { gameState, addPlayer, disconnectPlayer, addToStory };

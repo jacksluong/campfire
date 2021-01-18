@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import { post } from "../../../../utilities";
 import "./GameInputField.scss";
+import { socket } from "../../../../client-socket";
+import { Redirect } from "@reach/router";
 
 interface Props {
   gameId: string;
   userId: string;
+  disabled: boolean;
 }
 interface State {
   value: string;
+  redirect: string;
 }
 
 class GameInputField extends Component<Props, State> {
@@ -15,6 +19,7 @@ class GameInputField extends Component<Props, State> {
     super(props);
     this.state = {
       value: "",
+      redirect: null,
     };
   }
 
@@ -40,26 +45,51 @@ class GameInputField extends Component<Props, State> {
     });
   };
 
+  handleEndGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    console.log("reached endgame funtion");
+    socket.emit("endgameRequest", this.props.gameId);
+    socket.on("gameOver", (gameId: string) => {
+      this.setState({
+        redirect: `/end/${gameId}`,
+      });
+    });
+  };
+
   render() {
-    return (
-      <div className="GameInputField-container">
-        <input
-          type="text"
-          placeholder="Craft Your Sentence"
-          value={this.state.value}
-          onChange={this.handleChange}
-          className="GameInputField-textbox"
-        />
-        <button
-          type="submit"
-          className="GameInputField-button u-pointer"
-          value="Submit"
-          onClick={this.handleSubmit}
-        >
-          Submit
-        </button>
-      </div>
-    );
+    if (this.state.redirect) {
+      console.log();
+      return <Redirect to={this.state.redirect} />;
+    } else {
+      return (
+        <div className="GameInputField-container">
+          <input
+            type="text"
+            placeholder="Craft Your Sentence"
+            value={this.state.value}
+            onChange={this.handleChange}
+            className="GameInputField-textbox"
+            // disabled={this.props.disabled}
+          />
+          <button
+            type="submit"
+            className="GameInputField-button u-pointer"
+            value="Submit"
+            onClick={this.handleSubmit}
+            // disabled={this.props.disabled}
+          >
+            Submit
+          </button>
+          <button
+            type="submit"
+            className="GameInputField-button u-pointer"
+            onClick={this.handleEndGame}
+          >
+            End Game
+          </button>
+        </div>
+      );
+    }
   }
 }
 
