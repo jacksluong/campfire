@@ -4,7 +4,7 @@ import Story from "../../../../../shared/Story";
 interface State {
   storyList: Story[];
 }
-class Gallery extends Component {
+class Gallery extends Component<{}, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,20 +13,22 @@ class Gallery extends Component {
   }
 
   componentDidMount() {
-    let dummyStory1: Story = {
-      name: "dummyName",
-      contributors: ["dummyNames", "Dummyname2"],
-      content: "This is a story!",
-      usersThatLiked: ["player1", "player2,"],
-    };
-
-    let newStoriesList = this.state.storyList.slice();
-
-    this.setState((prevState) => {
-      return {
-        ...prevState,
-      };
-    });
+    // let dummyStory1: Story = {
+    //   name: "dummyName",
+    //   _id: "123",
+    //   contributors: ["dummyNames", "Dummyname2"],
+    //   content: "This is a story!",
+    //   usersThatLiked: ["player1", "player2,"],
+    //   keywords: ["potato"],
+    // };
+    // let newStoriesList = [...this.state.storyList];
+    // newStoriesList.push(dummyStory1);
+    // this.setState((prevState) => {
+    //   return {
+    //     ...prevState,
+    //     storyList: newStoriesList,
+    //   };
+    // });
   }
 
   render() {
