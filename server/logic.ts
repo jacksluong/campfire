@@ -40,7 +40,7 @@ const addPlayer = (user: User): void => {
         })
         return;
     }
-    let existingPlayer: Player | undefined = gameState.players.find(player => player.userId == user._id) 
+    const existingPlayer: Player | undefined = gameState.players.find(player => player.userId == user._id + "");
     if (existingPlayer) {
         existingPlayer.disconnected = false;
         return;
@@ -50,13 +50,13 @@ const addPlayer = (user: User): void => {
         for (let player of gameState.players) average += player.health;
         average = Math.ceil(average / gameState.players.length)
         gameState.players.push({
-            userId: user._id,
+            userId: user._id + "",
             name: user.name,
             health: average,
         })
     } else {
         gameState.players.push({
-            userId: user._id,
+            userId: user._id + "",
             name: user.name,
             health: 100,
         })
