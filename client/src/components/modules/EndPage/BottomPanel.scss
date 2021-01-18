@@ -1,0 +1,13 @@
+.BottomPanel-button {
+  /* width: 120px; */
+  /* height:10%; */
+  font-size: 24px;
+  border-radius: 8px;
+}
+
+.BottomPanel-container {
+  border-radius: var(--l);
+  border-color: var(--burntSienna);
+  display: flex;
+  justify-content: space-around;
+}
