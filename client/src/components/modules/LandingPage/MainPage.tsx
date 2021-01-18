@@ -3,8 +3,9 @@ import { RouteComponentProps, Link, Redirect } from "@reach/router";
 import { socket } from "../../../client-socket";
 
 import { get } from "../../../utilities";
+import PrivateGameButton from "./PrivateGameButton";
 
-interface Props { }
+interface Props { userId: string }
 interface State {
     redirect: string
 }
@@ -28,12 +29,13 @@ class MainPage extends Component<Props, State> {
             socket.emit("matchmaking", user._id);
         });
     }
-    handlePrivateGameClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        alert("click");
+    createPrivateGame = () => {
+      console.log("Create new private game");
+      alert("create private game");
     }
 
     handleQuestionClick = (event: React.MouseEvent<HTMLButtonElement,MouseEvent>) => {
-
+      
     }
     
     
@@ -54,14 +56,7 @@ class MainPage extends Component<Props, State> {
                         onClick={this.handleQuickPlayClick}>
                         Quick play
                     </button>
-                    <Link to="/">
-                        <button
-                            type="submit"
-                            className="Button"
-                            onClick={this.handlePrivateGameClick}>
-                            Private Game
-                        </button>
-                    </Link>
+                    <PrivateGameButton userId={this.props.userId} createPrivateGame={this.createPrivateGame} />
                 </div>
                 <div className="Help-container" >
 
