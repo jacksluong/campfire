@@ -44,6 +44,11 @@ class GameRoom extends Component<Props & RouteComponentProps, State> {
       });
     });
     socket.emit("join", this.props.userId);
+    socket.on("storyUpdate", (updatedStory: string) => {
+      this.setState({
+        currentStory: updatedStory,
+      });
+    });
   }
 
   render() {

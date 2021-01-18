@@ -14,7 +14,7 @@ class StoryText extends Component<Props, {}> {
   componentDidMount() {}
 
   render() {
-    return <div className="StoryText-container">This is a story.</div>;
+    return <div className="StoryText-container">{this.props.currentStory}</div>;
   }
 }
 

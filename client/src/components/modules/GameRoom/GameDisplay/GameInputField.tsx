@@ -26,14 +26,13 @@ class GameInputField extends Component<Props, State> {
 
   handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    //console.log(this.state.value);
     let body = {
       contributor: this.props.userId,
       content: this.state.value,
       gameId: this.props.gameId,
     };
     post("/api/inputSubmit", body).then((response) => {
-      console.log(response);
+      null;
     });
     //Reset the value
     this.setState({

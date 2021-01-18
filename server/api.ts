@@ -3,7 +3,7 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-//import logic from "./logic";
+import { gameState } from "./logic";
 
 const router = express.Router();
 
@@ -39,8 +39,8 @@ router.post("/inputSubmit", (req, res) => {
     content: req.body.content,
     gameId: req.body.gameId,
   };
-
-  res.send(newInput);
+  gameState.currentStory = gameState.currentStory + newInput.content;
+  socketManager.getIo().emit("storyUpdate", gameState.currentStory);
 });
 
 // anything else falls to this "not found" case
