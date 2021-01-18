@@ -4,7 +4,7 @@ import "./Passage.scss";
 interface Props {
   story: string;
 }
-class StoryText extends Component<Props, {}> {
+class Passage extends Component<Props, {}> {
   constructor(props) {
     super(props);
     this.state = {};
@@ -17,4 +17,4 @@ class StoryText extends Component<Props, {}> {
   }
 }
 
-export default StoryText;
+export default Passage;
