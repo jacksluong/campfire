@@ -2,7 +2,7 @@ import { RouteComponentProps } from "@reach/router";
 import React, { Component } from "react";
 import Navigation from "../modules/EndPage/Navigation";
 import Passage from "../modules/EndPage/Passage";
-import "../modules/EndPage/Endpage.scss";
+import "../modules/EndPage/EndPage.scss";
 import BottomPanel from "../modules/EndPage/BottomPanel";
 
 interface Props {}
