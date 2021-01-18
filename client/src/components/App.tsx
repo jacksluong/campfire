@@ -8,9 +8,9 @@ import { socket } from "../client-socket";
 import User from "../../../shared/User";
 import "../utilities.scss";
 import GameRoom from "./pages/GameRoom";
-import LandingPage from "./pages/LandingPage";
-import ProfilePage from "./pages/ProfilePage";
-import EndPage from "./pages/EndPage";
+import Landing from "./pages/Landing";
+import Profile from "./pages/Profile";
+import End from "./pages/End";
 
 type State = {
   userId: string;
@@ -67,17 +67,17 @@ class App extends Component<{}, State> {
           userId={this.state.userId}
         /> */}
         <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
-        {/* <LandingPage path="/landing" /> */}
-        <LandingPage
+        {/* <Landing path="/landing" /> */}
+        <Landing
           path="/"
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         />
-        <ProfilePage path="/profile" />
+        <Profile path="/profile" />
         {/* TODO: change endpage URL later */}
-        {/* <EndPage path="/endpage/:gameId" /> */}
-        <EndPage path="/endpage/" />
+        {/* <End path="/end/:gameId" /> */}
+        <End path="/end/" />
         <NotFound default={true} />
       </Router>
     );

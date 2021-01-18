@@ -8,8 +8,8 @@ import GoogleLogin, {
   GoogleLogout,
 } from "react-google-login";
 
-import MainPage from "../modules/LandingPage/MainPage";
-import NavBar from "../modules/LandingPage/NavBar";
+import Main from "../modules/Landing/Main";
+import NavBar from "../modules/Landing/NavBar";
 import Story from "../../../../shared/Story";
 import { get } from "../../utilities";
 
@@ -24,7 +24,7 @@ type State = {
   stories: Story[];
 };
 
-class LandingPage extends Component<Props & RouteComponentProps, State> {
+class Landing extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
   }
@@ -45,9 +45,9 @@ class LandingPage extends Component<Props & RouteComponentProps, State> {
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}
         />
-        <MainPage userId={this.props.userId} />
+        <Main userId={this.props.userId} />
       </div>
     );
   }
 }
-export default LandingPage;
+export default Landing;
