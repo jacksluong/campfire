@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import "./BottomPanel.scss";
 
-class BottomPanel extends Component<{}, {}> {
+class BottomPanel extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   componentDidMount() {}
