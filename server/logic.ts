@@ -31,39 +31,6 @@ const gameState: GameState = {
 };
 
 const addPlayer = (user: User): void => {
-<<<<<<< Updated upstream
-    if (!user) { // NOTE: this is temporary; ideally, user will never be null, but currently that is not how it works, so adding this here to prevent the server crashing every time we join game room without being signed in
-        const random = Math.ceil(Math.random() * 999) + 1
-        gameState.players.push({
-            userId: `${random}`,
-            name: `guest${random}`,
-            health: 50,
-        })
-        return;
-    }
-    const existingPlayer: Player | undefined = gameState.players.find(player => player.userId == user._id + "");
-    if (existingPlayer) {
-        existingPlayer.disconnected = false;
-        return;
-    };
-    if (gameState.started) {
-        let average = 0;
-        for (let player of gameState.players) average += player.health;
-        average = Math.ceil(average / gameState.players.length)
-        gameState.players.push({
-            userId: user._id + "",
-            name: user.name,
-            health: average,
-        })
-    } else {
-        gameState.players.push({
-            userId: user._id + "",
-            name: user.name,
-            health: 100,
-        })
-    }
-}
-=======
   if (!user) {
     // NOTE: this is temporary; ideally, user will never be null, but currently that is not how it works, so adding this here to prevent the server crashing every time we join game room without being signed in
     const random = Math.ceil(Math.random() * 999) + 1;
@@ -98,7 +65,7 @@ const addPlayer = (user: User): void => {
     });
   }
 };
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
 
 const disconnectPlayer = (userId: string): void => {
   const disconnectedPlayer = gameState.players.filter((player) => player.userId == userId)[0];
