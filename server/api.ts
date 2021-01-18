@@ -3,6 +3,7 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
+import { gameState } from "./logic";
 
 const router = express.Router();
 
@@ -30,6 +31,16 @@ router.post("/initsocket", (req, res) => {
 
 router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
+});
+
+router.post("/inputSubmit", (req, res) => {
+  let newInput = {
+    contributor: req.body.contributor,
+    content: req.body.content,
+    gameId: req.body.gameId,
+  };
+  gameState.currentStory = gameState.currentStory + newInput.content;
+  socketManager.getIo().emit("storyUpdate", gameState.currentStory);
 });
 
 // anything else falls to this "not found" case
