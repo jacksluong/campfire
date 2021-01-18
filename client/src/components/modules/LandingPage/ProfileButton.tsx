@@ -26,7 +26,7 @@ class ProfileButton extends Component<Props, State> {
         </button>
         <div id="dropdown" className="Dropdown-content">
           <Link to="/profile" className="Dropdown-item">Profile</Link>
-          <span className="Dropdown-item" onClick={this.props.handleLogout}>Logout</span>
+          <a className="Dropdown-item" onClick={this.props.handleLogout}>Logout</a>
         </div>
       </div>
     );
