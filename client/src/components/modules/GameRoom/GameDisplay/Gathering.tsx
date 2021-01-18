@@ -4,7 +4,7 @@ import "./Gathering.scss";
 
 interface Props {
   players: Player[];
-  currentTurn: string;
+  currentTurn: number;
 }
 class Gathering extends Component<Props, {}> {
   constructor(props) {

@@ -8,7 +8,7 @@ import "./GameDisplay.scss";
 interface Props {
   players: Player[];
   currentStory: string;
-  currentTurn: string;
+  currentTurn: number;
   currentInput: string;
   gameId: string;
   userId: string;
@@ -23,11 +23,14 @@ class GameDisplay extends Component<Props, State> {
   }
 
   render() {
+    console.log("userId of current player's turn from players: ", this.props.players[this.props.currentTurn].userId);
+    console.log("from props: ", this.props.userId);
+    let inputField = this.props.players[this.props.currentTurn].userId == this.props.userId ? <GameInputField gameId={this.props.gameId} userId={this.props.userId} /> : "";
     return (
       <div className="GameDisplay-container">
         <StoryText currentStory={this.props.currentStory} currentInput={this.props.currentInput} />
         <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
-        <GameInputField gameId={this.props.gameId} userId={this.props.userId} />
+        {inputField}
       </div>
     );
   }

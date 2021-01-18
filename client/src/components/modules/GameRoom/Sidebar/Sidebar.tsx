@@ -6,7 +6,7 @@ import "./Sidebar.scss";
 
 interface Props {
   players: Player[];
-  currentTurn: string;
+  currentTurn: number;
 }
 
 interface State {}

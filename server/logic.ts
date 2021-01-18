@@ -64,6 +64,9 @@ const addPlayer = (user: User): void => {
       health: 100,
     });
   }
+  if (gameState.currentTurn === -1 && gameState.players.length >= 5) {
+    gameState.currentTurn = Math.ceil(Math.random() * (gameState.players.length - 1) + 1);
+  }
 };
 //>>>>>>> Stashed changes
 

@@ -19,7 +19,7 @@ interface State {
   gameId: string;
   players: Player[];
   currentStory: string;
-  currentTurn: string;
+  currentTurn: number;
   currentInput: string;
 }
 
@@ -31,7 +31,7 @@ class GameRoom extends Component<Props & RouteComponentProps, State> {
       gameId: "",
       players: [],
       currentStory: "",
-      currentTurn: "",
+      currentTurn: -1,
       currentInput: "",
     };
   }
