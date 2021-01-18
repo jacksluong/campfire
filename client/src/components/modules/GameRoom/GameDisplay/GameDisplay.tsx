@@ -23,12 +23,10 @@ class GameDisplay extends Component<Props, State> {
   }
 
   render() {
-    let inputField = (this.props.currentTurn !== -1 && this.props.players[this.props.currentTurn].userId == this.props.userId) ? <GameInputField gameId={this.props.gameId} userId={this.props.userId} /> : "";
     return (
       <div className="GameDisplay-container">
         <StoryText currentStory={this.props.currentStory} currentInput={this.props.currentInput} />
         <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
-        {inputField}
       </div>
     );
   }
