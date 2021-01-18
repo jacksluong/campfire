@@ -15,16 +15,10 @@ export interface GameState {
 
 /** Utils */
 
-let testingInitialPlayers: Player[] = [
-  { userId: "p1", name: "Tony Cui", health: 100 },
-  { userId: "p2", name: "Jacky Luong", health: 100 },
-  { userId: "p3", name: "Brandon Lei", health: 100 },
-];
-
 /** Game State */
 const gameState: GameState = {
   gameId: "",
-  players: testingInitialPlayers,
+  players: [],
   currentStory: "",
   currentTurn: -1,
   currentInput: "",
@@ -42,8 +36,9 @@ const addPlayer = (user: User): void => {
       health: 50,
     });
   } else {
+    let idOfSessionUser = user._id + ""; // necessary to make it same string type as player.userId string for some reason
     let existingPlayer: Player | undefined = gameState.players.find(
-      (player) => player.userId == user._id
+      (player) => player.userId == idOfSessionUser
     );
     if (existingPlayer) {
       existingPlayer.disconnected = false;
@@ -54,13 +49,13 @@ const addPlayer = (user: User): void => {
       for (let player of gameState.players) average += player.health;
       average = Math.ceil(average / gameState.players.length);
       gameState.players.push({
-        userId: user._id,
+        userId: idOfSessionUser,
         name: user.name,
         health: average,
       });
     } else {
       gameState.players.push({
-        userId: user._id,
+        userId: idOfSessionUser,
         name: user.name,
         health: 100,
       });
