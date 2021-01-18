@@ -75,7 +75,9 @@ class App extends Component<{}, State> {
           userId={this.state.userId}
         />
         <ProfilePage path="/profile" />
-        <EndPage path="/endpage/:gameId" />
+        {/* TODO: change endpage URL later */}
+        {/* <EndPage path="/endpage/:gameId" /> */}
+        <EndPage path="/endpage/" />
         <NotFound default={true} />
       </Router>
     );
