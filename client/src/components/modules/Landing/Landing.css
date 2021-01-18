@@ -107,12 +107,15 @@ Button {
   /* text-align: center; */
   display: flex;
   border-style: solid;
+  display: flex;
+  justify-content: wrap;
 }
 .SingleStoryCard-container {
   border-style: solid;
   max-width: 30vw;
   margin: 2%;
   text-align: left;
+
   /* display: inline; */
 }
 .Gallery-title {
