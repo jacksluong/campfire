@@ -7,7 +7,7 @@ export interface GameState {
   gameId: string;
   players: Player[];
   currentStory: string;
-  currentTurn: Player;
+  currentTurn: number;
   currentInput: string;
   started: boolean;
 }
@@ -25,7 +25,7 @@ const gameState: GameState = {
   gameId: "",
   players: testingInitialPlayers,
   currentStory: "",
-  currentTurn: { userId: "", name: "", health: 100 },
+  currentTurn: -1,
   currentInput: "",
   started: false,
 };
@@ -72,4 +72,10 @@ const disconnectPlayer = (userId: string): void => {
   disconnectedPlayer.disconnected = true;
 };
 
-export { gameState, addPlayer, disconnectPlayer };
+const addToStory = (text: string): void => {
+  // format text (remove whitespace, add period if necessary) here
+  gameState.currentStory += text;
+  gameState.currentTurn = (gameState.currentTurn + 1) % gameState.players.length;
+}
+
+export { gameState, addPlayer, disconnectPlayer, addToStory };

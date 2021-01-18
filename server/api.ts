@@ -3,7 +3,7 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-import { gameState } from "./logic";
+import { gameState, addToStory } from "./logic";
 
 const router = express.Router();
 
@@ -52,7 +52,7 @@ router.post("/inputSubmit", (req, res) => {
     content: req.body.content,
     gameId: req.body.gameId,
   };
-  gameState.currentStory = gameState.currentStory + newInput.content;
+  addToStory(newInput.content);
   socketManager.getIo().emit("storyUpdate", gameState.currentStory);
 });
 
