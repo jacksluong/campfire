@@ -7,7 +7,7 @@ import { Redirect } from "@reach/router";
 interface Props {
   gameId: string;
   userId: string;
-  disabled: boolean;
+  enabled: boolean;
 }
 interface State {
   value: string;
@@ -37,11 +37,9 @@ class GameInputField extends Component<Props, State> {
       gameId: this.props.gameId,
     };
     post("/api/inputSubmit", body).then((response) => {
-      null;
-    });
-    //Reset the value
-    this.setState({
-      value: "",
+      this.setState({
+        value: "",
+      });
     });
   };
 
@@ -58,7 +56,6 @@ class GameInputField extends Component<Props, State> {
 
   render() {
     if (this.state.redirect) {
-      console.log();
       return <Redirect to={this.state.redirect} />;
     } else {
       return (
@@ -69,14 +66,14 @@ class GameInputField extends Component<Props, State> {
             value={this.state.value}
             onChange={this.handleChange}
             className="GameInputField-textbox"
-            // disabled={this.props.disabled}
+            disabled={!this.props.enabled}
           />
           <button
             type="submit"
             className="GameInputField-button u-pointer"
             value="Submit"
             onClick={this.handleSubmit}
-            // disabled={this.props.disabled}
+            disabled={!this.props.enabled}
           >
             Submit
           </button>

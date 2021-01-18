@@ -18,7 +18,6 @@ export const getUserFromSocketID = (socketid: string) => socketToUserMap.get(soc
 export const getSocketFromSocketID = (socketid: string) => io.sockets.sockets.get(socketid);
 
 export const addUser = (user: User, socket: Socket): void => {
-  console.log("got here");
   const oldSocket = userToSocketMap.get(user._id);
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
@@ -29,7 +28,6 @@ export const addUser = (user: User, socket: Socket): void => {
   }
   userToSocketMap.set(user._id, socket);
   socketToUserMap.set(socket.id, user);
-  console.log(socketToUserMap);
 };
 
 export const removeUser = (user: User, socket: Socket): void => {
