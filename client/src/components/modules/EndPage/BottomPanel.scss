@@ -6,8 +6,10 @@
 }
 
 .BottomPanel-container {
+  margin: var(--l);
+  padding: var(--l);
   border-radius: var(--l);
-  border-color: var(--burntSienna);
+  background-color: var(--burntSienna);
   display: flex;
   justify-content: space-around;
 }
