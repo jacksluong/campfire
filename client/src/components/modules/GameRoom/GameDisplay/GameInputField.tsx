@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { post } from "../../../../utilities";
 import "./GameInputField.scss";
 
-interface Props {}
-
+interface Props {
+  gameId: string;
+  userId: string;
+}
 interface State {
   value: string;
 }
@@ -23,6 +26,16 @@ class GameInputField extends Component<Props, State> {
 
   handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+    //console.log(this.state.value);
+    let body = {
+      contributor: this.props.userId,
+      content: this.state.value,
+      gameId: this.props.gameId,
+    };
+    post("/api/inputSubmit", body).then((response) => {
+      console.log(response);
+    });
+    //Reset the value
     this.setState({
       value: "",
     });

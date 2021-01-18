@@ -10,6 +10,8 @@ interface Props {
   currentStory: string;
   currentTurn: string;
   currentInput: string;
+  gameId: string;
+  userId: string;
 }
 
 interface State {}
@@ -25,7 +27,7 @@ class GameDisplay extends Component<Props, State> {
       <div className="GameDisplay-container">
         <StoryText currentStory={this.props.currentStory} currentInput={this.props.currentInput} />
         <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
-        <GameInputField />
+        <GameInputField gameId={this.props.gameId} userId={this.props.userId} />
       </div>
     );
   }
