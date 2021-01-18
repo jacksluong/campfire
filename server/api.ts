@@ -53,7 +53,7 @@ router.post("/inputSubmit", (req, res) => {
     gameId: req.body.gameId,
   };
   addToStory(newInput.content);
-  socketManager.getIo().emit("storyUpdate", gameState.currentStory);
+  socketManager.getIo().emit("storyUpdate", gameState);
 });
 
 // anything else falls to this "not found" case

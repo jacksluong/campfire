@@ -39,33 +39,35 @@ const addPlayer = (user: User): void => {
       name: `guest${random}`,
       health: 50,
     });
-    return;
-  }
-  let existingPlayer: Player | undefined = gameState.players.find(
-    (player) => player.userId == user._id
-  );
-  if (existingPlayer) {
-    existingPlayer.disconnected = false;
-    return;
-  }
-  if (gameState.started) {
-    let average = 0;
-    for (let player of gameState.players) average += player.health;
-    average = Math.ceil(average / gameState.players.length);
-    gameState.players.push({
-      userId: user._id,
-      name: user.name,
-      health: average,
-    });
   } else {
-    gameState.players.push({
-      userId: user._id,
-      name: user.name,
-      health: 100,
-    });
+    let existingPlayer: Player | undefined = gameState.players.find(
+      (player) => player.userId == user._id
+    );
+    if (existingPlayer) {
+      existingPlayer.disconnected = false;
+      return;
+    }
+    if (gameState.started) {
+      let average = 0;
+      for (let player of gameState.players) average += player.health;
+      average = Math.ceil(average / gameState.players.length);
+      gameState.players.push({
+        userId: user._id,
+        name: user.name,
+        health: average,
+      });
+    } else {
+      gameState.players.push({
+        userId: user._id,
+        name: user.name,
+        health: 100,
+      });
+    }
   }
-  if (gameState.currentTurn === -1 && gameState.players.length >= 5) {
-    gameState.currentTurn = Math.ceil(Math.random() * (gameState.players.length - 1) + 1);
+  if (gameState.currentTurn == -1 && gameState.players.length >= 5) {
+    // gameState.currentTurn = Math.ceil(Math.random() * (gameState.players.length - 1) + 1);
+    console.log(" b");
+    gameState.currentTurn = 3;
   }
 };
 //>>>>>>> Stashed changes
