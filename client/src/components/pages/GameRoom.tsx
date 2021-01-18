@@ -28,7 +28,7 @@ class GameRoom extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      gameId: "",
+      gameId: "gameIdGoesHere",
       players: [],
       currentStory: "",
       currentTurn: -1,
