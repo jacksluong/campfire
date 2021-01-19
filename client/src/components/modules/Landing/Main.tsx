@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RouteComponentProps, Link, Redirect } from "@reach/router";
+import { RouteComponentProps, Link, Redirect, redirectTo } from "@reach/router";
 import { socket } from "../../../client-socket";
 
 import { get } from "../../../utilities";
@@ -41,7 +41,7 @@ class Main extends Component<Props, State> {
   render() {
     if (this.state.redirect) {
       console.log("redirected to", this.state.redirect);
-      return <Redirect to={this.state.redirect} />;
+      return <Redirect noThrow={true} to={this.state.redirect} />;
     }
     return (
       <div className="Main Container">
