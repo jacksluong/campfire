@@ -26,49 +26,35 @@ const gameState: GameState = {
   gameOver: false,
 };
 
-const addPlayer = (user: User): void => {
-  if (!user) {
-    // NOTE: this is temporary; ideally, user will never be null, but currently that is not how it works, so adding this here to prevent the server crashing every time we join game room without being signed in
-    const random = Math.ceil(Math.random() * 999) + 1;
-    gameState.players.push({
-      userId: `${random}`,
-      name: `guest${random}`,
-      health: 50,
-    });
+const addPlayer = (user: User, socketId: string): void => {
+  const existingPlayer: Player | undefined = gameState.players.find((player) => player.socketId == socketId);
+  if (existingPlayer) {
+    existingPlayer.disconnected = false;
   } else {
-    let idOfSessionUser = user._id + ""; // necessary to make it same string type as player.userId string for some reason
-    let existingPlayer: Player | undefined = gameState.players.find(
-      (player) => player.userId == idOfSessionUser
-    );
-    if (existingPlayer) {
-      existingPlayer.disconnected = false;
-      return;
-    }
+    let userId = !user ? "guest" : (user._id + "");
+    let name = !user ? `guest${Math.ceil(Math.random() * 99999) + 1}` : user.name;
+    let health = 100;
     if (gameState.currentTurn !== -1) {
       let average = 0;
       for (let player of gameState.players) average += player.health;
-      average = Math.ceil(average / gameState.players.length);
-      gameState.players.push({
-        userId: idOfSessionUser,
-        name: user.name,
-        health: average,
-      });
-    } else {
-      gameState.players.push({
-        userId: idOfSessionUser,
-        name: user.name,
-        health: 100,
-      });
+      health = Math.ceil(average / gameState.players.length);
+    }
+    gameState.players.push({
+      userId: userId,
+      socketId: socketId,
+      name: name,
+      health: health,
+      wordFrequencies: new Map<string, number>()
+    });
+    let startCondition = gameState.players.length >= 3; // NOTE: modify this after MVP
+    if (gameState.currentTurn === -1 && startCondition) {
+      gameState.currentTurn = Math.ceil(Math.random() * (gameState.players.length - 1) + 1); // start game, select random playter to start
     }
   }
-  if (gameState.currentTurn == -1 && gameState.players.length >= 3) {
-    gameState.currentTurn = Math.ceil(Math.random() * (gameState.players.length - 1) + 1);
-  }
 };
-//>>>>>>> Stashed changes
 
-const disconnectPlayer = (userId: string): void => {
-  const disconnectedPlayer = gameState.players.filter((player) => player.userId == userId)[0];
+const disconnectPlayer = (socketId: string): void => {
+  const disconnectedPlayer = gameState.players.find((player) => player.socketId == socketId);
   disconnectedPlayer.disconnected = true;
 };
 

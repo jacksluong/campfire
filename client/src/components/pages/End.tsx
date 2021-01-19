@@ -8,7 +8,9 @@ import { socket } from "../../../../client/src/client-socket";
 import { post } from "../../../src/utilities";
 import Player from "../../../../shared/Player";
 
-interface Props {}
+interface Props extends RouteComponentProps {
+  gameId?: string
+}
 interface State {
   name: string;
   contributors: Player[];
@@ -17,7 +19,7 @@ interface State {
   keywords: string[];
 }
 
-class End extends Component<Props & RouteComponentProps, State> {
+class End extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +31,7 @@ class End extends Component<Props & RouteComponentProps, State> {
     };
   }
   componentDidMount() {
-    socket.emit("requestGameState");
+    socket.emit("requestGameState"); // TODO: send game id when multiple rooms are a feature
     socket.on("sendGameState", (gameState) => {
       this.setState({
         name: `TITLE`,

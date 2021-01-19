@@ -44,11 +44,10 @@ export const init = (server: http.Server): void => {
     socket.on("disconnect", () => {
       console.log(`socket has disconnected ${socket.id}`);
 
-      // TODO: (handle it if they are in a game -> "playerleft")
+      logic.disconnectPlayer(socket.id);
+      
       const user = getUserFromSocketID(socket.id);
-
       if (user !== undefined) {
-        logic.disconnectPlayer(user._id);
         removeUser(user, socket);
       }
 
@@ -71,10 +70,10 @@ export const init = (server: http.Server): void => {
     });
 
     // TODO: socket.on("join")
-    socket.on("join", (data: string) => {
+    socket.on("join", (userId: string) => {
       // userId: string
-      UserModel.findById(data).then((user: User) => {
-        logic.addPlayer(user);
+      UserModel.findById(userId).then((user: User) => {
+        logic.addPlayer(user, socket.id);
         io.emit("playersupdate", gameState);
       });
     });
