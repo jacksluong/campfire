@@ -21,7 +21,7 @@ export interface User extends Document {
   wordsTyped: number;
   storiesWorkedOn: string[];
   storiesLiked: string[]; 
-  wordFrequencies: Record<string, number>; // functions like a dictionary
+  wordFrequencies: Map<string, number>; // functions like a dictionary
 }
 
 const UserModel = model<User>("User", UserSchema);
