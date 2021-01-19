@@ -31,11 +31,13 @@ const gameState: GameState = {
 };
 
 const addPlayer = (user: User, socketId: string): void => {
-  const existingPlayer: Player | undefined = gameState.players.find((player) => player.socketId == socketId);
+  const existingPlayer: Player | undefined = gameState.players.find(
+    (player) => player.socketId == socketId
+  );
   if (existingPlayer) {
     existingPlayer.disconnected = false;
   } else {
-    let userId = !user ? "guest" : (user._id + "");
+    let userId = !user ? "guest" : user._id + "";
     let name = !user ? `guest${Math.ceil(Math.random() * 99999) + 1}` : user.name;
     let health = 100;
     if (gameState.currentTurn !== -1) {
@@ -48,9 +50,9 @@ const addPlayer = (user: User, socketId: string): void => {
       socketId: socketId,
       name: name,
       health: health,
-      wordFrequencies: new Map<string, number>()
+      wordFrequencies: new Map<string, number>(),
     });
-    let startCondition = gameState.players.length >= 3; // NOTE: modify this after MVP
+    let startCondition = gameState.players.length >= 2; // NOTE: modify this after MVP
     if (gameState.currentTurn === -1 && startCondition) {
       gameState.currentTurn = Math.floor(Math.random() * gameState.players.length); // start game, select random playter to start
     }
