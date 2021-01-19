@@ -31,6 +31,7 @@ class Gallery extends Component<{}, State> {
         keywords={story.keywords}
       />
     ));
+    console.log(storyListElement);
 
     return (
       <>
