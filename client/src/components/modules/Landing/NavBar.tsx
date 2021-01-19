@@ -9,6 +9,8 @@ import GoogleLogin, {
 import ProfileButton from "./ProfileButton";
 const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
 
+import { post } from "../../../utilities"; // TODO: remove on production release
+
 type Props = {
   userId: string;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
@@ -22,6 +24,10 @@ type State = {
 class NavBar extends Component<Props & RouteComponentProps, State> {
   constructor(props) {
     super(props);
+  }
+
+  resetGame = () => {
+    post("/api/rg", {}).then((msg) => console.log("gameState is now ", msg));
   }
 
   render() {
@@ -43,7 +49,7 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
             />
           )}
         </span>
-        <span className="NavBar-link">Explore</span>
+        <span className="NavBar-link" onClick={this.resetGame}>Explore</span>
       </div>
     );
   }

@@ -69,8 +69,7 @@ class GameInputField extends Component<Props, State> {
             value={this.state.value}
             onChange={this.handleChange}
             className="GameInputField-textbox"
-            //TO DO: comment in
-            // disabled={!this.props.enabled}
+            disabled={!this.props.enabled}
           />
 
           <button
@@ -78,8 +77,7 @@ class GameInputField extends Component<Props, State> {
             className="GameInputField-button u-pointer"
             value="Submit"
             onClick={this.handleSubmit}
-            //TO DO: comment in
-            // disabled={!this.props.enabled}
+            disabled={!this.props.enabled}
           >
             Submit
           </button>
