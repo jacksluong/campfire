@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { post } from "../../../../utilities";
 import "./GameInputField.scss";
 import { socket } from "../../../../client-socket";
-import { Redirect } from "@reach/router";
+import { navigate, Redirect } from "@reach/router";
 
 interface Props {
   gameId: string;
@@ -25,9 +25,7 @@ class GameInputField extends Component<Props, State> {
 
   componentDidMount() {
     socket.on("gameOver", (gameId: string) => {
-      this.setState({
-        redirect: `/end/${gameId}`,
-      });
+      navigate(`/end/${gameId}`);
     });
   }
 
@@ -58,39 +56,35 @@ class GameInputField extends Component<Props, State> {
   };
 
   render() {
-    if (this.state.redirect) {
-      return <Redirect noThrow={true} to={this.state.redirect} />;
-    } else {
-      return (
-        <div className="GameInputField-container">
-          <input
-            type="text"
-            placeholder="Craft Your Sentence"
-            value={this.state.value}
-            onChange={this.handleChange}
-            className="GameInputField-textbox"
-            disabled={!this.props.enabled}
-          />
+    return (
+      <div className="GameInputField-container">
+        <input
+          type="text"
+          placeholder="Craft Your Sentence"
+          value={this.state.value}
+          onChange={this.handleChange}
+          className="GameInputField-textbox"
+          disabled={!this.props.enabled}
+        />
 
-          <button
-            type="submit"
-            className="GameInputField-button u-pointer"
-            value="Submit"
-            onClick={this.handleSubmit}
-            disabled={!this.props.enabled}
-          >
-            Submit
-          </button>
-          <button
-            type="submit"
-            className="GameInputField-button u-pointer"
-            onClick={this.handleEndGame}
-          >
-            End Game
-          </button>
-        </div>
-      );
-    }
+        <button
+          type="submit"
+          className={"GameInputField-button u-pointer " + (this.props.enabled ? "enabled" : "")}
+          value="Submit"
+          onClick={this.handleSubmit}
+          disabled={!this.props.enabled}
+        >
+          Submit
+        </button>
+        <button
+          type="submit"
+          className="GameInputField-button u-pointer enabled"
+          onClick={this.handleEndGame}
+        >
+          End Game
+        </button>
+      </div>
+    );
   }
 }
 

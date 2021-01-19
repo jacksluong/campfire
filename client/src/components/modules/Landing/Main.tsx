@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RouteComponentProps, Link, Redirect, redirectTo } from "@reach/router";
+import { RouteComponentProps, Link, Redirect, redirectTo, navigate } from "@reach/router";
 import { socket } from "../../../client-socket";
 
 import { get } from "../../../utilities";
@@ -8,9 +8,7 @@ import PrivateGameButton from "./PrivateGameButton";
 interface Props {
   userId: string;
 }
-interface State {
-  redirect: string;
-}
+interface State { }
 
 class Main extends Component<Props, State> {
   constructor(props) {
@@ -19,14 +17,11 @@ class Main extends Component<Props, State> {
       redirect: null,
     };
   }
-  handleQuickPlayClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log("abc");
+  handleQuickPlayClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     get("/api/whoami").then((user) => {
       if (!user) return;
       socket.on("matched", (gameId: string) => {
-        console.log("gameId received is", gameId);
-        this.setState({ redirect: `/gameroom/${gameId}` });
-        console.log("redirect to", this.state.redirect);
+        navigate(`/gameroom/${gameId}`);
       });
       socket.emit("matchmaking", user._id);
     });
@@ -39,10 +34,6 @@ class Main extends Component<Props, State> {
   handleQuestionClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {};
 
   render() {
-    if (this.state.redirect) {
-      console.log("redirected to", this.state.redirect);
-      return <Redirect noThrow={true} to={this.state.redirect} />;
-    }
     return (
       <div className="Main Container">
         <div className="Title-container"> Campfire</div>

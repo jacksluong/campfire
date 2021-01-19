@@ -16,13 +16,11 @@ class Gallery extends Component<{}, State> {
   componentDidMount() {
     get("/api/stories").then((stories) => {
       this.setState({ storyList: stories });
-      console.log(this.state.storyList);
     });
   }
 
   render() {
-    let storyListElement = null;
-    storyListElement = this.state.storyList.map((story) => (
+    let storyListElement = this.state.storyList.map((story) => (
       <SingleStoryCard
         name={story.name}
         contributors={story.contributorNames}
@@ -31,7 +29,6 @@ class Gallery extends Component<{}, State> {
         keywords={story.keywords}
       />
     ));
-    console.log(storyListElement);
 
     return (
       <>

@@ -31,9 +31,11 @@
   border-radius: 0 var(--xs) var(--xs) 0;
   background: none;
   transition: color 0.1s, background 0.1s;
+  cursor: default;
 }
 
-.GameInputField-button:hover {
+.enabled:hover {
   color: var(--white);
   background-color: var(--primary);
+  cursor: pointer;
 }
