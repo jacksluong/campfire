@@ -55,6 +55,12 @@ router.post("/publishStory", (req, res) => {
   }
 });
 
+router.post("/inputChange", (req, res) => {
+  console.log(req.body.content);
+  socketManager.getIo().emit("updateChange", req.body.content);
+  res.send({});
+});
+
 router.post("/inputSubmit", (req, res) => {
   let newInput = {
     contributor: req.body.contributor,
