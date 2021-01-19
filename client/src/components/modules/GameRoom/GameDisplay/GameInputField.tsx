@@ -33,6 +33,8 @@ class GameInputField extends Component<Props, State> {
     this.setState({
       value: event.target.value,
     });
+    post("/api/inputChange", { content: event.target.value });
+    console.log(this.state.value);
   };
 
   handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -60,11 +62,12 @@ class GameInputField extends Component<Props, State> {
       <div className="GameInputField-container">
         <input
           type="text"
+          maxLength={100}
           placeholder="Craft Your Sentence"
           value={this.state.value}
           onChange={this.handleChange}
           className="GameInputField-textbox"
-          disabled={!this.props.enabled}
+          // disabled={!this.props.enabled}
         />
 
         <button
@@ -72,7 +75,7 @@ class GameInputField extends Component<Props, State> {
           className={"GameInputField-button u-pointer " + (this.props.enabled ? "enabled" : "")}
           value="Submit"
           onClick={this.handleSubmit}
-          disabled={!this.props.enabled}
+          // disabled={!this.props.enabled}
         >
           Submit
         </button>

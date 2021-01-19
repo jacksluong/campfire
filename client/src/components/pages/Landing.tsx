@@ -19,22 +19,9 @@ type Props = {
   handleLogout: () => void;
 };
 
-type State = {
-  loggedIn: boolean;
-  stories: Story[];
-};
-
-class Landing extends Component<Props & RouteComponentProps, State> {
+class Landing extends Component<Props & RouteComponentProps, {}> {
   constructor(props) {
     super(props);
-  }
-
-  componentDidMount() {
-    get("/api/stories").then((stories) => {
-      this.setState({
-        stories: stories,
-      });
-    });
   }
 
   render() {

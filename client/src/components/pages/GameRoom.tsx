@@ -43,15 +43,21 @@ class GameRoom extends Component<Props, State> {
       // on player join or leave
       this.setState({
         players: gameState.players,
-        currentTurn: gameState.currentTurn
+        currentTurn: gameState.currentTurn,
       });
     });
     socket.emit("join", this.props.userId); // TODO: send gameId AS WELL
     socket.on("storyUpdate", (gameState: GameState) => {
       this.setState({
         currentStory: gameState.currentStory,
-        currentTurn: gameState.currentTurn
+        currentTurn: gameState.currentTurn,
       });
+    });
+    socket.on("updateChange", (content: string) => {
+      this.setState({
+        currentInput: content,
+      });
+      console.log(`YESSIR: ${content}`);
     });
   }
 

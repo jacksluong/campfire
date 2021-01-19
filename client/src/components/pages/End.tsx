@@ -17,6 +17,7 @@ interface State {
   content: string;
   usersThatLiked: string[];
   keywords: string[];
+  enabled: boolean;
 }
 
 class End extends Component<Props, State> {
@@ -28,6 +29,7 @@ class End extends Component<Props, State> {
       content: "",
       usersThatLiked: [],
       keywords: [],
+      enabled: true,
     };
   }
   componentDidMount() {
@@ -39,6 +41,11 @@ class End extends Component<Props, State> {
         content: gameState.currentStory,
         usersThatLiked: ["USERS THAT LIKE", "TTT", "JJJ", "BBB"],
         keywords: ["KEYWORDS", "I", "LIKE", "CHEESE"],
+      });
+    });
+    socket.on("disablePublish", () => {
+      this.setState({
+        enabled: false,
       });
     });
   }
@@ -53,6 +60,7 @@ class End extends Component<Props, State> {
           content={this.state.content}
           usersThatLiked={this.state.usersThatLiked}
           keywords={this.state.keywords}
+          enabled={this.state.enabled}
         />
       </div>
     );
