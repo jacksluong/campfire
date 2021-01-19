@@ -51,13 +51,13 @@ class GameRoom extends Component<Props, State> {
       this.setState({
         currentStory: gameState.currentStory,
         currentTurn: gameState.currentTurn,
+        currentInput: "",
       });
     });
     socket.on("updateChange", (content: string) => {
       this.setState({
         currentInput: content,
       });
-      console.log(`YESSIR: ${content}`);
     });
   }
 
