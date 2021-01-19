@@ -10,6 +10,8 @@ export interface GameState {
   currentTurn: number;
   currentInput: string;
   endVotes: number;
+  publishVotes: number;
+  isPublished: boolean;
   gameOver: boolean;
 }
 
@@ -23,6 +25,8 @@ const gameState: GameState = {
   currentTurn: -1,
   currentInput: "",
   endVotes: 0,
+  publishVotes: 0,
+  isPublished: false,
   gameOver: false,
 };
 
@@ -85,6 +89,8 @@ const resetGameState = (): void => {
   gameState.currentTurn = -1;
   gameState.currentInput = "";
   gameState.endVotes = 0;
+  gameState.publishVotes = 0;
+  gameState.isPublished = false;
   gameState.gameOver = false;
 };
 

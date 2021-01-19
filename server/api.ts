@@ -34,18 +34,25 @@ router.get("/stories", (req, res) => {
 });
 
 router.post("/publishStory", (req, res) => {
-  const newStory = new StoryModel({
-    name: req.body.name,
-    contributorNames: req.body.contributorNames,
-    contributorIds: req.body.contributorIds,
-    content: req.body.content,
-    usersThatLiked: req.body.usersThatLiked,
-    keywords: req.body.keywords,
-  });
-  newStory.save().then((story) => {
-    resetGameState();
-    res.send(story);
-  });
+  const requiredVotes = Math.ceil(gameState.players.length / 2);
+  gameState.publishVotes++;
+  if (gameState.publishVotes >= requiredVotes && !gameState.isPublished) {
+    const newStory = new StoryModel({
+      name: req.body.name,
+      contributorNames: req.body.contributorNames,
+      contributorIds: req.body.contributorIds,
+      content: req.body.content,
+      usersThatLiked: req.body.usersThatLiked,
+      keywords: req.body.keywords,
+    });
+    newStory.save().then((story) => {
+      gameState.isPublished = false;
+      socketManager.getIo().emit("disablePublish");
+      resetGameState();
+      res.send(story);
+    });
+    gameState.isPublished = false;
+  }
 });
 
 router.post("/inputSubmit", (req, res) => {

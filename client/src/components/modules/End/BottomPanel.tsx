@@ -11,6 +11,7 @@ interface Props {
   content: string;
   usersThatLiked: string[];
   keywords: string[];
+  enabled: boolean;
 }
 class BottomPanel extends Component<Props, {}> {
   constructor(props) {
@@ -26,13 +27,21 @@ class BottomPanel extends Component<Props, {}> {
       usersThatLiked: this.props.usersThatLiked,
       keywords: this.props.keywords,
     };
-    post("/api/publishStory", newStory).then((story) => console.log("Story saved in database"));
+    post("/api/publishStory", newStory).then((story) => {
+      console.log("Story saved in database");
+      alert("Story saved successfully!");
+    });
   };
 
   render() {
     return (
       <div className="BottomPanel-container">
-        <button className="BottomPannel-button" type="submit" onClick={this.handlePublish}>
+        <button
+          className="BottomPannel-button"
+          type="submit"
+          onClick={this.handlePublish}
+          disabled={!this.props.enabled}
+        >
           Publish
         </button>
       </div>
