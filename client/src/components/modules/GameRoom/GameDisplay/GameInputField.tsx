@@ -23,6 +23,14 @@ class GameInputField extends Component<Props, State> {
     };
   }
 
+  componentDidMount() {
+    socket.on("gameOver", (gameId: string) => {
+      this.setState({
+        redirect: `/end/${gameId}`,
+      });
+    });
+  }
+
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       value: event.target.value,
@@ -47,16 +55,11 @@ class GameInputField extends Component<Props, State> {
     event.preventDefault();
     console.log("reached endgame funtion");
     socket.emit("endgameRequest", this.props.gameId);
-    socket.on("gameOver", (gameId: string) => {
-      this.setState({
-        redirect: `/end/${gameId}`,
-      });
-    });
   };
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />;
+      return <Redirect noThrow={true} to={this.state.redirect} />;
     } else {
       return (
         <div className="GameInputField-container">
