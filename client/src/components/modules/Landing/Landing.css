@@ -102,26 +102,51 @@ Button {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
-.Gallery-container {
-  width: 100vw;
-  /* text-align: center; */
-  display: flex;
-  border-style: solid;
-  display: flex;
-  justify-content: wrap;
-}
-.SingleStoryCard-container {
-  border-style: solid;
-  max-width: 30vw;
-  margin: 2%;
-  text-align: left;
-
-  /* display: inline; */
-}
 .Gallery-title {
   margin: 0%, auto;
   width: 100%;
   text-align: center;
   font-size: 64px;
   /* border-style: solid; */
+}
+
+.Gallery-container {
+  width: 100vw;
+  /* text-align: center; */
+  display: flex;
+  flex-direction: row;
+  border-style: solid;
+  flex-wrap: wrap;
+  /* height: 2000px; */
+  justify-content: space-around;
+}
+/* Single Story Styling*/
+.SingleStoryCard-container {
+  border-style: solid;
+  margin: 2%;
+  text-align: left;
+  max-height: 20%;
+  padding: 0.5%;
+  flex-grow: 3;
+
+  /* display: inline; */
+}
+
+.SingleStoryCard-StoryTitle {
+  font-weight: bold;
+  font-size: 32px;
+}
+.SingleStoryCard-Contributors {
+  font-style: italic;
+  margin: auto 3%;
+}
+
+.SingleStoryCard-Content {
+  margin: auto 3%;
+}
+
+.SingleStoryCard-usersThatLiked {
+}
+
+.SingleStoryCard-Keywords {
 }

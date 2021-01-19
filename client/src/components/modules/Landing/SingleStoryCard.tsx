@@ -13,14 +13,31 @@ class SingleStoryCard extends Component<Props, {}> {
     super(props);
   }
   render() {
+    let contributorsElement = null;
+    contributorsElement = this.props.contributors.map((contributor) => (
+      <span>{contributor + ", "}</span>
+    ));
+    contributorsElement.pop();
+    contributorsElement.push(
+      <span>and {this.props.contributors[this.props.contributors.length - 1]}</span>
+    );
+    let keywordsElement = null;
+    keywordsElement = this.props.keywords.map((keyword) => <span>{keyword + ", "}</span>);
+    keywordsElement.pop();
+    keywordsElement.push(<span> {this.props.keywords[this.props.keywords.length - 1]}</span>);
+
     return (
       <div className="SingleStoryCard-container">
-        Story card
         <div className="SingleStoryCard-StoryTitle">{this.props.name}</div>
-        <div className="SingleStoryCard-Contributors">{this.props.contributors}</div>
+        <div className="SingleStoryCard-Contributors">
+          By: {"  "}
+          {contributorsElement}
+        </div>
         <div className="SingleStoryCard-Content">{this.props.content}</div>
-        <div className="SingleStoryCard-usersThatLiked">{this.props.usersThatLiked}</div>
-        <div className="SingleStoryCard-Keywords">{this.props.keywords}</div>
+        <div className="SingleStoryCard-usersThatLiked">
+          {this.props.usersThatLiked.length} Like
+        </div>
+        <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
       </div>
     );
   }
