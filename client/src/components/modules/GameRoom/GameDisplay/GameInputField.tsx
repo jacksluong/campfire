@@ -33,7 +33,7 @@ class GameInputField extends Component<Props, State> {
     event.preventDefault();
     let body = {
       contributor: this.props.userId,
-      content: this.state.value,
+      content: this.state.value + " ",
       gameId: this.props.gameId,
     };
     post("/api/inputSubmit", body).then((response) => {
@@ -66,14 +66,17 @@ class GameInputField extends Component<Props, State> {
             value={this.state.value}
             onChange={this.handleChange}
             className="GameInputField-textbox"
-            disabled={!this.props.enabled}
+            //TO DO: comment in
+            // disabled={!this.props.enabled}
           />
+
           <button
             type="submit"
             className="GameInputField-button u-pointer"
             value="Submit"
             onClick={this.handleSubmit}
-            disabled={!this.props.enabled}
+            //TO DO: comment in
+            // disabled={!this.props.enabled}
           >
             Submit
           </button>

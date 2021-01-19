@@ -95,10 +95,14 @@ export const init = (server: http.Server): void => {
       gameState.endVotes++;
       //TODO: take out later, want to emit only when majority want to end game
       // io.emit("gameOver", gameId);
-      if (gameState.endVotes > Math.ceil(gameState.players.length / 2)) {
+      if (gameState.endVotes >= Math.ceil(gameState.players.length / 2)) {
         gameState.gameOver = true;
         io.emit("gameOver", gameId);
       }
+    });
+
+    socket.on("requestLoadStory", () => {
+      socket.emit("endLoadStory", gameState);
     });
   });
 };
