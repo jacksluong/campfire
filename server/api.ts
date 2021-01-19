@@ -36,13 +36,12 @@ router.get("/stories", (req, res) => {
 router.post("/publishStory", (req, res) => {
   const newStory = new StoryModel({
     name: req.body.name,
-    contributors: req.body.contributors,
+    contributorNames: req.body.contributorNames,
+    contributorIds: req.body.contributorIds,
     content: req.body.content,
     usersThatLiked: req.body.usersThatLiked,
     keywords: req.body.keywords,
   });
-  socketManager.getIo().emit("publishStory", newStory);
-  console.log(`"Reached publishStory API endpoint: ${newStory}`);
   newStory.save().then((story) => {
     resetGameState();
     res.send(story);

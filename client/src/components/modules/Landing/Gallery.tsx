@@ -25,7 +25,7 @@ class Gallery extends Component<{}, State> {
     storyListElement = this.state.storyList.map((story) => (
       <SingleStoryCard
         name={story.name}
-        contributors={story.contributors}
+        contributors={story.contributorNames}
         content={story.content}
         usersThatLiked={story.usersThatLiked}
         keywords={story.keywords}

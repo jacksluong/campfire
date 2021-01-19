@@ -101,8 +101,9 @@ export const init = (server: http.Server): void => {
       }
     });
 
-    socket.on("requestLoadStory", () => {
-      socket.emit("endLoadStory", gameState);
+    //send GameState to End Page for render
+    socket.on("requestGameState", () => {
+      socket.emit("sendGameState", gameState);
     });
   });
 };

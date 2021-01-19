@@ -15,12 +15,11 @@ class SingleStoryCard extends Component<Props, {}> {
   render() {
     return (
       <div className="SingleStoryCard-container">
-        Story card
-        <div className="SingleStoryCard-StoryTitle">{this.props.name}</div>
-        <div className="SingleStoryCard-Contributors">{this.props.contributors}</div>
-        <div className="SingleStoryCard-Content">{this.props.content}</div>
-        <div className="SingleStoryCard-usersThatLiked">{this.props.usersThatLiked}</div>
-        <div className="SingleStoryCard-Keywords">{this.props.keywords}</div>
+        <div className="SingleStoryCard-StoryTitle">Story Title: {this.props.name}</div>
+        <div className="SingleStoryCard-Contributors">Contributors: {this.props.contributors}</div>
+        <div className="SingleStoryCard-Content">Content: {this.props.content}</div>
+        <div className="SingleStoryCard-usersThatLiked">Like By: {this.props.usersThatLiked}</div>
+        <div className="SingleStoryCard-Keywords">Keywords: {this.props.keywords}</div>
       </div>
     );
   }

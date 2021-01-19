@@ -2,7 +2,8 @@ import { Schema, model, Document } from "mongoose";
 
 const StorySchema = new Schema({
   name: String,
-  contributors: [String], // user IDs
+  contributorIds: [String], // user IDs
+  contributorNames: [String],
   content: String,
   usersThatLiked: [String],
   keywords: [String],
@@ -11,7 +12,8 @@ const StorySchema = new Schema({
 export interface Story extends Document {
   name: string;
   _id: string;
-  contributors: string[];
+  contributorIds: string[];
+  contributorNames: string[];
   content: string;
   usersThatLiked: string[]; // story IDs
   keywords: string[];

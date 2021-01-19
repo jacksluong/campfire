@@ -2,28 +2,31 @@ import React, { Component } from "react";
 import { socket } from "../../../client-socket";
 import { post } from "../../../utilities";
 import "./BottomPanel.scss";
+import Player from "../../../../../shared/Player";
+import Story from "../../../../../shared/Story";
 
-class BottomPanel extends Component {
+interface Props {
+  name: string;
+  contributors: Player[];
+  content: string;
+  usersThatLiked: string[];
+  keywords: string[];
+}
+class BottomPanel extends Component<Props, {}> {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {
-    socket.on("publishStory", (story) => {
-      console.log(`"Reached publishStory API endpoint: ${story.name}`);
-    });
-  }
-
   handlePublish = () => {
-    const body = {
-      _id: "Story ID",
-      name: "Story Name",
-      contributors: "Contributors",
-      content: "Story Content",
-      usersThatLiked: "Liked Users",
-      keywords: "Story Keywords",
+    const newStory = {
+      name: this.props.name,
+      contributorNames: this.props.contributors.map((player) => player.name),
+      contributorsIds: this.props.contributors.map((player) => player.userId),
+      content: this.props.content,
+      usersThatLiked: this.props.usersThatLiked,
+      keywords: this.props.keywords,
     };
-    post("/api/publishStory", body);
+    post("/api/publishStory", newStory).then((story) => console.log("Story saved in database"));
   };
 
   render() {
