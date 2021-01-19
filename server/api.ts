@@ -56,6 +56,7 @@ router.post("/inputSubmit", (req, res) => {
   };
   addToStory(newInput.content);
   socketManager.getIo().emit("storyUpdate", gameState);
+  res.send({});
 });
 
 router.post("/rg", (req, res) => {
