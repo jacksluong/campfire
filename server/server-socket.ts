@@ -70,11 +70,10 @@ export const init = (server: http.Server): void => {
     });
 
     // TODO: socket.on("join")
-    socket.on("join", (userId: string) => {
-      // userId: string
+    socket.on("join", (userId: string) => { // TODO: will receive gameId as well
       UserModel.findById(userId).then((user: User) => {
         logic.addPlayer(user, socket.id);
-        io.emit("playersupdate", gameState);
+        io.emit("playersupdate", gameState); // TODO: only emit to players in the game
       });
     });
 

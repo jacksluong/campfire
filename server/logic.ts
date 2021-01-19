@@ -48,14 +48,14 @@ const addPlayer = (user: User, socketId: string): void => {
     });
     let startCondition = gameState.players.length >= 3; // NOTE: modify this after MVP
     if (gameState.currentTurn === -1 && startCondition) {
-      gameState.currentTurn = Math.ceil(Math.random() * (gameState.players.length - 1) + 1); // start game, select random playter to start
+      gameState.currentTurn = Math.floor(Math.random() * gameState.players.length); // start game, select random playter to start
     }
   }
 };
 
 const disconnectPlayer = (socketId: string): void => {
   const disconnectedPlayer = gameState.players.find((player) => player.socketId == socketId);
-  disconnectedPlayer.disconnected = true;
+  if (disconnectedPlayer) disconnectedPlayer.disconnected = true;
 };
 
 const addToStory = (text: string): void => {

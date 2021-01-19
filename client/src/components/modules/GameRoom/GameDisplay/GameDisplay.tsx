@@ -3,6 +3,7 @@ import StoryText from "./StoryText";
 import Gathering from "./Gathering";
 import GameInputField from "./GameInputField";
 import Player from "../../../../../../shared/Player";
+import { socket } from "../../../../client-socket";
 import "./GameDisplay.scss";
 
 interface Props {
@@ -32,7 +33,7 @@ class GameDisplay extends Component<Props, State> {
           userId={this.props.userId}
           enabled={
             this.props.currentTurn !== -1 &&
-            this.props.players[this.props.currentTurn].userId == this.props.userId
+            this.props.players[this.props.currentTurn].socketId === socket.id
           }
         />
       </div>

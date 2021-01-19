@@ -46,7 +46,7 @@ class GameRoom extends Component<Props, State> {
         currentTurn: gameState.currentTurn
       });
     });
-    socket.emit("join", this.props.userId);
+    socket.emit("join", this.props.userId); // TODO: send gameId AS WELL
     socket.on("storyUpdate", (gameState: GameState) => {
       this.setState({
         currentStory: gameState.currentStory,
