@@ -3,7 +3,7 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-import { gameState, addToStory, resetGameState } from "./logic";
+import { gameState, addToStory, resetGameState, disconnectPlayer } from "./logic";
 
 const router = express.Router();
 
@@ -71,6 +71,12 @@ router.post("/inputSubmit", (req, res) => {
   socketManager.getIo().emit("storyUpdate", gameState);
   res.send({});
 });
+
+router.post("/leavegamepage", (req, res) => {
+  disconnectPlayer(req.body.socketId);
+  socketManager.getIo().emit("playersupdate", gameState);
+  res.send({});
+})
 
 router.post("/rg", (req, res) => {
   resetGameState();

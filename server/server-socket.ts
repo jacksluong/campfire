@@ -11,7 +11,7 @@ let io: Server;
 
 const userToSocketMap: Map<string, Socket> = new Map<string, Socket>(); // maps user ID to socket object
 const socketToUserMap: Map<string, User> = new Map<string, User>(); // maps socket ID to user object
-const ROOM_CAPACITY: number = 8;
+const ROOM_CAPACITY = 8;
 
 export const getSocketFromUserID = (userid: string) => userToSocketMap.get(userid);
 export const getUserFromSocketID = (socketid: string) => socketToUserMap.get(socketid);
@@ -60,7 +60,7 @@ export const init = (server: http.Server): void => {
     // TODO: socket.on("matchmaking")
     socket.on("matchmaking", (userId: string) => {
       if (gameState.players.length === ROOM_CAPACITY) {
-        // TODO: handle game full
+        // TODO: handle game full should be a logic thing
         console.log("Game full");
       } else {
         // NOTE: matchmaking happens here but for now, we only have one room so nothing needs to be done
@@ -70,8 +70,8 @@ export const init = (server: http.Server): void => {
     });
 
     // TODO: socket.on("join")
-    socket.on("join", (userId: string) => { // TODO: will receive gameId as well
-      UserModel.findById(userId).then((user: User) => {
+    socket.on("join", (info: {userId: string, gameId: string}) => { // TODO: will receive gameId as well
+      UserModel.findById(info.userId).then((user: User) => {
         logic.addPlayer(user, socket.id);
         io.emit("playersupdate", gameState); // TODO: only emit to players in the game
       });

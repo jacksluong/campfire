@@ -18,7 +18,9 @@ interface Props extends RouteComponentProps {
 
 interface State {
   gameId: string;
+  userId: string;
   players: Player[];
+  spectators: number;
   currentStory: string;
   currentTurn: number;
   currentInput: string;
@@ -30,23 +32,24 @@ class GameRoom extends Component<Props, State> {
     super(props);
     this.state = {
       gameId: "gameIdGoesHere",
+      userId: undefined,
       players: [],
+      spectators: 0,
       currentStory: "",
       currentTurn: -1,
-      currentInput: "",
+      currentInput: ""  
     };
   }
 
   componentDidMount() {
-    console.log("props.gameId is ", this.props.gameId);
     socket.on("playersupdate", (gameState: GameState) => {
       // on player join or leave
       this.setState({
         players: gameState.players,
-        currentTurn: gameState.currentTurn,
+        spectators: gameState.spectators.length,
+        currentTurn: gameState.currentTurn
       });
     });
-    socket.emit("join", this.props.userId); // TODO: send gameId AS WELL
     socket.on("storyUpdate", (gameState: GameState) => {
       this.setState({
         currentStory: gameState.currentStory,
@@ -59,13 +62,22 @@ class GameRoom extends Component<Props, State> {
         currentInput: content,
       });
     });
+    socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId + "" });
+  }
+
+  componentWillUnmount() {
+    post("/api/leavegamepage", { socketId: socket.id });
   }
 
   render() {
     return (
       <div className="GameRoom-container">
         <div className="Sidebar-container">
-          <Sidebar players={this.state.players} currentTurn={this.state.currentTurn} />
+          <Sidebar 
+            players={this.state.players} 
+            currentTurn={this.state.currentTurn} 
+            spectators={this.state.spectators}
+          />
         </div>
         <div className="GameDisplay-container">
           <GameDisplay

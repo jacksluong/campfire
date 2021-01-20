@@ -3,6 +3,6 @@ export default interface Player {
     socketId: string;
     name: string;
     health: number;
-    disconnected?: boolean;
     wordFrequencies: Map<string, number>;
+    disconnected?: boolean;
 }

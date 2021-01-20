@@ -24,18 +24,22 @@ class GameDisplay extends Component<Props, State> {
   }
 
   render() {
+    let input: any = "";
+    if (this.props.players.find(player => player.socketId == socket.id || player.userId == this.props.userId)) {
+      input = <GameInputField
+        gameId={this.props.gameId}
+        userId={this.props.userId}
+        enabled={
+          this.props.currentTurn !== -1 &&
+          this.props.players[this.props.currentTurn].socketId === socket.id
+        }
+      />
+    }
     return (
       <div className="GameDisplay-container">
         <StoryText currentStory={this.props.currentStory} currentInput={this.props.currentInput} />
         <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
-        <GameInputField
-          gameId={this.props.gameId}
-          userId={this.props.userId}
-          enabled={
-            this.props.currentTurn !== -1 &&
-            this.props.players[this.props.currentTurn].socketId === socket.id
-          }
-        />
+        {input}
       </div>
     );
   }
