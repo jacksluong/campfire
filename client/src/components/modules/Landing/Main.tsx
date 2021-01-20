@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RouteComponentProps, Link, Redirect, redirectTo, navigate } from "@reach/router";
+import { navigate } from "@reach/router";
 import { socket } from "../../../client-socket";
 
 import { get } from "../../../utilities";

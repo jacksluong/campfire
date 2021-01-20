@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { post } from "../../../../utilities";
 import "./GameInputField.scss";
 import { socket } from "../../../../client-socket";
-import { navigate, Redirect } from "@reach/router";
+import { navigate } from "@reach/router";
 
 interface Props {
   gameId: string;
