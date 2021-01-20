@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RouteComponentProps, Link, Redirect, redirectTo, navigate } from "@reach/router";
+import { navigate } from "@reach/router";
 import { socket } from "../../../client-socket";
 
 import { get } from "../../../utilities";
@@ -13,10 +13,8 @@ interface State { }
 class Main extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {
-      redirect: null,
-    };
   }
+
   handleQuickPlayClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     get("/api/whoami").then((user) => {
       if (!user) return;
@@ -26,6 +24,7 @@ class Main extends Component<Props, State> {
       socket.emit("matchmaking", user._id);
     });
   };
+  
   createPrivateGame = () => {
     console.log("Create new private game");
     alert("create private game");

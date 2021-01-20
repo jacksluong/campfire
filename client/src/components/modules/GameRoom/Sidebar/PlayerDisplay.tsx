@@ -7,6 +7,7 @@ import "./PlayerDisplay.scss";
 interface Props {
   players: Player[];
   currentTurn: number;
+  spectators: number;
 }
 
 interface State {}
@@ -20,7 +21,7 @@ class PlayerDisplay extends Component<Props, State> {
   render() {
     return (
       <div className="PlayerDisplay-container">
-        <h2>Players</h2>
+        <h2>Players with {this.props.spectators} spectators</h2>
         {this.props.players.map((player) => (
           <PlayerRow userId={player.userId} name={player.name} health={player.health} disconnected={player.disconnected ?? false} />
         ))}

@@ -15,7 +15,7 @@ class Gallery extends Component<{}, State> {
 
   componentDidMount() {
     get("/api/stories").then((stories) => {
-      this.setState({ storyList: stories });
+      this.setState({ storyList: stories.reverse() });
     });
   }
 

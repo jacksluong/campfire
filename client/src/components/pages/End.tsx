@@ -8,16 +8,19 @@ import { socket } from "../../../../client/src/client-socket";
 import { post } from "../../../src/utilities";
 import Player from "../../../../shared/Player";
 
-interface Props {}
+interface Props extends RouteComponentProps {
+  gameId?: string
+}
 interface State {
   name: string;
   contributors: Player[];
   content: string;
   usersThatLiked: string[];
   keywords: string[];
+  enabled: boolean;
 }
 
-class End extends Component<Props & RouteComponentProps, State> {
+class End extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,10 +29,11 @@ class End extends Component<Props & RouteComponentProps, State> {
       content: "",
       usersThatLiked: [],
       keywords: [],
+      enabled: true,
     };
   }
   componentDidMount() {
-    socket.emit("requestGameState");
+    socket.emit("requestGameState"); // TODO: send game id when multiple rooms are a feature
     socket.on("sendGameState", (gameState) => {
       this.setState({
         name: `TITLE`,
@@ -37,6 +41,11 @@ class End extends Component<Props & RouteComponentProps, State> {
         content: gameState.currentStory,
         usersThatLiked: ["USERS THAT LIKE", "TTT", "JJJ", "BBB"],
         keywords: ["KEYWORDS", "I", "LIKE", "CHEESE"],
+      });
+    });
+    socket.on("disablePublish", () => {
+      this.setState({
+        enabled: false,
       });
     });
   }
@@ -51,6 +60,7 @@ class End extends Component<Props & RouteComponentProps, State> {
           content={this.state.content}
           usersThatLiked={this.state.usersThatLiked}
           keywords={this.state.keywords}
+          enabled={this.state.enabled}
         />
       </div>
     );

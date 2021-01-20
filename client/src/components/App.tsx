@@ -60,14 +60,7 @@ class App extends Component<{}, State> {
     // All the pages need to have the props defined in RouteComponentProps for @reach/router to work properly. Please use the Skeleton as an example.
     return (
       <Router>
-        {/* <Skeleton
-          path="/"
-          handleLogin={this.handleLogin}
-          handleLogout={this.handleLogout}
-          userId={this.state.userId}
-        /> */}
         <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
-        {/* <Landing path="/landing" /> */}
         <Landing
           path="/"
           handleLogin={this.handleLogin}
