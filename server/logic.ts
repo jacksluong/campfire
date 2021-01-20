@@ -1,6 +1,5 @@
 import User from "../shared/User";
 import Player from "../shared/Player";
-import { resolveModuleNameFromCache } from "typescript";
 
 /** Consts */
 
@@ -22,7 +21,7 @@ export interface GameState {
   // Voting
   readyVotes: number[]; // indices of players
   endVotes: number[];
-  publishVotes: number;
+  publishVotes: number[];
   
   // Status
   isPrivate: boolean;
@@ -133,12 +132,36 @@ const processEndgameVote = (gameId: string, socketId: string): GameState => {
     }
   }
   // add to endVotes if not already there
-  if (!gameState.endVotes.find(index => index === playerIndex)) {
+  console.log("playerIndex and find are", playerIndex, gameState.endVotes.find(index => index == playerIndex));
+  if (gameState.endVotes.find(index => index == playerIndex) !== undefined) {
     gameState.endVotes.push(playerIndex);
   }
   // check end condition
+  console.log("endVotes", gameState.endVotes);
+  console.log("requirement", Math.ceil(getConnectedPlayers(gameState).length / 2));
   if (gameState.endVotes.length >= Math.ceil(getConnectedPlayers(gameState).length / 2)) {
     gameState.gameOver = true;
+  }
+  return gameState;
+}
+
+const processPublishVote = (gameId: string, socketId: string): GameState => {
+  // identify index of this player in given room
+  const gameState = rooms.find(room => room.gameId == gameId)!; // assume game will be found
+  let playerIndex = -1;
+  for (let i = 0; i < gameState.players.length; i++) {
+    if (gameState.players[i].socketId == socketId) {
+      playerIndex = i;
+      break;
+    }
+  }
+  // add to publishVotes if not already there
+  if (!gameState.publishVotes.find(index => index === playerIndex)) {
+    gameState.publishVotes.push(playerIndex);
+  }
+  // check end condition
+  if (gameState.publishVotes.length >= Math.ceil(getConnectedPlayers(gameState).length / 2)) {
+    gameState.isPublished = true;
   }
   return gameState;
 }
@@ -168,8 +191,8 @@ const createRoom = (isPrivate: boolean): GameState => {
     currentInput: "",
     
     readyVotes: [],
-    endVotes: [], // TODO: change votes properties to type array (to keep track of who actually did vote)
-    publishVotes: 0,
+    endVotes: [],
+    publishVotes: [],
   
     isPrivate: isPrivate,
     isPublished: false,
@@ -198,4 +221,4 @@ const findOpenRoom = (): string => {
 
 // TODO: room garbage collector
 
-export { addPlayer, disconnectPlayer, addToStory, processEndgameVote, findOpenRoom, getRoomById, getRoomByPlayer };
+export { addPlayer, disconnectPlayer, addToStory, processEndgameVote, processPublishVote, findOpenRoom, getRoomById, getRoomByPlayer };

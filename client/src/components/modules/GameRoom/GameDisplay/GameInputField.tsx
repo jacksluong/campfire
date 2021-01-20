@@ -24,8 +24,9 @@ class GameInputField extends Component<Props, State> {
   }
 
   componentDidMount() {
-    socket.on("gameOver", (gameId: string) => {
-      navigate(`/end/${gameId}`);
+    // NOTE: will want to move this to an upper level component like GameRoom or something
+    socket.on("gameOver", () => {
+      navigate(`/end/${this.props.gameId}`);
     });
   }
 

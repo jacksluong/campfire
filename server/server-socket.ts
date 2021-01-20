@@ -68,7 +68,7 @@ export const init = (server: http.Server): void => {
     // When players end game
     socket.on("endgameRequest", (gameId: string) => {
       const gameState = processEndgameVote(gameId, socket.id);
-      emitToRoom("gameOver", gameState);
+      if (gameState.gameOver) emitToRoom("gameOver", gameState);
     });
 
     // send GameState to End Page for render

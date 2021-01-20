@@ -3,8 +3,7 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-import { addToStory, disconnectPlayer, findOpenRoom, addPlayer, getRoomByPlayer } from "./logic";
-import UserModel from "./models/User";
+import { addToStory, disconnectPlayer, findOpenRoom, addPlayer, getRoomByPlayer, processPublishVote } from "./logic";
 
 const router = express.Router();
 
@@ -50,27 +49,26 @@ router.get("/matchmaking", (req, res) => {
 });
 
 // TODO: fix this one up with the new room system
-/* router.post("/publishStory", (req, res) => {
-  const requiredVotes = Math.ceil(gameState.players.length / 2);
-  gameState.publishVotes++;
-  if (gameState.publishVotes >= requiredVotes && !gameState.isPublished) {
+router.post("/publishStory", (req, res) => {
+  // publishStory should send gameId and socketId
+  const gameState = processPublishVote(req.body.gameId, req.body.socketId);
+  if (gameState.isPublished) {
+    const guests = gameState.players.find(player => player.userId == "guest") ? "guests" : ""
     const newStory = new StoryModel({
-      name: req.body.name,
-      contributorNames: req.body.contributorNames,
-      contributorIds: req.body.contributorIds,
-      content: req.body.content,
-      usersThatLiked: req.body.usersThatLiked,
-      keywords: req.body.keywords,
+      name: "TITLE",
+      contributorNames: gameState.players.filter(player => player.userId != "guest").map(player => player.name).concat(guests),
+      contributorIds: gameState.players.filter(player => player.userId != "guest").map(player => player.userId),
+      content: gameState.currentStory,
+      usersThatLiked: ["bydefaultthereshouldbenouserslikedatpublish"],
+      keywords: ["keyword1", "keyword2", "keyword3"],
     });
     newStory.save().then((story) => {
-      gameState.isPublished = false;
-      socketManager.getIo().emit("disablePublish");
-      resetGameState();
-      res.send(story);
+      socketManager.getIo().emit("storyPublished");
+      console.log("story saved: ", story);
     });
-    gameState.isPublished = false;
   }
-}); */
+  res.send({ });
+});
 
 router.post("/inputChange", (req, res) => {
   console.log(req.body.content);

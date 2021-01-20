@@ -17,10 +17,6 @@ class Main extends Component<Props, State> {
 
   handleQuickPlayClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     get("/api/whoami").then((user) => {
-      /* socket.on("matched", (gameId: string) => {
-        navigate(`/gameroom/${gameId}`);
-      });
-      socket.emit("matchmaking", user._id); */
       get("/api/matchmaking").then(response => {
         console.log("matched me to", response.gameId);
         navigate(`/gameroom/${response.gameId}`);
