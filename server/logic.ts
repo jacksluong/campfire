@@ -156,7 +156,7 @@ const processPublishVote = (gameId: string, socketId: string): GameState => {
     }
   }
   // add to publishVotes if not already there
-  if (!gameState.publishVotes.find(index => index === playerIndex)) {
+  if (gameState.publishVotes.find(index => index === playerIndex) !== undefined) {
     gameState.publishVotes.push(playerIndex);
   }
   // check end condition
