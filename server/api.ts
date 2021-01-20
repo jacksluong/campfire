@@ -3,7 +3,8 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-import { gameState, addToStory, resetGameState, disconnectPlayer } from "./logic";
+import { addToStory, disconnectPlayer, findOpenRoom, addPlayer, getRoomByPlayer } from "./logic";
+import UserModel from "./models/User";
 
 const router = express.Router();
 
@@ -33,7 +34,23 @@ router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
 });
 
-router.post("/publishStory", (req, res) => {
+router.get("/matchmaking", (req, res) => {
+  if (req.user) {
+    // if user is in existing room, return to room
+    let gameId = getRoomByPlayer(req.user._id)?.gameId;
+    if (gameId) {
+      res.send({ gameId: gameId });
+      return;
+    }
+  }
+
+  // otherwise return a new room to join
+  const gameId = findOpenRoom();
+  res.send({ gameId: gameId });
+});
+
+// TODO: fix this one up with the new room system
+/* router.post("/publishStory", (req, res) => {
   const requiredVotes = Math.ceil(gameState.players.length / 2);
   gameState.publishVotes++;
   if (gameState.publishVotes >= requiredVotes && !gameState.isPublished) {
@@ -53,7 +70,7 @@ router.post("/publishStory", (req, res) => {
     });
     gameState.isPublished = false;
   }
-});
+}); */
 
 router.post("/inputChange", (req, res) => {
   console.log(req.body.content);
@@ -63,24 +80,18 @@ router.post("/inputChange", (req, res) => {
 
 router.post("/inputSubmit", (req, res) => {
   let newInput = {
-    contributor: req.body.contributor,
     content: req.body.content,
     gameId: req.body.gameId,
   };
-  addToStory(newInput.content);
-  socketManager.getIo().emit("storyUpdate", gameState);
+  const newGameState = addToStory(req.body.gameId, newInput.content);
+  socketManager.getIo().emit("storyUpdate", newGameState); // TODO: only emit to sockets in this game
   res.send({});
 });
 
 router.post("/leaveGame", (req, res) => {
-  disconnectPlayer(req.body.socketId);
-  socketManager.getIo().emit("playersupdate", gameState);
+  const newGameState = disconnectPlayer(req.body.socketId)!;
+  socketManager.getIo().emit("playersUpdate", newGameState); // TODO: only emit to sockets in this game
   res.send({});
-});
-
-router.post("/rg", (req, res) => {
-  resetGameState();
-  res.send(gameState);
 });
 
 // anything else falls to this "not found" case

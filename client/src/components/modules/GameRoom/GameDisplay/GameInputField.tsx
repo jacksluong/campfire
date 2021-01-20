@@ -40,7 +40,6 @@ class GameInputField extends Component<Props, State> {
   handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     let body = {
-      contributor: this.props.userId,
       content: this.state.value + " ",
       gameId: this.props.gameId,
     };
