@@ -72,11 +72,11 @@ router.post("/inputSubmit", (req, res) => {
   res.send({});
 });
 
-router.post("/leavegamepage", (req, res) => {
+router.post("/leaveGame", (req, res) => {
   disconnectPlayer(req.body.socketId);
   socketManager.getIo().emit("playersupdate", gameState);
   res.send({});
-})
+});
 
 router.post("/rg", (req, res) => {
   resetGameState();

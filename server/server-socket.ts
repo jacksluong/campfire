@@ -2,7 +2,6 @@ import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
 import { GameState } from "./logic";
-import Player from "../shared/Player";
 import UserModel from "./models/User";
 
 const logic = require("./logic");

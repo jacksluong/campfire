@@ -37,7 +37,7 @@ class GameRoom extends Component<Props, State> {
       spectators: 0,
       currentStory: "",
       currentTurn: -1,
-      currentInput: ""  
+      currentInput: "",
     };
   }
 
@@ -47,7 +47,7 @@ class GameRoom extends Component<Props, State> {
       this.setState({
         players: gameState.players,
         spectators: gameState.spectators.length,
-        currentTurn: gameState.currentTurn
+        currentTurn: gameState.currentTurn,
       });
     });
     socket.on("storyUpdate", (gameState: GameState) => {
@@ -62,20 +62,20 @@ class GameRoom extends Component<Props, State> {
         currentInput: content,
       });
     });
-    socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId + "" });
+    socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId });
   }
 
   componentWillUnmount() {
-    post("/api/leavegamepage", { socketId: socket.id });
+    post("/api/leaveGame", { socketId: socket.id });
   }
 
   render() {
     return (
       <div className="GameRoom-container">
         <div className="Sidebar-container">
-          <Sidebar 
-            players={this.state.players} 
-            currentTurn={this.state.currentTurn} 
+          <Sidebar
+            players={this.state.players}
+            currentTurn={this.state.currentTurn}
             spectators={this.state.spectators}
           />
         </div>
