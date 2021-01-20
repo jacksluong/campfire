@@ -12,9 +12,10 @@ class StoryInteractionBar extends Component<Props, {}> {
   render() {
     return (
       <div className="StoryInteractionBar-container">
-        <button type="submit" className="LikeButton" onClick={this.handleClick}>
+        <button type="submit" className="LikeButton-container" onClick={this.handleClick}>
           Like
         </button>
+        {/* <input className="NewComment-container" type="text" defaultValue="Write a comment"></input> */}
       </div>
     );
   }

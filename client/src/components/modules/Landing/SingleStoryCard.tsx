@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Story from "../../../../../shared/Story";
+import StoryInteractionBar from "./StoryInteractionBar";
+import CommentsBlock from "./CommentsBlock";
 interface Props {
   name: string;
   contributors: string[];
@@ -39,6 +41,8 @@ class SingleStoryCard extends Component<Props, {}> {
           {this.props.usersThatLiked.length}
           <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
         </div>
+        <StoryInteractionBar />
+        <CommentsBlock />
       </div>
     );
   }
