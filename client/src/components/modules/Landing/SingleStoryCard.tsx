@@ -12,6 +12,11 @@ class SingleStoryCard extends Component<Props, {}> {
   constructor(props) {
     super(props);
   }
+
+  handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //Like function
+  };
+
   render() {
     let contributorsElement = null;
     contributorsElement = this.props.contributors.map((contributor) => (
@@ -35,7 +40,10 @@ class SingleStoryCard extends Component<Props, {}> {
         </div>
         <div className="SingleStoryCard-Content">{this.props.content}</div>
         <div className="SingleStoryCard-usersThatLiked">
-          {this.props.usersThatLiked.length} Like
+          {this.props.usersThatLiked.length}
+          <button type="submit" className="LikeButton" onClick={this.handleClick}>
+            Like
+          </button>
         </div>
         <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
       </div>
