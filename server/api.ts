@@ -3,7 +3,14 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-import { addToStory, disconnectPlayer, findOpenRoom, addPlayer, getRoomByPlayer, processPublishVote } from "./logic";
+import {
+  addToStory,
+  disconnectPlayer,
+  findOpenRoom,
+  addPlayer,
+  getRoomByPlayer,
+  processPublishVote,
+} from "./logic";
 
 const router = express.Router();
 
@@ -53,11 +60,16 @@ router.post("/publishStory", (req, res) => {
   // publishStory should send gameId and socketId
   const gameState = processPublishVote(req.body.gameId, req.body.socketId);
   if (gameState.isPublished) {
-    const guests = gameState.players.find(player => player.userId == "guest") ? "guests" : ""
+    const guests = gameState.players.find((player) => player.userId == "guest") ? "guests" : "";
     const newStory = new StoryModel({
       name: "TITLE",
-      contributorNames: gameState.players.filter(player => player.userId != "guest").map(player => player.name).concat(guests),
-      contributorIds: gameState.players.filter(player => player.userId != "guest").map(player => player.userId),
+      contributorNames: gameState.players
+        .filter((player) => player.userId != "guest")
+        .map((player) => player.name)
+        .concat(guests),
+      contributorIds: gameState.players
+        .filter((player) => player.userId != "guest")
+        .map((player) => player.userId),
       content: gameState.currentStory,
       usersThatLiked: ["bydefaultthereshouldbenouserslikedatpublish"],
       keywords: ["keyword1", "keyword2", "keyword3"],
@@ -67,7 +79,7 @@ router.post("/publishStory", (req, res) => {
       console.log("story saved: ", story);
     });
   }
-  res.send({ });
+  res.send({});
 });
 
 router.post("/inputChange", (req, res) => {
@@ -78,13 +90,20 @@ router.post("/inputChange", (req, res) => {
 
 router.post("/inputSubmit", (req, res) => {
   let newInput = {
-    content: req.body.content,
+    content: req.body.content + " ",
     gameId: req.body.gameId,
   };
   const newGameState = addToStory(req.body.gameId, newInput.content);
   socketManager.getIo().emit("storyUpdate", newGameState); // TODO: only emit to sockets in this game
   res.send({});
 });
+//TO DO:
+// router.post("/endGameRequest", (req, res) => {
+//   gameState.endVotes++;
+//   socketManager.getIo().emit("endGamePrompt", req.body.contributor);
+//   res.send({});
+//   setTimeout(() => socketManager.getIo().emit("takeBackEndGameButton"), 15000);
+// });
 
 router.post("/leaveGame", (req, res) => {
   const newGameState = disconnectPlayer(req.body.socketId)!;
