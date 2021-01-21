@@ -22,7 +22,7 @@ export interface GameState {
   readyVotes: number[]; // indices of players
   endVotes: number;
   publishVotes: number;
-  
+
   // Status
   isPublished: boolean;
   gameOver: boolean;
@@ -36,7 +36,7 @@ const gameState: GameState = {
   currentStory: "",
   currentTurn: -1,
   currentInput: "",
-  
+
   readyVotes: [],
   endVotes: 0, // TODO: change votes properties to type array (to keep track of who actually did vote)
   publishVotes: 0,
@@ -49,8 +49,9 @@ const gameState: GameState = {
 
 const addPlayer = (user: User, socketId: string): void => {
   // check if user was in-game (by socket or id)
-  const existingPlayer: Player | undefined = 
-    gameState.players.find((player) => player.socketId == socketId || player.userId == user?._id);
+  const existingPlayer: Player | undefined = gameState.players.find(
+    (player) => player.socketId == socketId || player.userId == user?._id
+  );
   if (existingPlayer) {
     console.log(`returning ${existingPlayer.name} to game`);
     existingPlayer.socketId = socketId;
@@ -114,7 +115,7 @@ const resetGameState = (): void => {
 /** Utilities */
 
 const startCondition = (): boolean => {
-  return gameState.players.length >= 2; // NOTE: modify this after MVP
-}
+  return gameState.players.length >= 3; // NOTE: modify this after MVP
+};
 
 export { gameState, addPlayer, disconnectPlayer, addToStory, resetGameState };

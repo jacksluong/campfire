@@ -18,6 +18,11 @@
   border: var(--darkgrey) 1px solid;
   border-radius: var(--xs) 0 0 var(--xs);
   transition: box-shadow 0.1s;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  box-sizing: border-box;
 }
 
 .GameInputField-textbox:focus-within {

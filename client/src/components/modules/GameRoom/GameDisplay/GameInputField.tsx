@@ -12,6 +12,8 @@ interface Props {
 interface State {
   value: string;
   redirect: string;
+  endGameButtonShow: boolean;
+  requestedToEndGame: boolean;
 }
 
 class GameInputField extends Component<Props, State> {
@@ -20,12 +22,28 @@ class GameInputField extends Component<Props, State> {
     this.state = {
       value: "",
       redirect: null,
+      endGameButtonShow: false,
+      requestedToEndGame: false,
     };
   }
 
   componentDidMount() {
     socket.on("gameOver", (gameId: string) => {
       navigate(`/end/${gameId}`);
+    });
+
+    socket.on("endGamePrompt", (userId: string) => {
+      if (!this.state.requestedToEndGame) {
+        this.setState({
+          endGameButtonShow: true,
+        });
+      }
+    });
+
+    socket.on("takeBackEndGameButton", () => {
+      this.setState({
+        endGameButtonShow: false,
+      });
     });
   }
 
@@ -37,55 +55,60 @@ class GameInputField extends Component<Props, State> {
     console.log(this.state.value);
   };
 
-  handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let body = {
       contributor: this.props.userId,
-      content: this.state.value + " ",
+      content: this.state.value,
       gameId: this.props.gameId,
     };
-    post("/api/inputSubmit", body).then((response) => {
+    if (this.state.value.toLowerCase() === "end") {
       this.setState({
         value: "",
+        requestedToEndGame: true,
       });
-    });
+      post("/api/endGameRequest", body).then();
+    } else {
+      post("/api/inputSubmit", body).then((response) => {
+        this.setState({
+          value: "",
+        });
+      });
+    }
   };
 
   handleEndGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    console.log("reached endgame funtion");
-    socket.emit("endgameRequest", this.props.gameId);
+    socket.emit("endGameConfirm", this.props.gameId);
   };
 
   render() {
     return (
-      <div className="GameInputField-container">
-        <input
-          type="text"
-          maxLength={100}
-          placeholder="Craft Your Sentence"
-          value={this.state.value}
-          onChange={this.handleChange}
-          className="GameInputField-textbox"
-          disabled={!this.props.enabled}
-        />
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            type="text"
+            maxLength={100}
+            placeholder="Craft Your Sentence"
+            value={this.state.value}
+            onChange={this.handleChange}
+            className="GameInputField-textbox"
+            disabled={!this.props.enabled}
+          />
+        </form>
 
-        <button
-          type="submit"
-          className={"GameInputField-button u-pointer " + (this.props.enabled ? "enabled" : "")}
-          value="Submit"
-          onClick={this.handleSubmit}
-          disabled={!this.props.enabled}
-        >
-          Submit
-        </button>
-        <button
-          type="submit"
-          className="GameInputField-button u-pointer enabled"
-          onClick={this.handleEndGame}
-        >
-          End Game
-        </button>
+        {this.state.endGameButtonShow ? (
+          <button
+            type="submit"
+            className="GameInputField-button u-pointer enabled"
+            onClick={this.handleEndGame}
+            // disabled={this.state.endGameDisabled}
+          >
+            End Game
+          </button>
+        ) : (
+          ""
+        )}
       </div>
     );
   }

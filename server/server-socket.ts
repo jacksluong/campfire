@@ -44,7 +44,7 @@ export const init = (server: http.Server): void => {
       console.log(`socket has disconnected ${socket.id}`);
 
       logic.disconnectPlayer(socket.id);
-      
+
       const user = getUserFromSocketID(socket.id);
       if (user !== undefined) {
         removeUser(user, socket);
@@ -69,7 +69,8 @@ export const init = (server: http.Server): void => {
     });
 
     // TODO: socket.on("join")
-    socket.on("join", (info: {userId: string, gameId: string}) => { // TODO: will receive gameId as well
+    socket.on("join", (info: { userId: string; gameId: string }) => {
+      // TODO: will receive gameId as well
       UserModel.findById(info.userId).then((user: User) => {
         logic.addPlayer(user, socket.id);
         io.emit("playersupdate", gameState); // TODO: only emit to players in the game
@@ -88,7 +89,7 @@ export const init = (server: http.Server): void => {
     // TODO: socket.on("choose")
 
     // When players end game
-    socket.on("endgameRequest", (gameId: string) => {
+    socket.on("endGameConfirm", (gameId: string) => {
       gameState.endVotes++;
       if (gameState.endVotes >= Math.ceil(gameState.players.length / 2)) {
         gameState.gameOver = true;

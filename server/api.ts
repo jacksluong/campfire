@@ -64,12 +64,19 @@ router.post("/inputChange", (req, res) => {
 router.post("/inputSubmit", (req, res) => {
   let newInput = {
     contributor: req.body.contributor,
-    content: req.body.content,
+    content: req.body.content + " ",
     gameId: req.body.gameId,
   };
   addToStory(newInput.content);
   socketManager.getIo().emit("storyUpdate", gameState);
   res.send({});
+});
+
+router.post("/endGameRequest", (req, res) => {
+  gameState.endVotes++;
+  socketManager.getIo().emit("endGamePrompt", req.body.contributor);
+  res.send({});
+  setTimeout(() => socketManager.getIo().emit("takeBackEndGameButton"), 15000);
 });
 
 router.post("/leaveGame", (req, res) => {
