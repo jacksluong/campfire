@@ -24,8 +24,9 @@ class GameInputField extends Component<Props, State> {
   }
 
   componentDidMount() {
-    socket.on("gameOver", (gameId: string) => {
-      navigate(`/end/${gameId}`);
+    // NOTE: will want to move this to an upper level component like GameRoom or something
+    socket.on("gameOver", () => {
+      navigate(`/end/${this.props.gameId}`);
     });
   }
 
@@ -40,7 +41,6 @@ class GameInputField extends Component<Props, State> {
   handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     let body = {
-      contributor: this.props.userId,
       content: this.state.value + " ",
       gameId: this.props.gameId,
     };

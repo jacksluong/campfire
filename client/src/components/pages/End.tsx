@@ -33,7 +33,7 @@ class End extends Component<Props, State> {
     };
   }
   componentDidMount() {
-    socket.emit("requestGameState"); // TODO: send game id when multiple rooms are a feature
+    socket.emit("requestGameState", this.props.gameId); // TODO: send game id when multiple rooms are a feature
     socket.on("sendGameState", (gameState) => {
       this.setState({
         name: `TITLE`,
@@ -43,11 +43,6 @@ class End extends Component<Props, State> {
         keywords: ["KEYWORDS", "I", "LIKE", "CHEESE"],
       });
     });
-    socket.on("disablePublish", () => {
-      this.setState({
-        enabled: false,
-      });
-    });
   }
   render() {
     return (
@@ -55,12 +50,7 @@ class End extends Component<Props, State> {
         <Navigation />
         <Passage content={this.state.content} contributors={this.state.contributors} />
         <BottomPanel
-          name={this.state.name}
-          contributors={this.state.contributors}
-          content={this.state.content}
-          usersThatLiked={this.state.usersThatLiked}
-          keywords={this.state.keywords}
-          enabled={this.state.enabled}
+          gameId={this.props.gameId}
         />
       </div>
     );
