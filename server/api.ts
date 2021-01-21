@@ -3,7 +3,7 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-import { addToStory, disconnectPlayer, findOpenRoom, addPlayer, getRoomByPlayer, processPublishVote } from "./logic";
+import { createRoom, addToStory, disconnectPlayer, findOpenRoom, addPlayer, getRoomByPlayer, processPublishVote } from "./logic";
 
 const router = express.Router();
 
@@ -48,12 +48,16 @@ router.get("/matchmaking", (req, res) => {
   res.send({ gameId: gameId });
 });
 
+router.get("/createPrivate", (req, res) => {
+  res.send({ gameId: createRoom(true).gameId });
+})
+
 // TODO: fix this one up with the new room system
 router.post("/publishStory", (req, res) => {
   // publishStory should send gameId and socketId
   const gameState = processPublishVote(req.body.gameId, req.body.socketId);
   if (gameState.isPublished) {
-    const guests = gameState.players.find(player => player.userId == "guest") ? "guests" : ""
+    const guests = gameState.players.find(player => player.userId == "guest") ? "guests" : "";
     const newStory = new StoryModel({
       name: "TITLE",
       contributorNames: gameState.players.filter(player => player.userId != "guest").map(player => player.name).concat(guests),

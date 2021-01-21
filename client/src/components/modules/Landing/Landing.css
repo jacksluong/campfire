@@ -16,7 +16,7 @@
 }
 .Buttons-container {
   margin: auto auto 18% auto;
-  text-align: center;
+  /* text-align: center; */
   display: flex;
   justify-content: space-between;
   /* border-style: solid; */

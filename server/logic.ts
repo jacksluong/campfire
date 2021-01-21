@@ -137,10 +137,9 @@ const processEndgameVote = (gameId: string, socketId: string): GameState => {
     gameState.endVotes.push(playerIndex);
   }
   // check end condition
-  console.log("endVotes", gameState.endVotes);
-  console.log("requirement", Math.ceil(getConnectedPlayers(gameState).length / 2));
   if (gameState.endVotes.length >= Math.ceil(getConnectedPlayers(gameState).length / 2)) {
     gameState.gameOver = true;
+    dispose(gameState);
   }
   return gameState;
 }
@@ -215,10 +214,28 @@ const getRoomByPlayer = (userId: string): GameState | undefined => {
 }
 
 const findOpenRoom = (): string => {
-  let room = rooms.find(room => room.currentTurn === -1 && !room.isPrivate)
+  let room = rooms.find(room => !room.gameOver && room.currentTurn === -1 && !room.isPrivate);
   return (room ?? createRoom(false)).gameId;
 }
 
-// TODO: room garbage collector
+const dispose = (room: GameState): void => {
+  // room garbage collector
+  setTimeout(() => {
+    rooms.splice(rooms.indexOf(room), 1);
+  }, 1000 * 60 * 60 * 1);
+}
 
-export { addPlayer, disconnectPlayer, addToStory, processEndgameVote, processPublishVote, findOpenRoom, getRoomById, getRoomByPlayer };
+export { 
+  createRoom, 
+  findOpenRoom, 
+
+  getRoomById, 
+  getRoomByPlayer, 
+  
+  addPlayer, 
+  disconnectPlayer,
+
+  addToStory, 
+  processEndgameVote, 
+  processPublishVote 
+};

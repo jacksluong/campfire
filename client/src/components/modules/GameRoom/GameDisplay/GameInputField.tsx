@@ -53,7 +53,6 @@ class GameInputField extends Component<Props, State> {
 
   handleEndGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    console.log("reached endgame funtion");
     socket.emit("endgameRequest", this.props.gameId);
   };
 

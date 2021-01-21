@@ -15,18 +15,18 @@ class Main extends Component<Props, State> {
     super(props);
   }
 
-  handleQuickPlayClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    get("/api/whoami").then((user) => {
-      get("/api/matchmaking").then(response => {
-        console.log("matched me to", response.gameId);
-        navigate(`/gameroom/${response.gameId}`);
-      });
+  joinPublicGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    get("/api/matchmaking").then(response => {
+      console.log("matched me to", response.gameId);
+      navigate(`/gameroom/${response.gameId}`);
     });
   };
   
   createPrivateGame = () => {
-    console.log("Create new private game");
-    alert("create private game");
+    get("/api/createPrivate").then(response => {
+      console.log("matched me to", response.gameId, "(private)");
+      navigate(`/gameroom/${response.gameId}`);
+    })
   };
 
   handleQuestionClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {};
@@ -40,7 +40,7 @@ class Main extends Component<Props, State> {
             type="submit"
             value="Create Game"
             className="Button"
-            onClick={this.handleQuickPlayClick}
+            onClick={this.joinPublicGame}
           >
             Quick play
           </button>

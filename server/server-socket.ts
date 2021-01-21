@@ -26,8 +26,6 @@ export const getSocketFromSocketID = (socketid: string) => io.sockets.sockets.ge
 export const addUser = (user: User, socket: Socket): void => {
   const oldSocket = userToSocketMap.get(user._id);
   if (oldSocket && oldSocket.id !== socket.id) {
-    // there was an old tab open for this user, force it to disconnect
-    // is this the behavior you want?
 
     oldSocket.disconnect();
     socketToUserMap.delete(oldSocket.id);
@@ -57,6 +55,7 @@ export const init = (server: http.Server): void => {
       if (gameState) emitToRoom("playersUpdate", gameState);
     });
 
+    // NOTE: spent a lot of time trying to move this one into api but it does not go well
     socket.on("join", (info: { userId: string; gameId: string }) => {
       UserModel.findById(info.userId).then((user: User) => {
         const gameState = addPlayer(info.gameId, user, socket.id);
@@ -66,12 +65,14 @@ export const init = (server: http.Server): void => {
     });
 
     // When players end game
+    // TODO: can probably move this over to api
     socket.on("endgameRequest", (gameId: string) => {
       const gameState = processEndgameVote(gameId, socket.id);
       if (gameState.gameOver) emitToRoom("gameOver", gameState);
     });
 
     // send GameState to End Page for render
+    // TODO: can probably move this to api as well
     socket.on("requestGameState", (gameId: string) => {
       socket.emit("sendGameState", getRoomById(gameId));
     });
