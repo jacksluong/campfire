@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import Story from "../../../../../shared/Story";
 import { get } from "../../../utilities";
 import SingleStoryCard from "./SingleStoryCard";
+interface Props {
+  userId: string;
+}
 interface State {
   storyList: Story[];
 }
-class Gallery extends Component<{}, State> {
+class Gallery extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,6 +30,7 @@ class Gallery extends Component<{}, State> {
         content={story.content}
         usersThatLiked={story.usersThatLiked}
         keywords={story.keywords}
+        userId={this.props.userId}
       />
     ));
 

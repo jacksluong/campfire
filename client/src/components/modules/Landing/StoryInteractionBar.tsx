@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+import { post } from "../../../utilities";
 
 interface Props {
   numLikes: number;
+  userId: string;
+  onClick: () => void;
 }
 interface State {
   value: string;
@@ -16,6 +19,8 @@ class StoryInteractionBar extends Component<Props, State> {
   }
   handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //Like function
+    this.props.onClick();
+    //console.log("click");
   };
   onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({

@@ -38,7 +38,7 @@ class Landing extends Component<Props & RouteComponentProps, {}> {
         <br />
         <br />
         <br />
-        <Gallery />
+        <Gallery userId={this.props.userId} />
       </div>
     );
   }
