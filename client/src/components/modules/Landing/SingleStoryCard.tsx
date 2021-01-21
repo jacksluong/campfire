@@ -8,12 +8,22 @@ interface Props {
   content: string;
   usersThatLiked: string[];
   keywords: string[];
+
+  userId: string;
+}
+interface State {
+  liked: boolean;
 }
 
-class SingleStoryCard extends Component<Props, {}> {
+class SingleStoryCard extends Component<Props, State> {
   constructor(props) {
     super(props);
   }
+  likeFunction = () => {
+    //Like function
+    console.log("like");
+    //console.log(this.props.userId);
+  };
 
   render() {
     let contributorsElement = null;
@@ -38,7 +48,11 @@ class SingleStoryCard extends Component<Props, {}> {
         </div>
         <div className="SingleStoryCard-Content">{this.props.content}</div>
         <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
-        <StoryInteractionBar numLikes={this.props.usersThatLiked.length} />
+        <StoryInteractionBar
+          numLikes={this.props.usersThatLiked.length}
+          userId={this.props.userId}
+          onClick={this.likeFunction}
+        />
         <CommentsBlock />
       </div>
     );
