@@ -31,7 +31,50 @@ export interface GameState {
 
 const rooms: GameState[] = [];
 
-/** Primary Functions */
+/** Room Functions */
+
+const createRoom = (isPrivate: boolean): GameState => {
+  let r = Math.random().toString(36).substring(7);
+  for (; rooms.find((state) => state.gameId == r); r = Math.random().toString(36).substring(7));
+  let newGame: GameState = {
+    gameId: r,
+    players: [],
+    spectators: [],
+
+    currentStory: "",
+    currentTurn: -1,
+    currentInput: "",
+
+    readyVotes: [],
+    endVotes: [],
+    publishVotes: [],
+
+    isPrivate: isPrivate,
+    isPublished: false,
+    gameOver: false,
+  };
+  rooms.push(newGame);
+  return newGame;
+};
+
+const findOpenRoom = (): string => {
+  let room = rooms.find(room => !room.gameOver && room.currentTurn === -1 && !room.isPrivate);
+  return (room ?? createRoom(false)).gameId;
+};
+
+const getRoomById = (gameId: string): GameState | undefined => {
+  return rooms.find((room) => room.gameId == gameId);
+};
+
+const getRoomByPlayer = (userId: string): GameState | undefined => {
+  return rooms.find((room) => {
+    for (let player of room.players) {
+      if (player.userId == userId) return true;
+    }
+  });
+};
+
+/** Player Functions */
 
 const addPlayer = (gameId: string, user: User, socketId: string): GameState | undefined => {
   const gameState = getRoomById(gameId);
@@ -111,6 +154,12 @@ const disconnectPlayer = (socketId: string): GameState | undefined => {
   return;
 };
 
+const getConnectedPlayers = (room: GameState): Player[] => {
+  return room.players.filter((player) => !player.disconnected);
+};
+
+/** Gamewide Actions */
+
 const addToStory = (gameId: string, text: string): GameState => {
   console.log("adding to gameId", gameId, " with rooms list as", rooms);
   const gameState = getRoomById(gameId)!;
@@ -122,8 +171,6 @@ const addToStory = (gameId: string, text: string): GameState => {
 
   return gameState;
 };
-
-/** Voting */
 
 const processEndgameVote = (gameId: string, socketId: string): GameState => {
   // identify index of this player in given room
@@ -168,57 +215,10 @@ const processPublishVote = (gameId: string, socketId: string): GameState => {
   return gameState;
 };
 
-/** Utilities */
-
-const getConnectedPlayers = (room: GameState): Player[] => {
-  return room.players.filter((player) => !player.disconnected);
-};
-
 const startCondition = (gameState: GameState): boolean => {
   return gameState.players.length === 3;
   // let minimum = gameState.isPrivate ? 2 : 3
   // return gameState.players.length >= minimum && gameState.readyVotes.length > gameState.players.length / 2;
-};
-
-const createRoom = (isPrivate: boolean): GameState => {
-  let r = Math.random().toString(36).substring(7);
-  for (; rooms.find((state) => state.gameId == r); r = Math.random().toString(36).substring(7));
-  let newGame: GameState = {
-    gameId: r,
-    players: [],
-    spectators: [],
-
-    currentStory: "",
-    currentTurn: -1,
-    currentInput: "",
-
-    readyVotes: [],
-    endVotes: [],
-    publishVotes: [],
-
-    isPrivate: isPrivate,
-    isPublished: false,
-    gameOver: false,
-  };
-  rooms.push(newGame);
-  return newGame;
-};
-
-const getRoomById = (gameId: string): GameState | undefined => {
-  return rooms.find((room) => room.gameId == gameId);
-};
-
-const getRoomByPlayer = (userId: string): GameState | undefined => {
-  return rooms.find((room) => {
-    for (let player of room.players) {
-      if (player.userId == userId) return true;
-    }
-  });
-};
-
-const findOpenRoom = (): string => {
-  let room = rooms.find(room => !room.gameOver && room.currentTurn === -1 && !room.isPrivate);
-  return (room ?? createRoom(false)).gameId;
 };
 
 const dispose = (room: GameState): void => {
