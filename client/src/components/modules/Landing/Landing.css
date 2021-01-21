@@ -34,10 +34,10 @@ Button {
 .Title-container {
   margin: 10% auto 2.5% auto;
   text-align: center;
-  font-size: 80px;
+  font-size: 160px;
 }
 .Space {
-  height: 20%;
+  height: 1%;
 }
 
 .u-small-radius {
@@ -124,8 +124,8 @@ Button {
 .SingleStoryCard-container {
   border-style: solid;
   margin: 2%;
-  min-width: 15%;
-  max-width: 50%;
+  min-width: 20%;
+  max-width: 40%;
   text-align: left;
   max-height: 20%;
   padding: 0.5%;

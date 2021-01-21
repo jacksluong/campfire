@@ -20,34 +20,25 @@ export interface GameState {
 
   // Voting
   readyVotes: number[]; // indices of players
-  endVotes: number;
-  publishVotes: number;
+  endVotes: number[];
+  publishVotes: number[];
 
   // Status
+  isPrivate: boolean;
   isPublished: boolean;
   gameOver: boolean;
 }
 
-const gameState: GameState = {
-  gameId: "",
-  players: [],
-  spectators: [],
-
-  currentStory: "",
-  currentTurn: -1,
-  currentInput: "",
-
-  readyVotes: [],
-  endVotes: 0, // TODO: change votes properties to type array (to keep track of who actually did vote)
-  publishVotes: 0,
-
-  isPublished: false,
-  gameOver: false,
-};
+const rooms: GameState[] = [];
 
 /** Primary Functions */
 
-const addPlayer = (user: User, socketId: string): void => {
+const addPlayer = (gameId: string, user: User, socketId: string): GameState | undefined => {
+  const gameState = getRoomById(gameId);
+  if (!gameState) {
+    return undefined;
+  }
+
   // check if user was in-game (by socket or id)
   const existingPlayer: Player | undefined = gameState.players.find(
     (player) => player.socketId == socketId || player.userId == user?._id
@@ -61,7 +52,7 @@ const addPlayer = (user: User, socketId: string): void => {
       // add as spectator if game is in progress or full
       if (gameState.spectators.indexOf(socketId) === -1) {
         gameState.spectators.push(socketId);
-        return;
+        return gameState;
       }
     }
 
@@ -78,44 +69,172 @@ const addPlayer = (user: User, socketId: string): void => {
     });
 
     // game start condition
-    if (gameState.currentTurn === -1 && startCondition()) {
+    if (gameState.currentTurn === -1 && startCondition(gameState)) {
       gameState.currentTurn = Math.floor(Math.random() * gameState.players.length);
     }
   }
+
+  return gameState;
 };
 
-const disconnectPlayer = (socketId: string): void => {
-  const disconnectedPlayer = gameState.players.find((player) => player.socketId == socketId);
-  if (disconnectedPlayer) {
-    console.log("disconnecting ", disconnectPlayer.name);
-    disconnectedPlayer.disconnected = true;
+const disconnectPlayer = (socketId: string): GameState | undefined => {
+  for (let index = 0; index < rooms.length; index++) {
+    const room = rooms[index];
+    for (let i = 0; i < room.players.length; i++) {
+      if (room.players[i].socketId == socketId) {
+        console.log("disconnecting ", room.players[i].name);
+        if (room.currentTurn === -1) {
+          // remove if game hasn't started
+          room.players.splice(i, 1);
+        } else {
+          // take action if current turn or last active player was this person
+          room.players[i].disconnected = true;
+          if (getConnectedPlayers(room).length === 0) {
+            rooms.splice(index, 1);
+            return room;
+          } else if (room.currentTurn === i) {
+            while (room.players[room.currentTurn].disconnected)
+              room.currentTurn = (room.currentTurn + 1) % room.players.length;
+          }
+        }
+        return room;
+      }
+    }
+    for (let i = 0; i < room.spectators.length; i++) {
+      if (room.spectators[i] == socketId) {
+        room.spectators.splice(i, 1);
+        return room;
+      }
+    }
   }
+  return;
 };
 
-const addToStory = (text: string): void => {
-  // NOTE: format text (remove whitespace, add period if necessary) here
+const addToStory = (gameId: string, text: string): GameState => {
+  console.log("adding to gameId", gameId, " with rooms list as", rooms);
+  const gameState = getRoomById(gameId)!;
+
   gameState.currentStory += text;
   gameState.currentTurn = (gameState.currentTurn + 1) % gameState.players.length;
+  while (gameState.players[gameState.currentTurn].disconnected)
+    gameState.currentTurn = (gameState.currentTurn + 1) % gameState.players.length;
+
+  return gameState;
 };
 
-const resetGameState = (): void => {
-  // can't change the pointer of gameState because we export this pointer
-  gameState.gameId = "";
-  gameState.players = [];
-  gameState.spectators = [];
-  gameState.currentStory = "";
-  gameState.currentTurn = -1;
-  gameState.currentInput = "";
-  gameState.endVotes = 0;
-  gameState.publishVotes = 0;
-  gameState.isPublished = false;
-  gameState.gameOver = false;
+/** Voting */
+
+const processEndgameVote = (gameId: string, socketId: string): GameState => {
+  // identify index of this player in given room
+  const gameState = rooms.find((room) => room.gameId == gameId)!; // assume game will be found
+  let playerIndex = -1;
+  for (let i = 0; i < gameState.players.length; i++) {
+    if (gameState.players[i].socketId == socketId) {
+      playerIndex = i;
+      break;
+    }
+  }
+  // add to endVotes if not already there
+  console.log(
+    "playerIndex and find are",
+    playerIndex,
+    gameState.endVotes.find((index) => index == playerIndex)
+  );
+  if (gameState.endVotes.find((index) => index == playerIndex) !== undefined) {
+    gameState.endVotes.push(playerIndex);
+  }
+  // check end condition
+  console.log("endVotes", gameState.endVotes);
+  console.log("requirement", Math.ceil(getConnectedPlayers(gameState).length / 2));
+  if (gameState.endVotes.length >= Math.ceil(getConnectedPlayers(gameState).length / 2)) {
+    gameState.gameOver = true;
+  }
+  return gameState;
+};
+
+const processPublishVote = (gameId: string, socketId: string): GameState => {
+  // identify index of this player in given room
+  const gameState = rooms.find((room) => room.gameId == gameId)!; // assume game will be found
+  let playerIndex = -1;
+  for (let i = 0; i < gameState.players.length; i++) {
+    if (gameState.players[i].socketId == socketId) {
+      playerIndex = i;
+      break;
+    }
+  }
+  // add to publishVotes if not already there
+  if (gameState.publishVotes.find((index) => index === playerIndex) !== undefined) {
+    gameState.publishVotes.push(playerIndex);
+  }
+  // check end condition
+  if (gameState.publishVotes.length >= Math.ceil(getConnectedPlayers(gameState).length / 2)) {
+    gameState.isPublished = true;
+  }
+  return gameState;
 };
 
 /** Utilities */
 
-const startCondition = (): boolean => {
-  return gameState.players.length >= 3; // NOTE: modify this after MVP
+const getConnectedPlayers = (room: GameState): Player[] => {
+  return room.players.filter((player) => !player.disconnected);
 };
 
-export { gameState, addPlayer, disconnectPlayer, addToStory, resetGameState };
+const startCondition = (gameState: GameState): boolean => {
+  return gameState.players.length === 3;
+  // let minimum = gameState.isPrivate ? 2 : 3
+  // return gameState.players.length >= minimum && gameState.readyVotes.length > gameState.players.length / 2;
+};
+
+const createRoom = (isPrivate: boolean): GameState => {
+  let r = Math.random().toString(36).substring(7);
+  for (; rooms.find((state) => state.gameId == r); r = Math.random().toString(36).substring(7));
+  let newGame: GameState = {
+    gameId: r,
+    players: [],
+    spectators: [],
+
+    currentStory: "",
+    currentTurn: -1,
+    currentInput: "",
+
+    readyVotes: [],
+    endVotes: [],
+    publishVotes: [],
+
+    isPrivate: isPrivate,
+    isPublished: false,
+    gameOver: false,
+  };
+  rooms.push(newGame);
+  return newGame;
+};
+
+const getRoomById = (gameId: string): GameState | undefined => {
+  return rooms.find((room) => room.gameId == gameId);
+};
+
+const getRoomByPlayer = (userId: string): GameState | undefined => {
+  return rooms.find((room) => {
+    for (let player of room.players) {
+      if (player.userId == userId) return true;
+    }
+  });
+};
+
+const findOpenRoom = (): string => {
+  let room = rooms.find((room) => room.currentTurn === -1 && !room.isPrivate);
+  return (room ?? createRoom(false)).gameId;
+};
+
+// TODO: room garbage collector
+
+export {
+  addPlayer,
+  disconnectPlayer,
+  addToStory,
+  processEndgameVote,
+  processPublishVote,
+  findOpenRoom,
+  getRoomById,
+  getRoomByPlayer,
+};

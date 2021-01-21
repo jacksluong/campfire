@@ -3,7 +3,14 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-import { gameState, addToStory, resetGameState, disconnectPlayer } from "./logic";
+import {
+  addToStory,
+  disconnectPlayer,
+  findOpenRoom,
+  addPlayer,
+  getRoomByPlayer,
+  processPublishVote,
+} from "./logic";
 
 const router = express.Router();
 
@@ -33,26 +40,46 @@ router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
 });
 
+router.get("/matchmaking", (req, res) => {
+  if (req.user) {
+    // if user is in existing room, return to room
+    let gameId = getRoomByPlayer(req.user._id)?.gameId;
+    if (gameId) {
+      res.send({ gameId: gameId });
+      return;
+    }
+  }
+
+  // otherwise return a new room to join
+  const gameId = findOpenRoom();
+  res.send({ gameId: gameId });
+});
+
+// TODO: fix this one up with the new room system
 router.post("/publishStory", (req, res) => {
-  const requiredVotes = Math.ceil(gameState.players.length / 2);
-  gameState.publishVotes++;
-  if (gameState.publishVotes >= requiredVotes && !gameState.isPublished) {
+  // publishStory should send gameId and socketId
+  const gameState = processPublishVote(req.body.gameId, req.body.socketId);
+  if (gameState.isPublished) {
+    const guests = gameState.players.find((player) => player.userId == "guest") ? "guests" : "";
     const newStory = new StoryModel({
-      name: req.body.name,
-      contributorNames: req.body.contributorNames,
-      contributorIds: req.body.contributorIds,
-      content: req.body.content,
-      usersThatLiked: req.body.usersThatLiked,
-      keywords: req.body.keywords,
+      name: "TITLE",
+      contributorNames: gameState.players
+        .filter((player) => player.userId != "guest")
+        .map((player) => player.name)
+        .concat(guests),
+      contributorIds: gameState.players
+        .filter((player) => player.userId != "guest")
+        .map((player) => player.userId),
+      content: gameState.currentStory,
+      usersThatLiked: ["bydefaultthereshouldbenouserslikedatpublish"],
+      keywords: ["keyword1", "keyword2", "keyword3"],
     });
     newStory.save().then((story) => {
-      gameState.isPublished = false;
-      socketManager.getIo().emit("disablePublish");
-      resetGameState();
-      res.send(story);
+      socketManager.getIo().emit("storyPublished");
+      console.log("story saved: ", story);
     });
-    gameState.isPublished = false;
   }
+  res.send({});
 });
 
 router.post("/inputChange", (req, res) => {
@@ -63,31 +90,25 @@ router.post("/inputChange", (req, res) => {
 
 router.post("/inputSubmit", (req, res) => {
   let newInput = {
-    contributor: req.body.contributor,
     content: req.body.content + " ",
     gameId: req.body.gameId,
   };
-  addToStory(newInput.content);
-  socketManager.getIo().emit("storyUpdate", gameState);
+  const newGameState = addToStory(req.body.gameId, newInput.content);
+  socketManager.getIo().emit("storyUpdate", newGameState); // TODO: only emit to sockets in this game
   res.send({});
 });
-
-router.post("/endGameRequest", (req, res) => {
-  gameState.endVotes++;
-  socketManager.getIo().emit("endGamePrompt", req.body.contributor);
-  res.send({});
-  setTimeout(() => socketManager.getIo().emit("takeBackEndGameButton"), 15000);
-});
+//TO DO:
+// router.post("/endGameRequest", (req, res) => {
+//   gameState.endVotes++;
+//   socketManager.getIo().emit("endGamePrompt", req.body.contributor);
+//   res.send({});
+//   setTimeout(() => socketManager.getIo().emit("takeBackEndGameButton"), 15000);
+// });
 
 router.post("/leaveGame", (req, res) => {
-  disconnectPlayer(req.body.socketId);
-  socketManager.getIo().emit("playersupdate", gameState);
+  const newGameState = disconnectPlayer(req.body.socketId)!;
+  socketManager.getIo().emit("playersUpdate", newGameState); // TODO: only emit to sockets in this game
   res.send({});
-});
-
-router.post("/rg", (req, res) => {
-  resetGameState();
-  res.send(gameState);
 });
 
 // anything else falls to this "not found" case

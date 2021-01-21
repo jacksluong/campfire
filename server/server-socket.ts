@@ -1,11 +1,18 @@
 import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
-import { GameState } from "./logic";
+import {
+  findOpenRoom,
+  addPlayer,
+  disconnectPlayer,
+  processEndgameVote,
+  getRoomById,
+  GameState,
+} from "./logic";
 import UserModel from "./models/User";
 
-const logic = require("./logic");
-const gameState: GameState = logic.gameState;
+// const logic = require("./logic");
+// const gameState: GameState = logic.gameState;
 let io: Server;
 
 const userToSocketMap: Map<string, Socket> = new Map<string, Socket>(); // maps user ID to socket object
@@ -30,8 +37,6 @@ export const addUser = (user: User, socket: Socket): void => {
 };
 
 export const removeUser = (user: User, socket: Socket): void => {
-  // TODO:  I think we want a user to disconnect when they close a tab with the game room open
-
   if (user) userToSocketMap.delete(user._id);
   socketToUserMap.delete(socket.id);
 };
@@ -43,65 +48,46 @@ export const init = (server: http.Server): void => {
     socket.on("disconnect", () => {
       console.log(`socket has disconnected ${socket.id}`);
 
-      logic.disconnectPlayer(socket.id);
-
       const user = getUserFromSocketID(socket.id);
       if (user !== undefined) {
         removeUser(user, socket);
       }
 
-      io.emit("playersupdate", gameState);
+      const gameState = disconnectPlayer(socket.id);
+      if (gameState) emitToRoom("playersUpdate", gameState);
     });
 
-    /* Joining a game: matchmaking, join*/
-    // ("matchmaking" -> "matched") Landing handles adding user to a game in gameState, sends user over to game room page (passing gameId through URL), ("join" -> "playerjoined") user prompts (via socket) server to provide all information about this game (this is the step), then render, and the server lets the other players in the room know
-
-    // TODO: socket.on("matchmaking")
-    socket.on("matchmaking", (userId: string) => {
-      if (gameState.players.length === ROOM_CAPACITY) {
-        // TODO: handle game full should be a logic thing
-        console.log("Game full");
-      } else {
-        // NOTE: matchmaking happens here but for now, we only have one room so nothing needs to be done
-        socket.emit("matched", "gameIdGoesHere"); // not io because we only want to let this person know
-        // on "matched", the user is redirected to /gameroom/:gameId and will call socket.emit("join", req.user._id) to get room information
-      }
-    });
-
-    // TODO: socket.on("join")
     socket.on("join", (info: { userId: string; gameId: string }) => {
-      // TODO: will receive gameId as well
       UserModel.findById(info.userId).then((user: User) => {
-        logic.addPlayer(user, socket.id);
-        io.emit("playersupdate", gameState); // TODO: only emit to players in the game
+        const gameState = addPlayer(info.gameId, user, socket.id);
+        if (!gameState) socket.emit("redirectHome");
+        else emitToRoom("playersUpdate", gameState);
       });
     });
 
-    /* In a game: inputchange, inputsubmit, update */
-    // Actions that require synchronization amongst all players in a room include: input change ("inputchange" -> "input changed"), input submit ("inputsubmit" -> "inputsubmitted"), next person chosen ("choose" -> "personchosen")
-
-    // TODO: socket.on("inputchange")
-
-    // TODO: socket.on("inputsubmit")
-
-    // TODO: socket.on("update")
-
-    // TODO: socket.on("choose")
-
     // When players end game
-    socket.on("endGameConfirm", (gameId: string) => {
-      gameState.endVotes++;
-      if (gameState.endVotes >= Math.ceil(gameState.players.length / 2)) {
-        gameState.gameOver = true;
-        io.emit("gameOver", gameId);
-      }
+    //TO DO: merge
+    // socket.on("endGameConfirm", (gameId: string) => {
+    //   gameState.endVotes++;
+    //   if (gameState.endVotes >= Math.ceil(gameState.players.length / 2)) {
+    //     gameState.gameOver = true;
+    //     io.emit("gameOver", gameId);
+    //   }
+    socket.on("endgameRequest", (gameId: string) => {
+      const gameState = processEndgameVote(gameId, socket.id);
+      if (gameState.gameOver) emitToRoom("gameOver", gameState);
     });
 
-    //send GameState to End Page for render
-    socket.on("requestGameState", () => {
-      socket.emit("sendGameState", gameState);
+    // send GameState to End Page for render
+    socket.on("requestGameState", (gameId: string) => {
+      socket.emit("sendGameState", getRoomById(gameId));
     });
   });
+};
+
+const emitToRoom = (message: string, room: GameState): void => {
+  for (let player of room.players) getSocketFromSocketID(player.socketId)?.emit(message, room);
+  for (let spectator of room.spectators) getSocketFromSocketID(spectator)?.emit(message, room);
 };
 
 export const getIo = () => io;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Sidebar from "../modules/GameRoom/Sidebar/Sidebar";
 import GameDisplay from "../modules/GameRoom/GameDisplay/GameDisplay";
-import { RouteComponentProps } from "@reach/router";
+import { navigate, RouteComponentProps } from "@reach/router";
 import Player from "../../../../shared/Player";
 import { socket } from "../../client-socket";
 import "../../../src/components/modules/GameRoom/GameRoom.scss";
@@ -17,7 +17,6 @@ interface Props extends RouteComponentProps {
 } // replaced "Props & RouteComponentProps" with "RouteComponentProps" because that's the primary way we are receiving props for this component
 
 interface State {
-  gameId: string;
   userId: string;
   players: Player[];
   spectators: number;
@@ -31,8 +30,7 @@ class GameRoom extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      gameId: "gameIdGoesHere",
-      userId: undefined,
+      userId: "",
       players: [],
       spectators: 0,
       currentStory: "",
@@ -42,12 +40,14 @@ class GameRoom extends Component<Props, State> {
   }
 
   componentDidMount() {
-    socket.on("playersupdate", (gameState: GameState) => {
+    socket.on("playersUpdate", (gameState: GameState) => {
       // on player join or leave
       this.setState({
         players: gameState.players,
         spectators: gameState.spectators.length,
+        currentStory: gameState.currentStory,
         currentTurn: gameState.currentTurn,
+        currentInput: gameState.currentInput
       });
     });
     socket.on("storyUpdate", (gameState: GameState) => {
@@ -62,7 +62,10 @@ class GameRoom extends Component<Props, State> {
         currentInput: content,
       });
     });
-    socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId });
+    socket.on("redirectHome", () => {
+      navigate("/");
+    })
+    socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId }); // NOTE: maybe get("/api/whoami") somewhere if refresh becomes a problem?
   }
 
   componentWillUnmount() {
@@ -85,7 +88,7 @@ class GameRoom extends Component<Props, State> {
             currentStory={this.state.currentStory}
             currentTurn={this.state.currentTurn}
             currentInput={this.state.currentInput}
-            gameId={this.state.gameId}
+            gameId={this.props.gameId}
             userId={this.props.userId}
           />
         </div>
