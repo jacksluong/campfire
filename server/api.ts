@@ -48,7 +48,8 @@ router.get("/matchmaking", (req, res) => {
     if (gameId) {
       res.send({ gameId: gameId });
       return;
-      }
+    }
+  }
 
   // otherwise return a new room to join
   const gameId = findOpenRoom();
