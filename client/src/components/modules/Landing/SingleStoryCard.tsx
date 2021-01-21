@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Story from "../../../../../shared/Story";
+import StoryInteractionBar from "./StoryInteractionBar";
+import CommentsBlock from "./CommentsBlock";
 interface Props {
   name: string;
   contributors: string[];
@@ -12,6 +14,7 @@ class SingleStoryCard extends Component<Props, {}> {
   constructor(props) {
     super(props);
   }
+
   render() {
     let contributorsElement = null;
     contributorsElement = this.props.contributors.map((contributor) => (
@@ -34,10 +37,9 @@ class SingleStoryCard extends Component<Props, {}> {
           {contributorsElement}
         </div>
         <div className="SingleStoryCard-Content">{this.props.content}</div>
-        <div className="SingleStoryCard-usersThatLiked">
-          {this.props.usersThatLiked.length} Like
-        </div>
         <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
+        <StoryInteractionBar numLikes={this.props.usersThatLiked.length} />
+        <CommentsBlock />
       </div>
     );
   }

@@ -1,9 +1,17 @@
 import express from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
-import socketManager from "./server-socket";
+import socketManager, { getSocketFromSocketID } from "./server-socket";
 import Story from "../shared/Story";
-import { createRoom, addToStory, disconnectPlayer, findOpenRoom, addPlayer, getRoomByPlayer, processPublishVote } from "./logic";
+import {
+  createRoom,
+  addToStory,
+  disconnectPlayer,
+  findOpenRoom,
+  getRoomByPlayer,
+  processPublishVote,
+  processEndgameVote,
+} from "./logic";
 
 const router = express.Router();
 
@@ -60,8 +68,13 @@ router.post("/publishStory", (req, res) => {
     const guests = gameState.players.find(player => player.userId == "guest") ? "guests" : "";
     const newStory = new StoryModel({
       name: "TITLE",
-      contributorNames: gameState.players.filter(player => player.userId != "guest").map(player => player.name).concat(guests),
-      contributorIds: gameState.players.filter(player => player.userId != "guest").map(player => player.userId),
+      contributorNames: gameState.players
+        .filter((player) => player.userId != "guest")
+        .map((player) => player.name)
+        .concat(guests),
+      contributorIds: gameState.players
+        .filter((player) => player.userId != "guest")
+        .map((player) => player.userId),
       content: gameState.currentStory,
       usersThatLiked: ["bydefaultthereshouldbenouserslikedatpublish"],
       keywords: ["keyword1", "keyword2", "keyword3"],
@@ -71,22 +84,28 @@ router.post("/publishStory", (req, res) => {
       console.log("story saved: ", story);
     });
   }
-  res.send({ });
+  res.send({});
 });
 
 router.post("/inputChange", (req, res) => {
-  console.log(req.body.content);
   socketManager.getIo().emit("updateChange", req.body.content);
   res.send({});
 });
 
 router.post("/inputSubmit", (req, res) => {
   let newInput = {
-    content: req.body.content,
+    content: req.body.content + " ",
     gameId: req.body.gameId,
   };
   const newGameState = addToStory(req.body.gameId, newInput.content);
   socketManager.getIo().emit("storyUpdate", newGameState); // TODO: only emit to sockets in this game
+  res.send({});
+});
+
+router.post("/endGameRequest", (req, res) => {
+  const gameState = processEndgameVote(req.body.gameId, req.body.socketId);
+  for (let player of gameState.players) getSocketFromSocketID(player.socketId)?.emit("endGamePrompt", req.body.contributor);
+  setTimeout(() => socketManager.getIo().emit("takeBackEndGameButton"), 15000);
   res.send({});
 });
 

@@ -112,13 +112,18 @@ Button {
 
 .Gallery-container {
   width: 100vw;
+
   /* text-align: center; */
   display: flex;
   flex-direction: row;
   border-style: solid;
   flex-wrap: wrap;
-  /* height: 2000px; */
+  /* height: 3500px; */
   justify-content: space-around;
+  /* justify-content: safe; */
+  /* flex-basis: 2000px; */
+  flex-grow: unset;
+  /* flex-grow: 80; */
 }
 /* Single Story Styling*/
 .SingleStoryCard-container {
@@ -152,3 +157,20 @@ Button {
 
 .SingleStoryCard-Keywords {
 } */
+.StoryInteractionBar-container {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-around; */
+}
+.LikeButton-container {
+  font-size: 16px;
+}
+.NewComment-container {
+  margin: auto 3%;
+  width: fill;
+  flex-grow: 100;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+}

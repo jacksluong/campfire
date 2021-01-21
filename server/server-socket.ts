@@ -50,7 +50,7 @@ export const init = (server: http.Server): void => {
       if (user !== undefined) {
         removeUser(user, socket);
       }
-      
+
       const gameState = disconnectPlayer(socket.id);
       if (gameState) emitToRoom("playersUpdate", gameState);
     });
@@ -66,7 +66,7 @@ export const init = (server: http.Server): void => {
 
     // When players end game
     // TODO: can probably move this over to api
-    socket.on("endgameRequest", (gameId: string) => {
+    socket.on("endGameConfirm", (gameId: string) => {
       const gameState = processEndgameVote(gameId, socket.id);
       if (gameState.gameOver) emitToRoom("gameOver", gameState);
     });
@@ -74,16 +74,16 @@ export const init = (server: http.Server): void => {
     // send GameState to End Page for render
     // TODO: can probably move this to api as well
     socket.on("requestGameState", (gameId: string) => {
-      socket.emit("sendGameState", getRoomById(gameId));
+      const gameState = getRoomById(gameId);
+      if (!gameState) socket.emit("redirectHome");
+      socket.emit("sendGameState", gameState);
     });
   });
 };
 
 const emitToRoom = (message: string, room: GameState): void => {
-  for (let player of room.players)
-    getSocketFromSocketID(player.socketId)?.emit(message, room);
-  for (let spectator of room.spectators)
-    getSocketFromSocketID(spectator)?.emit(message, room);
+  for (let player of room.players) getSocketFromSocketID(player.socketId)?.emit(message, room);
+  for (let spectator of room.spectators) getSocketFromSocketID(spectator)?.emit(message, room);
 };
 
 export const getIo = () => io;

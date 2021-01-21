@@ -62,9 +62,6 @@ class GameRoom extends Component<Props, State> {
         currentInput: content,
       });
     });
-    socket.on("redirectHome", () => {
-      navigate("/");
-    })
     socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId }); // NOTE: maybe get("/api/whoami") somewhere if refresh becomes a problem?
   }
 

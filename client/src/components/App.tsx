@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Router } from "@reach/router";
+import { navigate, Router } from "@reach/router";
 import { get, post } from "../utilities";
 import NotFound from "./pages/NotFound";
 import Skeleton from "./pages/Skeleton";
@@ -35,6 +35,7 @@ class App extends Component<{}, State> {
       .then(() =>
         socket.on("connect", () => {
           post("/api/initsocket", { socketid: socket.id });
+          socket.on("redirectHome", () => navigate("/"));
         })
       );
   }
@@ -68,8 +69,6 @@ class App extends Component<{}, State> {
           userId={this.state.userId}
         />
         <Profile path="/profile" />
-        {/* TODO: change endpage URL later */}
-        {/* <End path="/end/:gameId" /> */}
         <End path="/end/:gameId" />
         <NotFound default={true} />
       </Router>
