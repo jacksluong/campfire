@@ -1,21 +1,34 @@
 import React, { Component } from "react";
 
-interface Props {}
+interface Props {
+  numLikes: number;
+}
+interface State {
+  value: string;
+}
 
-class StoryInteractionBar extends Component<Props, {}> {
+class StoryInteractionBar extends Component<Props, State> {
   constructor(props) {
     super(props);
+    this.state = {
+      value: "",
+    };
   }
   handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //Like function
+  };
+  onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      value: event.target.value,
+    });
   };
   render() {
     return (
       <div className="StoryInteractionBar-container">
         <button type="submit" className="LikeButton-container" onClick={this.handleClick}>
-          Like
+          {`Like | ${this.props.numLikes}`}
         </button>
-        {/* <input className="NewComment-container" type="text" defaultValue="Write a comment"></input> */}
+        <input className="NewComment-container" type="text" defaultValue="Write a comment"></input>
       </div>
     );
   }

@@ -37,11 +37,8 @@ class SingleStoryCard extends Component<Props, {}> {
           {contributorsElement}
         </div>
         <div className="SingleStoryCard-Content">{this.props.content}</div>
-        <div className="SingleStoryCard-usersThatLiked">
-          {this.props.usersThatLiked.length}
-          <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
-        </div>
-        <StoryInteractionBar />
+        <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
+        <StoryInteractionBar numLikes={this.props.usersThatLiked.length} />
         <CommentsBlock />
       </div>
     );

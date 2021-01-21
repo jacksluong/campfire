@@ -4,6 +4,9 @@ class CommentsBlock extends Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount = () => {
+    //get comments
+  };
   render() {
     return (
       <div className="CommmentsBlock">
