@@ -12,8 +12,8 @@ interface Props {
   usersThatLiked: string[];
   keywords: string[];
   storyId: string;
-
   userId: string;
+  comments: Map<string, string>;
 }
 interface State {
   likes: number;
