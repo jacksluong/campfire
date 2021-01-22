@@ -23,24 +23,33 @@ class SingleStoryCard extends Component<Props, State> {
     super(props);
     this.state = {
       likes: this.props.usersThatLiked.length,
-      hasLiked: this.props.usersThatLiked.includes(this.props.userId),
+      hasLiked: false,
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    if (this.props.userId && this.props.usersThatLiked.includes(this.props.userId)) {
+      this.setState({ hasLiked: true });
+    }
+  }
   likeFunction = () => {
     //Like function
     const body = { storyId: this.props.storyId, userId: this.props.userId };
     // console.log(this.state.hasLiked);
     if (this.props.userId) {
       post("/api/likeStory", body).then((response) => {
-        this.setState({
+        // this.setState({
+        //   likes: response.likes,
+        //   hasLiked: !response.hasLiked,
+        // });
+        this.setState((prevState) => ({
           likes: response.likes,
-          hasLiked: !response.hasLiked,
-        });
+          hasLiked: !prevState.hasLiked,
+        }));
       });
     } else {
       console.log(`ID: ${this.props.userId} not logged in`);
     }
+    this.forceUpdate();
 
     //console.log(this.props.storyId);
     //console.log(this.props.userId);
@@ -48,13 +57,25 @@ class SingleStoryCard extends Component<Props, State> {
 
   render() {
     let contributorsElement = null;
-    contributorsElement = this.props.contributors.map((contributor, i) => <span key={i}>{contributor + ", "}</span>);
+    contributorsElement = this.props.contributors.map((contributor, i) => (
+      <span key={i}>{contributor + ", "}</span>
+    ));
     contributorsElement.pop();
-    contributorsElement.push(<span key={this.props.contributors.length}>and {this.props.contributors[this.props.contributors.length - 1]}</span>);
+    contributorsElement.push(
+      <span key={this.props.contributors.length}>
+        and {this.props.contributors[this.props.contributors.length - 1]}
+      </span>
+    );
 
-    let keywordsElement = this.props.keywords.map((keyword, i) => <span key={i}>{keyword + ", "}</span>);
+    let keywordsElement = this.props.keywords.map((keyword, i) => (
+      <span key={i}>{keyword + ", "}</span>
+    ));
     keywordsElement.pop();
-    keywordsElement.push(<span key={this.props.keywords.length}>{this.props.keywords[this.props.keywords.length - 1]}</span>);
+    keywordsElement.push(
+      <span key={this.props.keywords.length}>
+        {this.props.keywords[this.props.keywords.length - 1]}
+      </span>
+    );
 
     return (
       <div className="SingleStoryCard-container">
