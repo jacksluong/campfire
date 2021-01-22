@@ -10,6 +10,7 @@ import "../utilities.scss";
 import GameRoom from "./pages/GameRoom";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
+import Gallery from "./pages/Gallery";
 import End from "./pages/End";
 
 type State = {
@@ -61,6 +62,7 @@ class App extends Component<{}, State> {
     return (
       <Router>
         <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
+        <Gallery path="/gallery" userId={this.state.userId} />
         <Landing
           path="/"
           handleLogin={this.handleLogin}

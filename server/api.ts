@@ -52,12 +52,10 @@ router.get("/chat", (req, res) => {
 router.post("/message", (req, res) => {
   let ChatRoom: ChatRoom = getChatRoomById(req.body.gameId)!;
   const room: GameState = logic.getRoomById(req.body.gameId)!;
-  console.log(req.body.socketId);
   let sender: Player | undefined = room.players.find((player) => {
     return player.socketId == req.body.socketId;
   });
   let senderName: string;
-  console.log(room);
   if (!sender) {
     //spectator is sending message
     const spectatorIndex: number = room.spectators.indexOf(req.body.socketId);

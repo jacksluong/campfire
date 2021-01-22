@@ -45,7 +45,9 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
             />
           )}
         </span>
-        <Link to="/explore" className="NavBar-link">Explore</Link>
+        <Link to="/gallery" className="NavBar-link">
+          Explore
+        </Link>
       </div>
     );
   }
