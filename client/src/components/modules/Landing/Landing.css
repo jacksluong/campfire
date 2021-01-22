@@ -112,12 +112,15 @@ Button {
 
 .Gallery-container {
   width: 100vw;
-
-  /* text-align: center; */
   display: flex;
-  flex-direction: row;
+  flex-flow: column wrap;
+  align-content: space-between;
+  height: 8000px;
+  /* text-align: center; */
+  /* display: flex; */
+  /* flex-direction: row; */
   border-style: solid;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   /* height: 3500px; */
   justify-content: space-around;
   /* justify-content: safe; */
@@ -125,12 +128,30 @@ Button {
   flex-grow: unset;
   /* flex-grow: 80; */
 }
+
+.Gallery-container::before,
+.Gallery-container::after {
+  content: "";
+  flex-basis: 100%;
+  width: 0;
+  order: 2;
+}
+
+.SingleStoryCard-container:nth-child(3n + 1) {
+  order: 1;
+}
+.SingleStoryCard-container:nth-child(3n + 2) {
+  order: 2;
+}
+.SingleStoryCard-container:nth-child(3n) {
+  order: 3;
+}
 /* Single Story Styling*/
 .SingleStoryCard-container {
   border-style: solid;
   margin: 2%;
   min-width: 20%;
-  max-width: 30%;
+  max-width: 28%;
   text-align: left;
   max-height: 20%;
   padding: 0.5%;
