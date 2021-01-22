@@ -57,10 +57,13 @@ class GameRoom extends Component<Props, State> {
         currentInput: "",
       });
     });
-    socket.on("updateChange", (content: string) => {
+    socket.on("inputUpdate", (content: string) => {
       this.setState({
         currentInput: content,
       });
+    });
+    socket.on("gameOver", () => {
+      navigate(`/end/${this.props.gameId}`);
     });
     socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId });
   }

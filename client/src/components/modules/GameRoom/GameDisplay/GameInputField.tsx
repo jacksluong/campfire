@@ -30,15 +30,9 @@ class GameInputField extends Component<Props, State> {
   }
 
   componentDidMount() {
-    // NOTE: will want to move this to an upper level component like GameRoom or something
-    socket.on("gameOver", () => {
-      navigate(`/end/${this.props.gameId}`);
-    });
     socket.on("endGamePrompt", (userId: string) => {
       if (!this.state.requestedToEndGame) {
-        this.setState({
-          endGameButtonShow: true,
-        });
+        this.setState({ endGameButtonShow: true });
       }
     });
 
@@ -53,7 +47,7 @@ class GameInputField extends Component<Props, State> {
     this.setState({
       value: event.target.value,
     });
-    post("/api/inputChange", { content: event.target.value });
+    post("/api/inputChange", { gameId: this.props.gameId, content: event.target.value });
   };
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

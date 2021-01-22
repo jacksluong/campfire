@@ -77,7 +77,8 @@ router.post("/leaveGame", (req, res) => {
 });
 
 router.post("/inputChange", (req, res) => {
-  socketManager.getIo().emit("updateChange", req.body.content);
+  const room = logic.getRoomById(req.body.gameId)!;
+  socketManager.emitToRoom("inputUpdate", room, req.body.content)
   res.send({});
 });
 
@@ -94,9 +95,11 @@ router.post("/inputSubmit", (req, res) => {
 router.post("/endGameRequest", (req, res) => {
   const gameState = logic.processEndgameVote(req.body.gameId, req.body.socketId);
   for (let player of gameState.players) {
-    const socket = socketManager.getSocketFromSocketID(player.socketId)!;
-    socket.emit("endGamePrompt", req.body.contributor);
-    setTimeout(() => socket.emit("takeBackEndGameButton"), 15000); // TODO
+    const socket = socketManager.getSocketFromSocketID(player.socketId);
+    if (socket) {
+      socket.emit("endGamePrompt", req.body.contributor);
+      setTimeout(() => socket.emit("takeBackEndGameButton"), 15000); // TODO
+    }
   }
   res.send({});
 });
