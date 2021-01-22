@@ -31,6 +31,7 @@ class Gallery extends Component<Props, State> {
         usersThatLiked={story.usersThatLiked}
         keywords={story.keywords}
         userId={this.props.userId}
+        storyId={story._id}
       />
     ));
 

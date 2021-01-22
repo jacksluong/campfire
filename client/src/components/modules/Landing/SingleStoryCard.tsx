@@ -2,26 +2,59 @@ import React, { Component } from "react";
 import Story from "../../../../../shared/Story";
 import StoryInteractionBar from "./StoryInteractionBar";
 import CommentsBlock from "./CommentsBlock";
+import { post } from "../../../utilities";
 interface Props {
   name: string;
   contributors: string[];
   content: string;
   usersThatLiked: string[];
   keywords: string[];
+  storyId: string;
 
   userId: string;
 }
 interface State {
   liked: boolean;
+  likes: number;
 }
 
 class SingleStoryCard extends Component<Props, State> {
   constructor(props) {
     super(props);
+    this.state = {
+      liked: this.props.usersThatLiked.includes(this.props.userId),
+      likes: this.props.usersThatLiked.length,
+    };
   }
+  componentDidMount() {}
   likeFunction = () => {
     //Like function
     console.log("like");
+    const body = { storyId: this.props.storyId, userId: this.props.userId };
+
+    if (this.props.userId) {
+      post("/api/likeStory", body).then((response) => {
+        //Liking the post on the backend
+        console.log(this.state.liked);
+        //lets say the user already liked the post
+        if (this.state.liked) {
+          this.setState((prevState) => ({
+            liked: !prevState.liked,
+            likes: prevState.likes - 1,
+          }));
+          //lets say the user didnt like the post yet
+        } else {
+          this.setState((prevState) => ({
+            liked: !prevState.liked,
+            likes: prevState.likes + 1,
+          }));
+        }
+      });
+    } else {
+      console.log(`ID: ${this.props.userId} not logged in`);
+    }
+
+    //console.log(this.props.storyId);
     //console.log(this.props.userId);
   };
 
@@ -49,7 +82,7 @@ class SingleStoryCard extends Component<Props, State> {
         <div className="SingleStoryCard-Content">{this.props.content}</div>
         <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
         <StoryInteractionBar
-          numLikes={this.props.usersThatLiked.length}
+          numLikes={this.state.likes}
           userId={this.props.userId}
           onClick={this.likeFunction}
         />

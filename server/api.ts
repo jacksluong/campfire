@@ -12,6 +12,7 @@ import {
   processPublishVote,
   processEndgameVote,
 } from "./logic";
+import { isValidObjectId } from "mongoose";
 
 const router = express.Router();
 
@@ -37,8 +38,32 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
+//get stories
 router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
+});
+
+//like a specific story
+router.post("/likeStory", (req, res) => {
+  const storyId = req.body.storyId;
+  const userId = req.body.userId;
+  // res.send(StoryModel.find({ _id: storyId }));
+  // res.send({ storyId: storyId, userId: userId });
+  StoryModel.findById(storyId).then((story: Story) => {
+    //copy
+    let usersThatLiked = story.usersThatLiked.slice();
+    if (usersThatLiked.indexOf(userId) === -1) {
+      usersThatLiked.push(userId);
+    } else {
+      usersThatLiked.splice(usersThatLiked.indexOf(userId), 1);
+    }
+    story.usersThatLiked = usersThatLiked;
+    story.save();
+    res.send(story.usersThatLiked);
+  });
+  //todo
+  //1. get the array of users
+  //2. update
 });
 
 router.get("/matchmaking", (req, res) => {
@@ -58,14 +83,14 @@ router.get("/matchmaking", (req, res) => {
 
 router.get("/createPrivate", (req, res) => {
   res.send({ gameId: createRoom(true).gameId });
-})
+});
 
 // TODO: fix this one up with the new room system
 router.post("/publishStory", (req, res) => {
   // publishStory should send gameId and socketId
   const gameState = processPublishVote(req.body.gameId, req.body.socketId);
   if (gameState.isPublished) {
-    const guests = gameState.players.find(player => player.userId == "guest") ? "guests" : "";
+    const guests = gameState.players.find((player) => player.userId == "guest") ? "guests" : "";
     const newStory = new StoryModel({
       name: "TITLE",
       contributorNames: gameState.players
@@ -104,7 +129,8 @@ router.post("/inputSubmit", (req, res) => {
 
 router.post("/endGameRequest", (req, res) => {
   const gameState = processEndgameVote(req.body.gameId, req.body.socketId);
-  for (let player of gameState.players) getSocketFromSocketID(player.socketId)?.emit("endGamePrompt", req.body.contributor);
+  for (let player of gameState.players)
+    getSocketFromSocketID(player.socketId)?.emit("endGamePrompt", req.body.contributor);
   setTimeout(() => socketManager.getIo().emit("takeBackEndGameButton"), 15000);
   res.send({});
 });
