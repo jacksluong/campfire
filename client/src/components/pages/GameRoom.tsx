@@ -40,17 +40,21 @@ class GameRoom extends Component<Props, State> {
   }
 
   componentDidMount() {
+    socket.on("gameUpdate", (currentTurn: number) => {
+      // on game start
+      this.setState({
+        currentTurn: currentTurn
+      })
+    })
     socket.on("playersUpdate", (gameState: GameState) => {
       // on player join or leave
       this.setState({
         players: gameState.players,
         spectators: gameState.spectators,
-        currentStory: gameState.currentStory,
-        currentTurn: gameState.currentTurn,
-        currentInput: gameState.currentInput,
       });
     });
     socket.on("storyUpdate", (gameState: GameState) => {
+      // on input submit
       this.setState({
         currentStory: gameState.currentStory,
         currentTurn: gameState.currentTurn,
@@ -58,6 +62,7 @@ class GameRoom extends Component<Props, State> {
       });
     });
     socket.on("inputUpdate", (content: string) => {
+      // on type
       this.setState({
         currentInput: content,
       });

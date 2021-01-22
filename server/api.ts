@@ -144,6 +144,11 @@ router.post("/endGameRequest", (req, res) => {
 
 /** Voting */
 
+router.post("/voteReady", (req, res) => {
+  const newGameState = logic.processReadyVote(req.body.gameId, req.body.socketId);
+  if (newGameState.currentTurn !== -1) socketManager.emitToRoom("gameUpdate", newGameState, newGameState.currentTurn);
+})
+
 router.post("/voteEndGame", (req, res) => {
   const newGameState = logic.processEndgameVote(req.body.gameId, req.body.socketId);
   if (newGameState.gameOver) socketManager.emitToRoom("gameOver", newGameState);

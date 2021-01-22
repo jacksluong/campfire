@@ -117,11 +117,6 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
       health: health,
       wordFrequencies: new Map<string, number>(),
     });
-
-    // game start condition
-    if (gameState.currentTurn === -1 && startCondition(gameState)) {
-      gameState.currentTurn = Math.floor(Math.random() * gameState.players.length);
-    }
   }
 
   return gameState;
@@ -135,6 +130,7 @@ const disconnectPlayer = (socketId: string): GameState | undefined => {
       if (room.players[i].socketId == socketId) {
         if (room.currentTurn === -1) {
           // remove if game hasn't started
+          remove(room.readyVotes, i);
           room.players.splice(i, 1);
         } else {
           // take action if current turn or last active player was this person
@@ -150,12 +146,7 @@ const disconnectPlayer = (socketId: string): GameState | undefined => {
         return room;
       }
     }
-    for (let i = 0; i < room.spectators.length; i++) {
-      if (room.spectators[i] == socketId) {
-        room.spectators.splice(i, 1);
-        return room;
-      }
-    }
+    if (remove(room.spectators, socketId)) return room;
   }
   return;
 };
@@ -178,6 +169,26 @@ const addToStory = (gameId: string, text: string): GameState => {
   return gameState;
 };
 
+const processReadyVote = (gameId: string, socketId: string): GameState => {
+  // identify index of this player in given room
+  const gameState = rooms.find((room) => room.gameId == gameId)!; // assume game will be found
+  let playerIndex = -1;
+  for (let i = 0; i < gameState.players.length; i++) {
+    if (gameState.players[i].socketId == socketId) {
+      playerIndex = i;
+      break;
+    }
+  }
+  // add to endVotes if not already there, remove otherwise
+  if (gameState.readyVotes.includes(playerIndex)) remove(gameState.readyVotes, playerIndex);
+  else gameState.readyVotes.push(playerIndex);
+  // check start condition
+  if (gameState.currentTurn === -1 && startCondition(gameState)) {
+    gameState.currentTurn = Math.floor(Math.random() * gameState.players.length);
+  }
+  return gameState;
+};
+
 const processEndgameVote = (gameId: string, socketId: string): GameState => {
   // identify index of this player in given room
   const gameState = rooms.find((room) => room.gameId == gameId)!; // assume game will be found
@@ -189,7 +200,7 @@ const processEndgameVote = (gameId: string, socketId: string): GameState => {
     }
   }
   // add to endVotes if not already there
-  if (gameState.endVotes.find((index) => index == playerIndex) === undefined) {
+  if (!gameState.endVotes.includes(playerIndex)) {
     gameState.endVotes.push(playerIndex);
   }
   // check end condition
@@ -211,7 +222,7 @@ const processPublishVote = (gameId: string, socketId: string): GameState => {
     }
   }
   // add to publishVotes if not already there
-  if (gameState.publishVotes.find((index) => index === playerIndex) === undefined) {
+  if (!gameState.publishVotes.includes(playerIndex)) {
     gameState.publishVotes.push(playerIndex);
   }
   // check end condition
@@ -222,9 +233,8 @@ const processPublishVote = (gameId: string, socketId: string): GameState => {
 };
 
 const startCondition = (gameState: GameState): boolean => {
-  return gameState.players.length === 3;
-  // let minimum = gameState.isPrivate ? 2 : 3
-  // return gameState.players.length >= minimum && gameState.readyVotes.length > gameState.players.length / 2;
+  let minimum = gameState.isPrivate ? 2 : 3
+  return gameState.players.length >= minimum && gameState.readyVotes.length > gameState.players.length / 2;
 };
 
 const dispose = (room: GameState): void => {
@@ -233,6 +243,16 @@ const dispose = (room: GameState): void => {
     rooms.splice(rooms.indexOf(room), 1);
   }, 1000 * 60 * 60 * 1);
 };
+
+const remove = <T>(array: T[], element: T): boolean => {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] == element) {
+      array.splice(i, 1);
+      return true;
+    }
+  }
+  return false;
+}
 
 export default {
   createRoom,
@@ -245,6 +265,7 @@ export default {
   disconnectPlayer,
 
   addToStory,
+  processReadyVote,
   processEndgameVote,
   processPublishVote,
 };

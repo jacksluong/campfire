@@ -48,6 +48,7 @@ class GameInputField extends Component<Props, State> {
   handleReady = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const prevReady = this.state.ready;
     this.setState({ ready: !prevReady });
+    post("/api/voteReady", { gameId: this.props.gameId, socketId: socket.id }).then(() => this.setState({ ready: !prevReady }));
   }
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
