@@ -12,10 +12,8 @@ interface Props {
 interface State {
   ready: boolean;
   value: string;
-  redirect: string;
-  endGameButtonShow: boolean;
-  endGameDisabled: boolean;
-  requestedToEndGame: boolean;
+  endGameRequester: string;
+  voted: boolean
 }
 
 class GameInputField extends Component<Props, State> {
@@ -24,25 +22,15 @@ class GameInputField extends Component<Props, State> {
     this.state = {
       ready: false,
       value: "",
-      redirect: null,
-      endGameButtonShow: false,
-      endGameDisabled: false,
-      requestedToEndGame: false,
+      endGameRequester: "",
+      voted: false
     };
   }
 
   componentDidMount() {
-    socket.on("endGamePrompt", (userId: string) => {
-      if (!this.state.requestedToEndGame) {
-        this.setState({ endGameButtonShow: true });
-      }
-    });
+    socket.on("endGamePrompt", response => this.setState({ endGameRequester: response, voted: false }));
 
-    socket.on("takeBackEndGameButton", () => {
-      this.setState({
-        endGameButtonShow: false,
-      });
-    });
+    socket.on("endGameRequestCancel", () => this.setState({ value: "", endGameRequester: "" }));
   }
 
   handleReady = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -52,73 +40,50 @@ class GameInputField extends Component<Props, State> {
   }
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      value: event.target.value,
-    });
+    this.setState({ value: event.target.value });
     post("/api/inputChange", { gameId: this.props.gameId, content: event.target.value });
   };
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (this.state.value.toLowerCase() === "end") {
-      let body = {
-        socketId: socket.id,
-        gameId: this.props.gameId
-      };
-      this.setState({
-        value: "",
-        requestedToEndGame: true,
-      });
-      post("/api/endGameRequest", body).then();
+    if (this.state.endGameRequester.length > 0) {
+      // someone requested to end game
+      post("/api/voteEndGame", { gameId: this.props.gameId, socketId: socket.id, response: this.state.value.toLowerCase() }).then(() => {
+        this.setState({ voted: true });
+      })
     } else {
-      let body = {
-        content: this.state.value,
-        gameId: this.props.gameId
-      };
-      post("/api/inputSubmit", body).then((response) => {
-        this.setState({
-          value: "",
-        });
-      });
+      if (this.state.value.toLowerCase() === "end") {
+        post("/api/endGameRequest", { socketId: socket.id, gameId: this.props.gameId }).then(() => this.setState({ value: "" }));
+      } else {
+        post("/api/inputSubmit", { content: this.state.value, gameId: this.props.gameId }).then(() => this.setState({ value: "" }));
+      }
     }
   };
 
-  handleEndGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    post("/api/voteEndGame", { gameId: this.props.gameId, socketId: socket.id }).then(() => {
-      this.setState({ endGameDisabled: true });
-    })
-  };
-
   render() {
-    let placeholder = this.props.enabled ? "Craft your sentence here" : "";
-    let primary = !this.props.started ?
+    console.log(this.state.endGameRequester);
+    let placeholder: string;
+    let enabled = this.props.enabled;
+    if (this.state.endGameRequester.length > 0) {
+      placeholder = enabled ? "" : `${this.state.endGameRequester} requested to end the story here. If you agree, type "y" and press enter.`; // TODO: update handleSubmit with this
+      enabled = !enabled && !this.state.voted; // person's turn cannot respond to prompt, everyone else can
+    } else {
+      placeholder = enabled ? "Craft your sentence here" : "It's someone else's turn right now!";
+    }
+    let display = !this.props.started ?
       <button className={"GameInputField primary ready" + (this.state.ready ? " clicked" : "")} onClick={this.handleReady}>READY</button> :
-      (<>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            maxLength={100}
-            placeholder={placeholder}
-            value={this.state.value}
-            onChange={this.handleChange}
-            className="GameInputField primary input"
-            disabled={!this.props.enabled}
-          />
-        </form>
-
-        {this.state.endGameButtonShow ? (
-          <button
-            className="GameInputField-button u-pointer enabled"
-            onClick={this.handleEndGame}
-            disabled={this.state.endGameDisabled}
-          >
-            End Game
-          </button>
-        ) : (
-          ""
-        )}
-      </>);
-    return primary;
+      <form onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          maxLength={100}
+          placeholder={placeholder}
+          value={this.state.value}
+          onChange={this.handleChange}
+          className="GameInputField primary input"
+          disabled={!enabled}
+        />
+      </form>;
+    return display;
   }
 }
 

@@ -11,16 +11,15 @@ export interface GameState {
   // Users
   gameId: string;
   players: Player[];
-  spectators: string[]; // socket ids of players who joined
+  spectators: string[]; // socket ids
 
   // Story
   currentStory: string;
   currentTurn: number;
-  currentInput: string;
 
   // Voting
   readyVotes: number[]; // indices of players
-  endVotes: number[];
+  endVotes: (boolean | undefined)[]; // haven't voted, voted no, voted yes
   publishVotes: number[];
 
   // Status
@@ -43,7 +42,6 @@ const createRoom = (isPrivate: boolean): GameState => {
 
     currentStory: "",
     currentTurn: -1,
-    currentInput: "",
 
     readyVotes: [],
     endVotes: [],
@@ -117,6 +115,7 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
       health: health,
       wordFrequencies: new Map<string, number>(),
     });
+    gameState.endVotes.push(undefined);
   }
 
   return gameState;
@@ -158,7 +157,6 @@ const getConnectedPlayers = (room: GameState): Player[] => {
 /** Gamewide Actions */
 
 const addToStory = (gameId: string, text: string): GameState => {
-  console.log("adding to gameId", gameId, " with rooms list as", rooms);
   const gameState = getRoomById(gameId)!;
 
   gameState.currentStory += text;
@@ -181,7 +179,7 @@ const processReadyVote = (gameId: string, socketId: string): GameState => {
   }
   // add to endVotes if not already there, remove otherwise
   if (gameState.readyVotes.includes(playerIndex)) remove(gameState.readyVotes, playerIndex);
-  else gameState.readyVotes.push(playerIndex);
+  else gameState.readyVotes.push(playerIndex); // TODO: don't use playerIndex since that can change if people disconnect
   // check start condition
   if (gameState.currentTurn === -1 && startCondition(gameState)) {
     gameState.currentTurn = Math.floor(Math.random() * gameState.players.length);
@@ -189,7 +187,7 @@ const processReadyVote = (gameId: string, socketId: string): GameState => {
   return gameState;
 };
 
-const processEndgameVote = (gameId: string, socketId: string): GameState => {
+const processEndgameVote = (gameId: string, socketId: string, response: boolean): GameState => {
   // identify index of this player in given room
   const gameState = rooms.find((room) => room.gameId == gameId)!; // assume game will be found
   let playerIndex = -1;
@@ -199,12 +197,10 @@ const processEndgameVote = (gameId: string, socketId: string): GameState => {
       break;
     }
   }
-  // add to endVotes if not already there
-  if (!gameState.endVotes.includes(playerIndex)) {
-    gameState.endVotes.push(playerIndex);
-  }
+  // set player's vote in endVotes
+  gameState.endVotes[playerIndex] = response;
   // check end condition
-  if (gameState.endVotes.length >= Math.ceil(getConnectedPlayers(gameState).length / 2)) {
+  if (gameState.endVotes.filter(vote => vote).length >= Math.ceil(getConnectedPlayers(gameState).length / 2)) {
     gameState.gameOver = true;
     dispose(gameState);
   }
@@ -268,4 +264,6 @@ export default {
   processReadyVote,
   processEndgameVote,
   processPublishVote,
+
+  getConnectedPlayers
 };

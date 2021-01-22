@@ -66,10 +66,7 @@ router.post("/message", (req, res) => {
   const message: Message = { sender: senderName, content: req.body.content };
   ChatRoom.messages.push(message);
   console.log(`New message by ${senderName}: ${req.body.content}`);
-  for (let player of room.players)
-    socketManager.getSocketFromSocketID(player.socketId)?.emit("newMessage", message);
-  for (let spectator of room.spectators)
-    socketManager.getSocketFromSocketID(spectator)?.emit("newMessage", message);
+  socketManager.emitToRoom("newMessage", room, message);
   res.send({});
 });
 
@@ -131,14 +128,21 @@ router.post("/inputSubmit", (req, res) => {
 });
 
 router.post("/endGameRequest", (req, res) => {
-  const gameState = logic.processEndgameVote(req.body.gameId, req.body.socketId);
-  for (let player of gameState.players) {
+  const newGameState = logic.processEndgameVote(req.body.gameId, req.body.socketId, true);
+  const requester = newGameState.players.find(player => player.socketId == req.body.socketId)!;
+  newGameState.players.forEach(player => {
     const socket = socketManager.getSocketFromSocketID(player.socketId);
     if (socket) {
-      socket.emit("endGamePrompt", req.body.contributor);
-      setTimeout(() => socket.emit("takeBackEndGameButton"), 15000);
+      socket.emit("endGamePrompt", requester.name);
+      setTimeout(() => {
+        if (newGameState.endVotes.filter(vote => vote !== undefined).length > 0) {
+          // if end game request not already canceled by votes for no
+          socket.emit("endGameRequestCancel");
+          newGameState.endVotes = newGameState.endVotes.map(() => undefined);
+        }
+      }, 15000);
     }
-  }
+  });
   res.send({});
 });
 
@@ -150,8 +154,13 @@ router.post("/voteReady", (req, res) => {
 })
 
 router.post("/voteEndGame", (req, res) => {
-  const newGameState = logic.processEndgameVote(req.body.gameId, req.body.socketId);
-  if (newGameState.gameOver) socketManager.emitToRoom("gameOver", newGameState);
+  const newGameState = logic.processEndgameVote(req.body.gameId, req.body.socketId, req.body.response === "y");
+  if (newGameState.gameOver) {
+    socketManager.emitToRoom("gameOver", newGameState);
+  } else if (newGameState.endVotes.filter(vote => vote === false).length > logic.getConnectedPlayers(newGameState).length / 2) {
+    socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
+    newGameState.endVotes = newGameState.endVotes.map(() => undefined);
+  }
   res.send({});
 });
 
