@@ -1,11 +1,11 @@
-import { RouteComponentProps } from "@reach/router";
+import { navigate, RouteComponentProps } from "@reach/router";
 import React, { Component } from "react";
 import Navigation from "../modules/End/Navigation";
 import Passage from "../modules/End/Passage";
 import "../modules/End/End.scss";
 import BottomPanel from "../modules/End/BottomPanel";
 import { socket } from "../../../../client/src/client-socket";
-import { post } from "../../../src/utilities";
+import { get, post } from "../../../src/utilities";
 import Player from "../../../../shared/Player";
 
 interface Props extends RouteComponentProps {
@@ -13,7 +13,7 @@ interface Props extends RouteComponentProps {
 }
 interface State {
   name: string;
-  contributors: Player[];
+  contributors: string[];
   content: string;
   usersThatLiked: string[];
   keywords: string[];
@@ -33,15 +33,23 @@ class End extends Component<Props, State> {
     };
   }
   componentDidMount() {
-    socket.emit("requestGameState", this.props.gameId); // TODO: send game id when multiple rooms are a feature
-    socket.on("sendGameState", (gameState) => {
-      this.setState({
-        name: `TITLE`,
-        contributors: gameState.players,
-        content: gameState.currentStory,
-        usersThatLiked: ["USERS THAT LIKE", "TTT", "JJJ", "BBB"],
-        keywords: ["KEYWORDS", "I", "LIKE", "CHEESE"],
-      });
+    get("/api/requestGameState", { gameId: this.props.gameId }).then(gameState => {
+      if (!gameState.players) {
+        console.log(`gameId ${this.props.gameId} doesn't exist`);
+        navigate("/");
+      } else {
+        let guests = gameState.players.find(player => player.userId == "guest") ? "guests" : ""
+        this.setState({
+          name: `TITLE`,
+          contributors: gameState.players
+          .filter((player) => player.userId != "guest")
+          .map((player) => player.name)
+          .concat(guests),
+          content: gameState.currentStory,
+          usersThatLiked: ["USERS THAT LIKE", "TTT", "JJJ", "BBB"],
+          keywords: ["KEYWORDS", "I", "LIKE", "CHEESE"],
+        });
+      }
     });
   }
   render() {

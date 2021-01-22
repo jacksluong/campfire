@@ -1,23 +1,13 @@
 import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
-import {
-  findOpenRoom,
-  addPlayer,
-  disconnectPlayer,
-  processEndgameVote,
-  getRoomById,
-  GameState,
-} from "./logic";
+import logic, { GameState } from "./logic";
 import UserModel from "./models/User";
 
-// const logic = require("./logic");
-// const gameState: GameState = logic.gameState;
 let io: Server;
 
 const userToSocketMap: Map<string, Socket> = new Map<string, Socket>(); // maps user ID to socket object
 const socketToUserMap: Map<string, User> = new Map<string, User>(); // maps socket ID to user object
-const ROOM_CAPACITY = 8;
 
 export const getSocketFromUserID = (userid: string) => userToSocketMap.get(userid);
 export const getUserFromSocketID = (socketid: string) => socketToUserMap.get(socketid);
@@ -51,32 +41,16 @@ export const init = (server: http.Server): void => {
         removeUser(user, socket);
       }
 
-      const gameState = disconnectPlayer(socket.id);
+      const gameState = logic.disconnectPlayer(socket.id);
       if (gameState) emitToRoom("playersUpdate", gameState);
     });
 
-    // NOTE: spent a lot of time trying to move this one into api but it does not go well
     socket.on("join", (info: { userId: string; gameId: string }) => {
       UserModel.findById(info.userId).then((user: User) => {
-        const gameState = addPlayer(info.gameId, user, socket.id);
+        const gameState = logic.addPlayer(info.gameId, user, socket.id);
         if (!gameState) socket.emit("redirectHome");
         else emitToRoom("playersUpdate", gameState);
       });
-    });
-
-    // When players end game
-    // TODO: can probably move this over to api
-    socket.on("endGameConfirm", (gameId: string) => {
-      const gameState = processEndgameVote(gameId, socket.id);
-      if (gameState.gameOver) emitToRoom("gameOver", gameState);
-    });
-
-    // send GameState to End Page for render
-    // TODO: can probably move this to api as well
-    socket.on("requestGameState", (gameId: string) => {
-      const gameState = getRoomById(gameId);
-      if (!gameState) socket.emit("redirectHome");
-      socket.emit("sendGameState", gameState);
     });
   });
 };
@@ -89,6 +63,7 @@ const emitToRoom = (message: string, room: GameState): void => {
 export const getIo = () => io;
 
 export default {
+  emitToRoom,
   getIo,
   init,
   removeUser,

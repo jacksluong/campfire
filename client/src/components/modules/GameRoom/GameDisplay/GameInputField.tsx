@@ -13,6 +13,7 @@ interface State {
   value: string;
   redirect: string;
   endGameButtonShow: boolean;
+  endGameDisabled: boolean;
   requestedToEndGame: boolean;
 }
 
@@ -23,6 +24,7 @@ class GameInputField extends Component<Props, State> {
       value: "",
       redirect: null,
       endGameButtonShow: false,
+      endGameDisabled: false,
       requestedToEndGame: false,
     };
   }
@@ -81,8 +83,9 @@ class GameInputField extends Component<Props, State> {
   };
 
   handleEndGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    socket.emit("endGameConfirm", this.props.gameId);
+    post("/api/voteEndGame", { gameId: this.props.gameId, socketId: socket.id }).then(() => {
+      this.setState({ endGameDisabled: true });
+    })
   };
 
   render() {
@@ -102,10 +105,9 @@ class GameInputField extends Component<Props, State> {
 
         {this.state.endGameButtonShow ? (
           <button
-            type="submit"
             className="GameInputField-button u-pointer enabled"
             onClick={this.handleEndGame}
-            // disabled={this.state.endGameDisabled}
+            disabled={this.state.endGameDisabled}
           >
             End Game
           </button>

@@ -57,8 +57,15 @@ const createRoom = (isPrivate: boolean): GameState => {
   return newGame;
 };
 
-const findOpenRoom = (): string => {
-  let room = rooms.find(room => !room.gameOver && room.currentTurn === -1 && !room.isPrivate);
+const matchmake = (userId: string = ""): string => {
+  // if a user was in a game that's still in progress, return them there
+  if (userId?.length > 0) {
+    let room = getRoomByPlayer(userId);
+    if (room) return room.gameId;
+  }
+
+  // otherwise find next open room
+  let room = rooms.find((room) => !room.gameOver && room.currentTurn === -1 && !room.isPrivate);
   return (room ?? createRoom(false)).gameId;
 };
 
@@ -116,7 +123,7 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
       gameState.currentTurn = Math.floor(Math.random() * gameState.players.length);
     }
   }
-  
+
   return gameState;
 };
 
@@ -226,19 +233,19 @@ const dispose = (room: GameState): void => {
   setTimeout(() => {
     rooms.splice(rooms.indexOf(room), 1);
   }, 1000 * 60 * 60 * 1);
-}
+};
 
-export { 
-  createRoom, 
-  findOpenRoom, 
+export default {
+  createRoom,
+  matchmake,
 
-  getRoomById, 
-  getRoomByPlayer, 
-  
-  addPlayer, 
+  getRoomById,
+  getRoomByPlayer,
+
+  addPlayer,
   disconnectPlayer,
 
-  addToStory, 
-  processEndgameVote, 
-  processPublishVote 
+  addToStory,
+  processEndgameVote,
+  processPublishVote,
 };

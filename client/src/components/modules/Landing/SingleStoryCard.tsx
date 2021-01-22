@@ -27,15 +27,15 @@ class SingleStoryCard extends Component<Props, State> {
 
   render() {
     let contributorsElement = null;
-    contributorsElement = this.props.contributors.map((contributor) => (
-      <span>{contributor + ", "}</span>
+    contributorsElement = this.props.contributors.map((contributor, i) => (
+      <span key={i}>{contributor + ", "}</span>
     ));
     contributorsElement.pop();
     contributorsElement.push(
       <span>and {this.props.contributors[this.props.contributors.length - 1]}</span>
     );
     let keywordsElement = null;
-    keywordsElement = this.props.keywords.map((keyword) => <span>{keyword + ", "}</span>);
+    keywordsElement = this.props.keywords.map((keyword, i) => <span key={i}>{keyword + ", "}</span>);
     keywordsElement.pop();
     keywordsElement.push(<span> {this.props.keywords[this.props.keywords.length - 1]}</span>);
 

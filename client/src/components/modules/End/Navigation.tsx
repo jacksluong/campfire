@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { RouteComponentProps, Link } from "@reach/router";
+import { RouteComponentProps, Link, navigate } from "@reach/router";
 import Player from "../../../../../shared/Player";
 import { get } from "../../../utilities";
 import { socket } from "../../../client-socket";
@@ -16,15 +16,20 @@ class Navigation extends Component<Props & RouteComponentProps, State> {
     super(props);
   }
 
+  handlePlayAgain = (): void => {
+    get("/api/matchmaking").then(response => {
+      console.log("play again! matched me to", response.gameId);
+      navigate(`/gameroom/${response.gameId}`);
+    });
+  }
+
   render() {
     return (
       <div className="Navigation-container">
         <Link to="/">
           <span className="Navigation-link">Home</span>
         </Link>
-        <Link to="/">
-          <span className="Navigation-link">Play Again</span>
-        </Link>
+        <span onClick={this.handlePlayAgain} className="Navigation-link">Play Again</span>
       </div>
     );
   }
