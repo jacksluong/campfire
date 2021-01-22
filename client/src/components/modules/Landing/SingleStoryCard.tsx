@@ -15,6 +15,7 @@ interface Props {
 }
 interface State {
   likes: number;
+  hasLiked: boolean;
 }
 
 class SingleStoryCard extends Component<Props, State> {
@@ -22,16 +23,19 @@ class SingleStoryCard extends Component<Props, State> {
     super(props);
     this.state = {
       likes: this.props.usersThatLiked.length,
+      hasLiked: this.props.usersThatLiked.includes(this.props.userId),
     };
   }
   componentDidMount() {}
   likeFunction = () => {
     //Like function
     const body = { storyId: this.props.storyId, userId: this.props.userId };
+    // console.log(this.state.hasLiked);
     if (this.props.userId) {
       post("/api/likeStory", body).then((response) => {
         this.setState((prevState) => ({
           likes: response.likes,
+          hasLiked: !response.hasLiked,
         }));
       });
     } else {
@@ -69,6 +73,7 @@ class SingleStoryCard extends Component<Props, State> {
           numLikes={this.state.likes}
           userId={this.props.userId}
           onClick={this.likeFunction}
+          hasLiked={this.state.hasLiked}
         />
         <CommentsBlock />
       </div>

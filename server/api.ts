@@ -52,14 +52,15 @@ router.post("/likeStory", (req, res) => {
   StoryModel.findById(storyId).then((story: Story) => {
     //copy
     let usersThatLiked = story.usersThatLiked.slice();
-    if (!usersThatLiked.includes(userId)) {
+    let hasLiked = usersThatLiked.includes(userId);
+    if (!hasLiked) {
       usersThatLiked.push(userId);
     } else {
       usersThatLiked.splice(usersThatLiked.indexOf(userId), 1);
     }
     story.usersThatLiked = usersThatLiked;
     story.save();
-    res.send({ likes: story.usersThatLiked.length });
+    res.send({ likes: story.usersThatLiked.length, hasLiked: !hasLiked });
   });
   //todo
   //1. get the array of users
