@@ -14,7 +14,6 @@ interface Props {
   userId: string;
 }
 interface State {
-  liked: boolean;
   likes: number;
 }
 
@@ -22,33 +21,18 @@ class SingleStoryCard extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      liked: this.props.usersThatLiked.includes(this.props.userId),
       likes: this.props.usersThatLiked.length,
     };
   }
   componentDidMount() {}
   likeFunction = () => {
     //Like function
-    console.log("like");
     const body = { storyId: this.props.storyId, userId: this.props.userId };
-
     if (this.props.userId) {
       post("/api/likeStory", body).then((response) => {
-        //Liking the post on the backend
-        console.log(this.state.liked);
-        //lets say the user already liked the post
-        if (this.state.liked) {
-          this.setState((prevState) => ({
-            liked: !prevState.liked,
-            likes: prevState.likes - 1,
-          }));
-          //lets say the user didnt like the post yet
-        } else {
-          this.setState((prevState) => ({
-            liked: !prevState.liked,
-            likes: prevState.likes + 1,
-          }));
-        }
+        this.setState((prevState) => ({
+          likes: response.likes,
+        }));
       });
     } else {
       console.log(`ID: ${this.props.userId} not logged in`);
