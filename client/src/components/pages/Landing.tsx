@@ -1,27 +1,26 @@
-import { RouteComponentProps } from "@reach/router";
-import { DefaultTransporter } from "google-auth-library";
+import { navigate, RouteComponentProps } from "@reach/router";
 import React, { Component } from "react";
-import { Link } from "@reach/router";
-import GoogleLogin, {
-  GoogleLoginResponse,
-  GoogleLoginResponseOffline,
-  GoogleLogout,
-} from "react-google-login";
 
 import Main from "../modules/Landing/Main";
 import NavBar from "../modules/Landing/NavBar";
-import Story from "../../../../shared/Story";
-import { get } from "../../utilities";
 
 type Props = {
   userId: string;
-  handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
-  handleLogout: () => void;
+  handleLogin: any;
+  handleLogout: any;
 };
 
 class Landing extends Component<Props & RouteComponentProps, {}> {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    const locationState: any = this.props.location?.state;
+    if (locationState?.message && locationState?.message != "") {
+      setTimeout(() => alert(locationState.message), 1500);
+      navigate("/", { state: { message: "" } });
+    }
   }
 
   render() {

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { navigate, Router } from "@reach/router";
 import { get, post } from "../utilities";
 import NotFound from "./pages/NotFound";
-import Skeleton from "./pages/Skeleton";
 import { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login";
 import { socket } from "../client-socket";
 import User from "../../../shared/User";
@@ -60,14 +59,14 @@ class App extends Component<{}, State> {
   render() {
     return (
       <Router>
-        <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
-        <Gallery path="/gallery" userId={this.state.userId} />
         <Landing
           path="/"
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         />
+        <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
+        <Gallery path="/gallery" userId={this.state.userId} />
         <Profile path="/profile" />
         <End path="/end/:gameId" />
         <NotFound default={true} />

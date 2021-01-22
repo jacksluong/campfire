@@ -1,17 +1,14 @@
 import React, { Component } from "react";
 import "./Landing.css";
 import { RouteComponentProps, Link } from "@reach/router";
-import GoogleLogin, {
-  GoogleLoginResponse,
-  GoogleLoginResponseOffline,
-} from "react-google-login";
+import GoogleLogin from "react-google-login";
 import ProfileButton from "./ProfileButton";
 const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
 
 type Props = {
   userId: string;
-  handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
-  handleLogout: () => void;
+  handleLogin: any;
+  handleLogout: any;
 };
 
 type State = {

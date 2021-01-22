@@ -130,6 +130,7 @@ const disconnectPlayer = (socketId: string): GameState | undefined => {
         if (room.currentTurn === -1) {
           // remove if game hasn't started
           remove(room.readyVotes, i);
+          room.readyVotes = room.readyVotes.map(playerIndex => playerIndex > i ? playerIndex - 1 : playerIndex);
           room.players.splice(i, 1);
         } else {
           // take action if current turn or last active player was this person
@@ -179,7 +180,7 @@ const processReadyVote = (gameId: string, socketId: string): GameState => {
   }
   // add to endVotes if not already there, remove otherwise
   if (gameState.readyVotes.includes(playerIndex)) remove(gameState.readyVotes, playerIndex);
-  else gameState.readyVotes.push(playerIndex); // TODO: don't use playerIndex since that can change if people disconnect
+  else gameState.readyVotes.push(playerIndex);
   // check start condition
   if (gameState.currentTurn === -1 && startCondition(gameState)) {
     gameState.currentTurn = Math.floor(Math.random() * gameState.players.length);
@@ -230,7 +231,7 @@ const processPublishVote = (gameId: string, socketId: string): GameState => {
 
 const startCondition = (gameState: GameState): boolean => {
   let minimum = gameState.isPrivate ? 2 : 3
-  return gameState.players.length >= minimum && gameState.readyVotes.length > gameState.players.length / 2;
+  return gameState.players.length >= minimum && gameState.readyVotes.length === gameState.players.length;
 };
 
 const dispose = (room: GameState): void => {
@@ -259,11 +260,11 @@ export default {
 
   addPlayer,
   disconnectPlayer,
+  getConnectedPlayers,
 
   addToStory,
   processReadyVote,
   processEndgameVote,
-  processPublishVote,
+  processPublishVote
 
-  getConnectedPlayers
 };

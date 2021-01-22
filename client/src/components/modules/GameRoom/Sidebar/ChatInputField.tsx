@@ -4,6 +4,7 @@ import { get, post } from "../../../../../src/utilities";
 import { socket } from "../../../../client-socket";
 
 interface Props {
+  resetTimeout: () => void;
   gameId: string;
 }
 
@@ -22,7 +23,9 @@ class ChatInputField extends Component<Props, State> {
     this.setState({
       value: event.target.value,
     });
+    this.props.resetTimeout();
   };
+
   handleSubmit = (event) => {
     event.preventDefault();
     const body = { gameId: this.props.gameId, socketId: socket.id, content: this.state.value };
@@ -30,6 +33,7 @@ class ChatInputField extends Component<Props, State> {
     this.setState({
       value: "",
     });
+    this.props.resetTimeout();
   };
 
   render() {

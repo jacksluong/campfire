@@ -9,6 +9,7 @@ import SingleMessage from "./SingleMessage";
 import Message from "../../../../../../shared/Message";
 import { socket } from "../../../../client-socket";
 interface Props {
+  resetTimeout: () => void;
   gameId: string;
   players: Player[];
   spectators: string[];
@@ -48,7 +49,7 @@ class Chat extends Component<Props, State> {
             <SingleMessage message={m} key={i} />
           ))}
         </div>
-        <ChatInputField gameId={this.props.gameId} />
+        <ChatInputField resetTimeout={this.props.resetTimeout} gameId={this.props.gameId} />
       </div>
     );
   }

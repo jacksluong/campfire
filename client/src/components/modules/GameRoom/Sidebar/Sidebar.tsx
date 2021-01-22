@@ -5,8 +5,10 @@ import Player from "../../../../../../shared/Player";
 import "./Sidebar.scss";
 
 interface Props {
+  resetTimeout: () => void;
   gameId: string;
   players: Player[];
+  readyPlayers: number[];
   currentTurn: number;
   spectators: string[];
 }
@@ -24,10 +26,12 @@ class Sidebar extends Component<Props, State> {
       <div className="Sidebar-container">
         <PlayerDisplay
           players={this.props.players}
+          readyPlayers={this.props.readyPlayers}
           spectators={this.props.spectators.length}
           currentTurn={this.props.currentTurn}
         />
         <Chat
+          resetTimeout={this.props.resetTimeout}
           gameId={this.props.gameId}
           players={this.props.players}
           spectators={this.props.spectators}

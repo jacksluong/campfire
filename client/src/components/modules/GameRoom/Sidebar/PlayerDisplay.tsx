@@ -6,6 +6,7 @@ import PlayerRow from "./PlayerRow";
 import "./PlayerDisplay.scss";
 interface Props {
   players: Player[];
+  readyPlayers: number[];
   currentTurn: number;
   spectators: number;
 }

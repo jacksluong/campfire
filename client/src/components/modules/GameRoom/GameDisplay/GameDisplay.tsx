@@ -7,6 +7,7 @@ import { socket } from "../../../../client-socket";
 import "./GameDisplay.scss";
 
 interface Props {
+  resetTimeout: () => void;
   players: Player[];
   currentStory: string;
   currentTurn: number;
@@ -25,16 +26,23 @@ class GameDisplay extends Component<Props, State> {
 
   render() {
     let input: any = "";
-    if (this.props.players.find(player => player.socketId == socket.id || player.userId == this.props.userId)) {
-      input = <GameInputField
-        gameId={this.props.gameId}
-        userId={this.props.userId}
-        started={this.props.currentTurn !== -1}
-        enabled={
-          this.props.currentTurn !== -1 &&
-          this.props.players[this.props.currentTurn].socketId === socket.id
-        }
-      />
+    if (
+      this.props.players.find(
+        (player) => player.socketId == socket.id || player.userId == this.props.userId
+      )
+    ) {
+      input = (
+        <GameInputField
+          resetTimeout={this.props.resetTimeout}
+          gameId={this.props.gameId}
+          userId={this.props.userId}
+          started={this.props.currentTurn !== -1}
+          enabled={
+            this.props.currentTurn !== -1 &&
+            this.props.players[this.props.currentTurn].socketId === socket.id
+          }
+        />
+      );
     }
     return (
       <div className="GameDisplay-container">
