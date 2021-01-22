@@ -71,6 +71,7 @@
     position: relative;
     background-color: #00fa50;
     color: #474747;
+    cursor: pointer;
     box-shadow: 0 5px 3px #1c1c1c;
     animation: floating 1.25s infinite;
 
@@ -89,6 +90,20 @@
       box-shadow: 0 2px 2px #1c1c1c;
       animation: none;
       background-color: #00db46;
+    }
+  }
+
+  &.input {
+    width: 75%;
+    border-radius: 50px;
+    height: 30px;
+    padding: 0px 10px;
+    border: none;
+    background-color: white;
+    transition: 0.3s;
+
+    &:disabled {
+      background-color: lightgray;
     }
   }
 }

@@ -90,6 +90,7 @@ class GameInputField extends Component<Props, State> {
   };
 
   render() {
+    let placeholder = this.props.enabled ? "Craft your sentence here" : "";
     let primary = !this.props.started ?
       <button className={"GameInputField primary ready" + (this.state.ready ? " clicked" : "")} onClick={this.handleReady}>READY</button> :
       (<>
@@ -97,10 +98,10 @@ class GameInputField extends Component<Props, State> {
           <input
             type="text"
             maxLength={100}
-            placeholder="Craft Your Sentence"
+            placeholder={placeholder}
             value={this.state.value}
             onChange={this.handleChange}
-            className="GameInputField-textbox"
+            className="GameInputField primary input"
             disabled={!this.props.enabled}
           />
         </form>
