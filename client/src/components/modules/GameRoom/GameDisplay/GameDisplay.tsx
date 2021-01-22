@@ -29,6 +29,7 @@ class GameDisplay extends Component<Props, State> {
       input = <GameInputField
         gameId={this.props.gameId}
         userId={this.props.userId}
+        started={this.props.currentTurn !== -1}
         enabled={
           this.props.currentTurn !== -1 &&
           this.props.players[this.props.currentTurn].socketId === socket.id

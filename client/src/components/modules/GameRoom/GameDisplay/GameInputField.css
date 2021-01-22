@@ -45,50 +45,44 @@
   cursor: pointer;
 }
 
-.GameInputField {
-  
-  &.primary {
-    border-radius: 50px; // NOTE: this should be more a percentage of the height than a specific value
-    outline: none;
+.GameInputField.primary {
+  border-radius: 50px;
+  outline: none;
+}
+.GameInputField.ready {
+  position: relative;
+  background-color: #00fa50;
+  color: #474747;
+  box-shadow: 0 5px 3px #1c1c1c;
+  animation: floating 1.25s infinite;
+}
+@keyframes floating {
+  0% {
+    top: 0px;
+    box-shadow: 0px 5px 3px #1c1c1c;
   }
-  
-  &.ready {
-    @keyframes floating {
-      0% {
-        top: 0px;
-        box-shadow: 0px 5px 3px #1c1c1c;
-      }
-      50% {
-        top: -3px;
-        box-shadow: 0px 7px 4px #1c1c1c;
-      }
-      100% {
-        top: 0px;
-        box-shadow: 0px 5px 3px #1c1c1c;
-      }
-    }
-
-    position: relative;
-    background-color: #00fa50;
-    color: #474747;
-    box-shadow: 0 5px 3px #1c1c1c;
-    animation: floating 1.25s infinite;
-
-    &:hover {
-      box-shadow: 0 4px 2px #1c1c1c;
-      animation: none;
-      transition: 0.1s;
-    }
-
-    &:active {
-      box-shadow: 0 2px 2px #1c1c1c;
-      animation: none;
-    }
-
-    &.clicked {
-      box-shadow: 0 2px 2px #1c1c1c;
-      animation: none;
-      background-color: #00db46;
-    }
+  50% {
+    top: -3px;
+    box-shadow: 0px 7px 4px #1c1c1c;
+  }
+  100% {
+    top: 0px;
+    box-shadow: 0px 5px 3px #1c1c1c;
   }
 }
+.GameInputField.ready:hover {
+  box-shadow: 0 4px 2px #1c1c1c;
+  animation: none;
+  transition: 0.1s;
+}
+.GameInputField.ready:active {
+  box-shadow: 0 2px 2px #1c1c1c;
+  animation: none;
+}
+.GameInputField.ready.clicked {
+  box-shadow: 0 2px 2px #1c1c1c;
+  animation: none;
+  background-color: #00db46;
+}
+
+/*# sourceMappingURL=GameInputField.css.map */

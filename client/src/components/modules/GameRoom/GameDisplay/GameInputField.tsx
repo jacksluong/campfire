@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { post } from "../../../../utilities";
-import "./GameInputField.scss";
+import "./GameInputField.css";
 import { socket } from "../../../../client-socket";
-import { navigate } from "@reach/router";
 
 interface Props {
   gameId: string;
   userId: string;
+  started: boolean;
   enabled: boolean;
 }
 interface State {
+  ready: boolean;
   value: string;
   redirect: string;
   endGameButtonShow: boolean;
@@ -21,6 +22,7 @@ class GameInputField extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      ready: false,
       value: "",
       redirect: null,
       endGameButtonShow: false,
@@ -41,6 +43,11 @@ class GameInputField extends Component<Props, State> {
         endGameButtonShow: false,
       });
     });
+  }
+
+  handleReady = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const prevReady = this.state.ready;
+    this.setState({ ready: !prevReady });
   }
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,8 +89,9 @@ class GameInputField extends Component<Props, State> {
   };
 
   render() {
-    return (
-      <div>
+    let primary = !this.props.started ?
+      <button className={"GameInputField primary ready" + (this.state.ready ? " clicked" : "")} onClick={this.handleReady}>READY</button> :
+      (<>
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
@@ -107,8 +115,8 @@ class GameInputField extends Component<Props, State> {
         ) : (
           ""
         )}
-      </div>
-    );
+      </>);
+    return primary;
   }
 }
 
