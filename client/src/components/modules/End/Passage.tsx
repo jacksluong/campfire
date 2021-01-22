@@ -16,8 +16,8 @@ class Passage extends Component<Props, {}> {
         <h2>Story</h2>
         {this.props.content}
         <h3>Contributors</h3>
-        {this.props.contributors.map((name) => (
-          <div>{name}</div>
+        {this.props.contributors.map((name, i) => (
+          <div key={i}>{name}</div>
         ))}
       </div>
     );

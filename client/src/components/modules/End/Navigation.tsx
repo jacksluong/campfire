@@ -26,8 +26,8 @@ class Navigation extends Component<Props & RouteComponentProps, State> {
   render() {
     return (
       <div className="Navigation-container">
-        <Link to="/">
-          <span className="Navigation-link">Home</span>
+        <Link to="/" className="Navigation-link">
+          Home
         </Link>
         <span onClick={this.handlePlayAgain} className="Navigation-link">Play Again</span>
       </div>

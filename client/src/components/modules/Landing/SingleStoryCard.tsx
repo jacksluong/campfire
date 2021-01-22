@@ -2,42 +2,59 @@ import React, { Component } from "react";
 import Story from "../../../../../shared/Story";
 import StoryInteractionBar from "./StoryInteractionBar";
 import CommentsBlock from "./CommentsBlock";
+import { post } from "../../../utilities";
 interface Props {
   name: string;
   contributors: string[];
   content: string;
   usersThatLiked: string[];
   keywords: string[];
+  storyId: string;
 
   userId: string;
 }
 interface State {
-  liked: boolean;
+  likes: number;
+  hasLiked: boolean;
 }
 
 class SingleStoryCard extends Component<Props, State> {
   constructor(props) {
     super(props);
+    this.state = {
+      likes: this.props.usersThatLiked.length,
+      hasLiked: this.props.usersThatLiked.includes(this.props.userId),
+    };
   }
+  componentDidMount() {}
   likeFunction = () => {
     //Like function
-    console.log("like");
+    const body = { storyId: this.props.storyId, userId: this.props.userId };
+    // console.log(this.state.hasLiked);
+    if (this.props.userId) {
+      post("/api/likeStory", body).then((response) => {
+        this.setState({
+          likes: response.likes,
+          hasLiked: !response.hasLiked,
+        });
+      });
+    } else {
+      console.log(`ID: ${this.props.userId} not logged in`);
+    }
+
+    //console.log(this.props.storyId);
     //console.log(this.props.userId);
   };
 
   render() {
     let contributorsElement = null;
-    contributorsElement = this.props.contributors.map((contributor, i) => (
-      <span key={i}>{contributor + ", "}</span>
-    ));
+    contributorsElement = this.props.contributors.map((contributor, i) => <span key={i}>{contributor + ", "}</span>);
     contributorsElement.pop();
-    contributorsElement.push(
-      <span>and {this.props.contributors[this.props.contributors.length - 1]}</span>
-    );
-    let keywordsElement = null;
-    keywordsElement = this.props.keywords.map((keyword, i) => <span key={i}>{keyword + ", "}</span>);
+    contributorsElement.push(<span key={this.props.contributors.length}>and {this.props.contributors[this.props.contributors.length - 1]}</span>);
+
+    let keywordsElement = this.props.keywords.map((keyword, i) => <span key={i}>{keyword + ", "}</span>);
     keywordsElement.pop();
-    keywordsElement.push(<span> {this.props.keywords[this.props.keywords.length - 1]}</span>);
+    keywordsElement.push(<span key={this.props.keywords.length}>{this.props.keywords[this.props.keywords.length - 1]}</span>);
 
     return (
       <div className="SingleStoryCard-container">
@@ -49,9 +66,10 @@ class SingleStoryCard extends Component<Props, State> {
         <div className="SingleStoryCard-Content">{this.props.content}</div>
         <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
         <StoryInteractionBar
-          numLikes={this.props.usersThatLiked.length}
+          numLikes={this.state.likes}
           userId={this.props.userId}
           onClick={this.likeFunction}
+          hasLiked={this.state.hasLiked}
         />
         <CommentsBlock />
       </div>

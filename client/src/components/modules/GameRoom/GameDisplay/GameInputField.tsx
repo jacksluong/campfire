@@ -54,7 +54,6 @@ class GameInputField extends Component<Props, State> {
       value: event.target.value,
     });
     post("/api/inputChange", { content: event.target.value });
-    console.log(this.state.value);
   };
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

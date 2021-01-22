@@ -4,9 +4,7 @@ import Navigation from "../modules/End/Navigation";
 import Passage from "../modules/End/Passage";
 import "../modules/End/End.scss";
 import BottomPanel from "../modules/End/BottomPanel";
-import { socket } from "../../../../client/src/client-socket";
 import { get, post } from "../../../src/utilities";
-import Player from "../../../../shared/Player";
 
 interface Props extends RouteComponentProps {
   gameId?: string

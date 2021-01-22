@@ -35,8 +35,32 @@ router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
 });
 
+//like a specific story
+router.post("/likeStory", (req, res) => {
+  const storyId = req.body.storyId;
+  const userId = req.body.userId;
+  // res.send(StoryModel.find({ _id: storyId }));
+  // res.send({ storyId: storyId, userId: userId });
+  StoryModel.findById(storyId).then((story: Story) => {
+    //copy
+    let usersThatLiked = story.usersThatLiked.slice();
+    let hasLiked = usersThatLiked.includes(userId);
+    if (!hasLiked) {
+      usersThatLiked.push(userId);
+    } else {
+      usersThatLiked.splice(usersThatLiked.indexOf(userId), 1);
+    }
+    story.usersThatLiked = usersThatLiked;
+    story.save();
+    res.send({ likes: story.usersThatLiked.length, hasLiked: !hasLiked });
+  });
+  //todo
+  //1. get the array of users
+  //2. update
+});
+
 router.get("/matchmaking", (req, res) => {
-  res.send({ gameId: logic.matchmake(req.user._id) })
+  res.send({ gameId: logic.matchmake(req.user?._id) });
 });
 
 router.get("/createPrivate", (req, res) => {

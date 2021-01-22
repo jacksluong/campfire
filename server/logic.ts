@@ -57,9 +57,9 @@ const createRoom = (isPrivate: boolean): GameState => {
   return newGame;
 };
 
-const matchmake = (userId: string = ""): string => {
+const matchmake = (userId: string | undefined = undefined): string => {
   // if a user was in a game that's still in progress, return them there
-  if (userId?.length > 0) {
+  if (userId) {
     let room = getRoomByPlayer(userId);
     if (room) return room.gameId;
   }
@@ -130,10 +130,9 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
 const disconnectPlayer = (socketId: string): GameState | undefined => {
   for (let index = 0; index < rooms.length; index++) {
     const room = rooms[index];
+    if (room.gameOver) continue; // disregard finished games
     for (let i = 0; i < room.players.length; i++) {
       if (room.players[i].socketId == socketId) {
-        if (room.gameOver) return; // disregard finished games
-        console.log("disconnecting ", room.players[i].name);
         if (room.currentTurn === -1) {
           // remove if game hasn't started
           room.players.splice(i, 1);
