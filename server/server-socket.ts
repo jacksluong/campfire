@@ -26,7 +26,6 @@ export const getSocketFromSocketID = (socketid: string) => io.sockets.sockets.ge
 export const addUser = (user: User, socket: Socket): void => {
   const oldSocket = userToSocketMap.get(user._id);
   if (oldSocket && oldSocket.id !== socket.id) {
-
     oldSocket.disconnect();
     socketToUserMap.delete(oldSocket.id);
   }

@@ -5,9 +5,10 @@ import Player from "../../../../../../shared/Player";
 import "./Sidebar.scss";
 
 interface Props {
+  gameId: string;
   players: Player[];
   currentTurn: number;
-  spectators: number;
+  spectators: string[];
 }
 
 interface State {}
@@ -21,12 +22,16 @@ class Sidebar extends Component<Props, State> {
   render() {
     return (
       <div className="Sidebar-container">
-        <PlayerDisplay 
-          players={this.props.players} 
-          spectators={this.props.spectators}
-          currentTurn={this.props.currentTurn} 
+        <PlayerDisplay
+          players={this.props.players}
+          spectators={this.props.spectators.length}
+          currentTurn={this.props.currentTurn}
         />
-        <Chat players={this.props.players} />
+        <Chat
+          gameId={this.props.gameId}
+          players={this.props.players}
+          spectators={this.props.spectators}
+        />
       </div>
     );
   }

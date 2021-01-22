@@ -3,6 +3,7 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager, { getSocketFromSocketID } from "./server-socket";
 import Story from "../shared/Story";
+import Player from "../shared/Player";
 import {
   createRoom,
   addToStory,
@@ -11,8 +12,13 @@ import {
   getRoomByPlayer,
   processPublishVote,
   processEndgameVote,
+  getRoomById,
+  GameState,
 } from "./logic";
+import { getChatRoomById, createChatRoom } from "./messaging";
 import { isValidObjectId } from "mongoose";
+import Message from "../shared/Message";
+import { ChatRoom } from "./messaging";
 
 const router = express.Router();
 
@@ -41,6 +47,41 @@ router.post("/initsocket", (req, res) => {
 //get stories
 router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
+});
+
+//get chat messages
+router.get("/chat", (req, res) => {
+  let ChatRoom: ChatRoom | undefined = getChatRoomById(req.query.gameId + "");
+  if (!ChatRoom) ChatRoom = createChatRoom(req.query.gameId + "");
+  const chatMessages: Message[] | undefined = ChatRoom.messages;
+  res.send({ messages: chatMessages });
+});
+
+//post new messages
+router.post("/message", (req, res) => {
+  let ChatRoom: ChatRoom = getChatRoomById(req.body.gameId)!;
+  const room: GameState = getRoomById(req.body.gameId)!;
+  console.log(req.body.socketId);
+  let sender: Player | undefined = room.players.find((player) => {
+    return player.socketId == req.body.socketId;
+  });
+  let senderName: string;
+  console.log(room);
+  if (!sender) {
+    //spectator is sending message
+    const spectatorIndex: number = room.spectators.indexOf(req.body.socketId);
+    senderName = "Spectator " + spectatorIndex;
+  } else {
+    senderName = sender.name;
+  }
+  const message: Message = { sender: senderName, content: req.body.content };
+  ChatRoom.messages.push(message);
+  console.log(`New message by ${senderName}: ${req.body.content}`);
+  for (let player of room.players)
+    getSocketFromSocketID(player.socketId)?.emit("newMessage", message);
+  for (let spectator of room.spectators)
+    getSocketFromSocketID(spectator)?.emit("newMessage", message);
+  res.send({});
 });
 
 //like a specific story
