@@ -21,6 +21,7 @@ class StoryInteractionBar extends Component<Props, State> {
   handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //Like function
     this.props.onClick();
+    this.forceUpdate();
     //console.log(this.props.hasLiked);
   };
   onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +33,7 @@ class StoryInteractionBar extends Component<Props, State> {
     return (
       <div className="StoryInteractionBar-container">
         <button type="submit" className={`LikeButton-container`} onClick={this.handleClick}>
-          {`${this.props.hasLiked ? "Like" : "unLike"} | ${this.props.numLikes}`}
+          {`${this.props.hasLiked ? "Unlike" : "Like"} | ${this.props.numLikes}`}
         </button>
         <input className="NewComment-container" type="text" defaultValue="Write a comment"></input>
       </div>
