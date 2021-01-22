@@ -3,6 +3,8 @@ import Story from "../../../../../shared/Story";
 import StoryInteractionBar from "./StoryInteractionBar";
 import CommentsBlock from "./CommentsBlock";
 import { post } from "../../../utilities";
+import AOS from "aos";
+import "aos/dist/aos.css";
 interface Props {
   name: string;
   contributors: string[];
@@ -27,6 +29,14 @@ class SingleStoryCard extends Component<Props, State> {
     };
   }
   componentDidMount() {
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/aos@next/dist/aos.css";
+    script.innerHTML = AOS.init({
+      offset: 200,
+      duration: 500,
+    });
+    script.async = true;
+    document.body.appendChild(script);
     if (this.props.userId && this.props.usersThatLiked.includes(this.props.userId)) {
       this.setState({ hasLiked: true });
     }
@@ -78,7 +88,7 @@ class SingleStoryCard extends Component<Props, State> {
     );
 
     return (
-      <div className="SingleStoryCard-container">
+      <div className="SingleStoryCard-container" data-aos="fade-up" data-aos-easing="ease-in-out">
         <div className="SingleStoryCard-StoryTitle">{this.props.name}</div>
         <div className="SingleStoryCard-Contributors">
           By: {"  "}

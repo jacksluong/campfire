@@ -4,10 +4,8 @@ import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
 import Player from "../shared/Player";
-import { getChatRoomById, createChatRoom } from "./messaging";
 import { isValidObjectId } from "mongoose";
 import Message from "../shared/Message";
-import { ChatRoom } from "./messaging";
 import logic, { GameState } from "./logic";
 
 const router = express.Router();
@@ -40,17 +38,8 @@ router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
 });
 
-//get chat messages
-router.get("/chat", (req, res) => {
-  let ChatRoom: ChatRoom | undefined = getChatRoomById(req.query.gameId + "");
-  if (!ChatRoom) ChatRoom = createChatRoom(req.query.gameId + "");
-  const chatMessages: Message[] | undefined = ChatRoom.messages;
-  res.send({ messages: chatMessages });
-});
-
 //post new messages
 router.post("/message", (req, res) => {
-  let ChatRoom: ChatRoom = getChatRoomById(req.body.gameId)!;
   const room: GameState = logic.getRoomById(req.body.gameId)!;
   let sender: Player | undefined = room.players.find((player) => {
     return player.socketId == req.body.socketId;
@@ -59,12 +48,11 @@ router.post("/message", (req, res) => {
   if (!sender) {
     //spectator is sending message
     const spectatorIndex: number = room.spectators.indexOf(req.body.socketId);
-    senderName = "Spectator " + spectatorIndex;
+    senderName = "Spectator " + spectatorIndex + 1;
   } else {
     senderName = sender.name;
   }
   const message: Message = { sender: senderName, content: req.body.content };
-  ChatRoom.messages.push(message);
   console.log(`New message by ${senderName}: ${req.body.content}`);
   socketManager.emitToRoom("newMessage", room, message);
   res.send({});
@@ -129,13 +117,13 @@ router.post("/inputSubmit", (req, res) => {
 
 router.post("/endGameRequest", (req, res) => {
   const newGameState = logic.processEndgameVote(req.body.gameId, req.body.socketId, true);
-  const requester = newGameState.players.find(player => player.socketId == req.body.socketId)!;
-  newGameState.players.forEach(player => {
+  const requester = newGameState.players.find((player) => player.socketId == req.body.socketId)!;
+  newGameState.players.forEach((player) => {
     const socket = socketManager.getSocketFromSocketID(player.socketId);
     if (socket) {
       socket.emit("endGamePrompt", requester.name);
       setTimeout(() => {
-        if (newGameState.endVotes.filter(vote => vote !== undefined).length > 0) {
+        if (newGameState.endVotes.filter((vote) => vote !== undefined).length > 0) {
           // if end game request not already canceled by votes for no
           socket.emit("endGameRequestCancel");
           newGameState.endVotes = newGameState.endVotes.map(() => undefined);
@@ -152,13 +140,20 @@ router.post("/voteReady", (req, res) => {
   const newGameState = logic.processReadyVote(req.body.gameId, req.body.socketId);
   socketManager.emitToRoom("gameUpdate", newGameState);
   res.send({});
-})
+});
 
 router.post("/voteEndGame", (req, res) => {
-  const newGameState = logic.processEndgameVote(req.body.gameId, req.body.socketId, req.body.response === "y");
+  const newGameState = logic.processEndgameVote(
+    req.body.gameId,
+    req.body.socketId,
+    req.body.response === "y"
+  );
   if (newGameState.gameOver) {
     socketManager.emitToRoom("gameOver", newGameState);
-  } else if (newGameState.endVotes.filter(vote => vote === false).length > logic.getConnectedPlayers(newGameState).length / 2) {
+  } else if (
+    newGameState.endVotes.filter((vote) => vote === false).length >
+    logic.getConnectedPlayers(newGameState).length / 2
+  ) {
     socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
     newGameState.endVotes = newGameState.endVotes.map(() => undefined);
   }

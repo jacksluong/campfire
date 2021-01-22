@@ -27,12 +27,6 @@ class Chat extends Component<Props, State> {
   }
 
   componentDidMount() {
-    get("/api/chat", { gameId: this.props.gameId }).then((data) => {
-      this.setState({
-        messages: data.messages,
-      });
-    });
-
     socket.on("newMessage", (message: Message) => {
       this.setState({
         messages: this.state.messages.concat([message]),
