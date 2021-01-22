@@ -5,6 +5,7 @@ interface Props {
   numLikes: number;
   userId: string;
   onClick: () => void;
+  hasLiked: boolean;
 }
 interface State {
   value: string;
@@ -20,7 +21,7 @@ class StoryInteractionBar extends Component<Props, State> {
   handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //Like function
     this.props.onClick();
-    //console.log("click");
+    //console.log(this.props.hasLiked);
   };
   onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
@@ -30,8 +31,8 @@ class StoryInteractionBar extends Component<Props, State> {
   render() {
     return (
       <div className="StoryInteractionBar-container">
-        <button type="submit" className="LikeButton-container" onClick={this.handleClick}>
-          {`Like | ${this.props.numLikes}`}
+        <button type="submit" className={`LikeButton-container`} onClick={this.handleClick}>
+          {`${this.props.hasLiked ? "Like" : "unLike"} | ${this.props.numLikes}`}
         </button>
         <input className="NewComment-container" type="text" defaultValue="Write a comment"></input>
       </div>

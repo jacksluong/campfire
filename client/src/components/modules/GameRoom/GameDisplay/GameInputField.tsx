@@ -13,6 +13,7 @@ interface State {
   value: string;
   redirect: string;
   endGameButtonShow: boolean;
+  endGameDisabled: boolean;
   requestedToEndGame: boolean;
 }
 
@@ -23,20 +24,15 @@ class GameInputField extends Component<Props, State> {
       value: "",
       redirect: null,
       endGameButtonShow: false,
+      endGameDisabled: false,
       requestedToEndGame: false,
     };
   }
 
   componentDidMount() {
-    // NOTE: will want to move this to an upper level component like GameRoom or something
-    socket.on("gameOver", () => {
-      navigate(`/end/${this.props.gameId}`);
-    });
     socket.on("endGamePrompt", (userId: string) => {
       if (!this.state.requestedToEndGame) {
-        this.setState({
-          endGameButtonShow: true,
-        });
+        this.setState({ endGameButtonShow: true });
       }
     });
 
@@ -51,8 +47,7 @@ class GameInputField extends Component<Props, State> {
     this.setState({
       value: event.target.value,
     });
-    post("/api/inputChange", { content: event.target.value });
-    console.log(this.state.value);
+    post("/api/inputChange", { gameId: this.props.gameId, content: event.target.value });
   };
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -81,8 +76,9 @@ class GameInputField extends Component<Props, State> {
   };
 
   handleEndGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    socket.emit("endGameConfirm", this.props.gameId);
+    post("/api/voteEndGame", { gameId: this.props.gameId, socketId: socket.id }).then(() => {
+      this.setState({ endGameDisabled: true });
+    })
   };
 
   render() {
@@ -102,10 +98,9 @@ class GameInputField extends Component<Props, State> {
 
         {this.state.endGameButtonShow ? (
           <button
-            type="submit"
             className="GameInputField-button u-pointer enabled"
             onClick={this.handleEndGame}
-            // disabled={this.state.endGameDisabled}
+            disabled={this.state.endGameDisabled}
           >
             End Game
           </button>

@@ -57,7 +57,14 @@ const createRoom = (isPrivate: boolean): GameState => {
   return newGame;
 };
 
-const findOpenRoom = (): string => {
+const matchmake = (userId: string | undefined = undefined): string => {
+  // if a user was in a game that's still in progress, return them there
+  if (userId) {
+    let room = getRoomByPlayer(userId);
+    if (room) return room.gameId;
+  }
+
+  // otherwise find next open room
   let room = rooms.find((room) => !room.gameOver && room.currentTurn === -1 && !room.isPrivate);
   return (room ?? createRoom(false)).gameId;
 };
@@ -123,10 +130,9 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
 const disconnectPlayer = (socketId: string): GameState | undefined => {
   for (let index = 0; index < rooms.length; index++) {
     const room = rooms[index];
+    if (room.gameOver) continue; // disregard finished games
     for (let i = 0; i < room.players.length; i++) {
       if (room.players[i].socketId == socketId) {
-        if (room.gameOver) return; // disregard finished games
-        console.log("disconnecting ", room.players[i].name);
         if (room.currentTurn === -1) {
           // remove if game hasn't started
           room.players.splice(i, 1);
@@ -228,13 +234,16 @@ const dispose = (room: GameState): void => {
   }, 1000 * 60 * 60 * 1);
 };
 
-export {
+export default {
   createRoom,
-  findOpenRoom,
+  matchmake,
+
   getRoomById,
   getRoomByPlayer,
+
   addPlayer,
   disconnectPlayer,
+
   addToStory,
   processEndgameVote,
   processPublishVote,

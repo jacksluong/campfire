@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import "./Passage.scss";
-import Player from "../../../../../shared/Player";
 
 interface Props {
   content: string;
-  contributors: Player[];
+  contributors: string[];
 }
 class Passage extends Component<Props, {}> {
   constructor(props) {
@@ -17,8 +16,8 @@ class Passage extends Component<Props, {}> {
         <h2>Story</h2>
         {this.props.content}
         <h3>Contributors</h3>
-        {this.props.contributors.map((player) => (
-          <div>{player.name}</div>
+        {this.props.contributors.map((name, i) => (
+          <div key={i}>{name}</div>
         ))}
       </div>
     );

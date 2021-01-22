@@ -23,7 +23,7 @@ class BottomPanel extends Component<Props, State> {
 
   handlePublish = () => {
     console.log("gameId", this.props.gameId);
-    post("/api/publishStory", { gameId: this.props.gameId, socketId: socket.id });
+    post("/api/votePublish", { gameId: this.props.gameId, socketId: socket.id });
     this.setState({ enabled: false });
   };
 

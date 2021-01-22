@@ -23,7 +23,7 @@ class Gallery extends Component<Props, State> {
   }
 
   render() {
-    let storyListElement = this.state.storyList.map((story) => (
+    let storyListElement = this.state.storyList.map((story, i) => (
       <SingleStoryCard
         name={story.name}
         contributors={story.contributorNames}
@@ -32,6 +32,7 @@ class Gallery extends Component<Props, State> {
         keywords={story.keywords}
         userId={this.props.userId}
         storyId={story._id}
+        key={i}
       />
     ));
 

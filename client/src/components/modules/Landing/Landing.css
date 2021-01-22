@@ -174,3 +174,7 @@ Button {
   border-left-style: hidden;
   border-bottom-style: groove;
 }
+
+.u-blue {
+  background-color: #29ccc7;
+}

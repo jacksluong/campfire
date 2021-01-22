@@ -26,10 +26,6 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
     super(props);
   }
 
-  resetGame = () => {
-    post("/api/rg", {}).then((msg) => console.log("gameState is now ", msg));
-  }
-
   render() {
     return (
       <div className="NavBar-container">
@@ -49,7 +45,7 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
             />
           )}
         </span>
-        <span className="NavBar-link" onClick={this.resetGame}>Explore</span>
+        <Link to="/explore" className="NavBar-link">Explore</Link>
       </div>
     );
   }

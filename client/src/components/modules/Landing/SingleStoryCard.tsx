@@ -15,6 +15,7 @@ interface Props {
 }
 interface State {
   likes: number;
+  hasLiked: boolean;
 }
 
 class SingleStoryCard extends Component<Props, State> {
@@ -22,17 +23,20 @@ class SingleStoryCard extends Component<Props, State> {
     super(props);
     this.state = {
       likes: this.props.usersThatLiked.length,
+      hasLiked: this.props.usersThatLiked.includes(this.props.userId),
     };
   }
   componentDidMount() {}
   likeFunction = () => {
     //Like function
     const body = { storyId: this.props.storyId, userId: this.props.userId };
+    // console.log(this.state.hasLiked);
     if (this.props.userId) {
       post("/api/likeStory", body).then((response) => {
-        this.setState((prevState) => ({
+        this.setState({
           likes: response.likes,
-        }));
+          hasLiked: !response.hasLiked,
+        });
       });
     } else {
       console.log(`ID: ${this.props.userId} not logged in`);
@@ -44,17 +48,13 @@ class SingleStoryCard extends Component<Props, State> {
 
   render() {
     let contributorsElement = null;
-    contributorsElement = this.props.contributors.map((contributor) => (
-      <span>{contributor + ", "}</span>
-    ));
+    contributorsElement = this.props.contributors.map((contributor, i) => <span key={i}>{contributor + ", "}</span>);
     contributorsElement.pop();
-    contributorsElement.push(
-      <span>and {this.props.contributors[this.props.contributors.length - 1]}</span>
-    );
-    let keywordsElement = null;
-    keywordsElement = this.props.keywords.map((keyword) => <span>{keyword + ", "}</span>);
+    contributorsElement.push(<span key={this.props.contributors.length}>and {this.props.contributors[this.props.contributors.length - 1]}</span>);
+
+    let keywordsElement = this.props.keywords.map((keyword, i) => <span key={i}>{keyword + ", "}</span>);
     keywordsElement.pop();
-    keywordsElement.push(<span> {this.props.keywords[this.props.keywords.length - 1]}</span>);
+    keywordsElement.push(<span key={this.props.keywords.length}>{this.props.keywords[this.props.keywords.length - 1]}</span>);
 
     return (
       <div className="SingleStoryCard-container">
@@ -69,6 +69,7 @@ class SingleStoryCard extends Component<Props, State> {
           numLikes={this.state.likes}
           userId={this.props.userId}
           onClick={this.likeFunction}
+          hasLiked={this.state.hasLiked}
         />
         <CommentsBlock />
       </div>
