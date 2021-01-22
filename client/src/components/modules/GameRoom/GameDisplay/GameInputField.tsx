@@ -34,7 +34,10 @@ class GameInputField extends Component<Props, State> {
       this.setState({ endGameRequester: response, voted: false })
     );
 
-    socket.on("endGameRequestCancel", () => this.setState({ value: "", endGameRequester: "" }));
+    socket.on("endGameRequestCancel", () => {
+      console.log("endGameRequestCancel message received.");
+      this.setState({ value: "", endGameRequester: "" });
+    });
   }
 
   handleReady = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -47,7 +50,9 @@ class GameInputField extends Component<Props, State> {
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ value: event.target.value });
-    post("/api/inputChange", { gameId: this.props.gameId, content: event.target.value });
+    if (this.state.endGameRequester.length === 0) {
+      post("/api/inputChange", { gameId: this.props.gameId, content: event.target.value });
+    }
   };
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -78,12 +83,15 @@ class GameInputField extends Component<Props, State> {
   render() {
     let placeholder: string;
     let enabled = this.props.enabled;
+    console.log("enabled and endGameRequester is ", enabled, this.state.endGameRequester);
     if (this.state.endGameRequester.length > 0) {
+      console.log("thinks request is still active")
       placeholder = enabled
         ? ""
         : `${this.state.endGameRequester} requested to end the story here. If you agree, type "y" and press enter.`; // TODO: update handleSubmit with this
       enabled = !enabled && !this.state.voted; // person's turn cannot respond to prompt, everyone else can
     } else {
+      console.log("knows request is not active");
       placeholder = enabled ? "Craft your sentence here" : "It's someone else's turn right now!";
     }
     let display = !this.props.started ? (

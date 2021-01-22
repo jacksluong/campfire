@@ -25,7 +25,7 @@ export interface GameState {
   // Status
   isPrivate: boolean;
   isPublished: boolean;
-  gameOver: boolean;
+  gameOver: boolean | undefined;
 }
 
 const rooms: GameState[] = [];
@@ -49,7 +49,7 @@ const createRoom = (isPrivate: boolean): GameState => {
 
     isPrivate: isPrivate,
     isPublished: false,
-    gameOver: false,
+    gameOver: undefined,
   };
   rooms.push(newGame);
   return newGame;
@@ -200,10 +200,13 @@ const processEndgameVote = (gameId: string, socketId: string, response: boolean)
   }
   // set player's vote in endVotes
   gameState.endVotes[playerIndex] = response;
-  // check end condition
+  // check for majority of yes/no
   if (gameState.endVotes.filter(vote => vote).length >= Math.ceil(getConnectedPlayers(gameState).length / 2)) {
     gameState.gameOver = true;
     dispose(gameState);
+  } else if (gameState.endVotes.filter(vote => vote === false).length > getConnectedPlayers(gameState).length / 2) {
+    gameState.gameOver = false;
+    gameState.endVotes = gameState.endVotes.map(() => undefined);
   }
   return gameState;
 };

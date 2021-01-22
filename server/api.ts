@@ -137,7 +137,7 @@ router.post("/endGameRequest", (req, res) => {
       setTimeout(() => {
         if (newGameState.endVotes.filter(vote => vote !== undefined).length > 0) {
           // if end game request not already canceled by votes for no
-          socket.emit("endGameRequestCancel");
+          socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
           newGameState.endVotes = newGameState.endVotes.map(() => undefined);
         }
       }, 15000);
@@ -158,9 +158,9 @@ router.post("/voteEndGame", (req, res) => {
   const newGameState = logic.processEndgameVote(req.body.gameId, req.body.socketId, req.body.response === "y");
   if (newGameState.gameOver) {
     socketManager.emitToRoom("gameOver", newGameState);
-  } else if (newGameState.endVotes.filter(vote => vote === false).length > logic.getConnectedPlayers(newGameState).length / 2) {
+  } else if (newGameState.gameOver === false) {
     socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
-    newGameState.endVotes = newGameState.endVotes.map(() => undefined);
+    newGameState.gameOver = undefined;
   }
   res.send({});
 });

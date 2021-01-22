@@ -23,6 +23,7 @@ export interface Story extends Document {
   content: string;
   usersThatLiked: string[]; // story IDs
   keywords: string[];
+  comments: { senderId: string, content: string }[];
 }
 
 const StoryModel = model<Story>("Story", StorySchema);

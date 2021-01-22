@@ -51,6 +51,7 @@ class GameRoom extends Component<Props, State> {
         readyPlayers: gameState.readyVotes,
         currentTurn: gameState.currentTurn
       })
+      if (gameState.currentTurn !== -1) clearTimeout(this.state.timeout);
     })
     socket.on("playersUpdate", (gameState: GameState) => {
       // on player join or leave
