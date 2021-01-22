@@ -1,7 +1,17 @@
-.ChatInputField-container {
+.ChatInputField-textbox {
   flex-grow: 1;
-  background-color: var(--burntSienna);
-  margin: var(--l) var(--xs);
-  border-radius: var(--m);
-  padding: var(--s);
+  flex-grow: 1;
+  border: var(--darkgrey) 1px solid;
+  border-radius: var(--xs) 0 0 var(--xs);
+  transition: box-shadow 0.1s;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.ChatInputField-textbox:focus-within {
+  border-color: var(--primary--dim);
+  box-shadow: 0 0 0 var(--xs) rgba(0, 123, 255, 0.25);
 }

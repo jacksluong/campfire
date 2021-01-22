@@ -3,7 +3,12 @@ import auth from "./auth";
 import StoryModel from "./models/Story";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
-import logic from "./logic";
+import Player from "../shared/Player";
+import { getChatRoomById, createChatRoom } from "./messaging";
+import { isValidObjectId } from "mongoose";
+import Message from "../shared/Message";
+import { ChatRoom } from "./messaging";
+import logic, { GameState } from "./logic";
 
 const router = express.Router();
 
@@ -33,6 +38,39 @@ router.post("/initsocket", (req, res) => {
 
 router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
+});
+
+//get chat messages
+router.get("/chat", (req, res) => {
+  let ChatRoom: ChatRoom | undefined = getChatRoomById(req.query.gameId + "");
+  if (!ChatRoom) ChatRoom = createChatRoom(req.query.gameId + "");
+  const chatMessages: Message[] | undefined = ChatRoom.messages;
+  res.send({ messages: chatMessages });
+});
+
+//post new messages
+router.post("/message", (req, res) => {
+  let ChatRoom: ChatRoom = getChatRoomById(req.body.gameId)!;
+  const room: GameState = logic.getRoomById(req.body.gameId)!;
+  let sender: Player | undefined = room.players.find((player) => {
+    return player.socketId == req.body.socketId;
+  });
+  let senderName: string;
+  if (!sender) {
+    //spectator is sending message
+    const spectatorIndex: number = room.spectators.indexOf(req.body.socketId);
+    senderName = "Spectator " + spectatorIndex;
+  } else {
+    senderName = sender.name;
+  }
+  const message: Message = { sender: senderName, content: req.body.content };
+  ChatRoom.messages.push(message);
+  console.log(`New message by ${senderName}: ${req.body.content}`);
+  for (let player of room.players)
+    socketManager.getSocketFromSocketID(player.socketId)?.emit("newMessage", message);
+  for (let spectator of room.spectators)
+    socketManager.getSocketFromSocketID(spectator)?.emit("newMessage", message);
+  res.send({});
 });
 
 //like a specific story
@@ -78,7 +116,7 @@ router.post("/leaveGame", (req, res) => {
 
 router.post("/inputChange", (req, res) => {
   const room = logic.getRoomById(req.body.gameId)!;
-  socketManager.emitToRoom("inputUpdate", room, req.body.content)
+  socketManager.emitToRoom("inputUpdate", room, req.body.content);
   res.send({});
 });
 

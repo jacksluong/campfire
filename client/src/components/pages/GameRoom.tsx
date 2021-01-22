@@ -19,7 +19,7 @@ interface Props extends RouteComponentProps {
 interface State {
   userId: string;
   players: Player[];
-  spectators: number;
+  spectators: string[];
   currentStory: string;
   currentTurn: number;
   currentInput: string;
@@ -32,7 +32,7 @@ class GameRoom extends Component<Props, State> {
     this.state = {
       userId: "",
       players: [],
-      spectators: 0,
+      spectators: [],
       currentStory: "",
       currentTurn: -1,
       currentInput: "",
@@ -44,10 +44,10 @@ class GameRoom extends Component<Props, State> {
       // on player join or leave
       this.setState({
         players: gameState.players,
-        spectators: gameState.spectators.length,
+        spectators: gameState.spectators,
         currentStory: gameState.currentStory,
         currentTurn: gameState.currentTurn,
-        currentInput: gameState.currentInput
+        currentInput: gameState.currentInput,
       });
     });
     socket.on("storyUpdate", (gameState: GameState) => {
@@ -77,6 +77,7 @@ class GameRoom extends Component<Props, State> {
       <div className="GameRoom-container">
         <div className="Sidebar-container">
           <Sidebar
+            gameId={this.props.gameId}
             players={this.state.players}
             currentTurn={this.state.currentTurn}
             spectators={this.state.spectators}

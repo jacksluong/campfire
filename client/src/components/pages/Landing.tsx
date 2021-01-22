@@ -12,7 +12,7 @@ import Main from "../modules/Landing/Main";
 import NavBar from "../modules/Landing/NavBar";
 import Story from "../../../../shared/Story";
 import { get } from "../../utilities";
-import Gallery from "../../components/modules/Landing/Gallery";
+
 type Props = {
   userId: string;
   handleLogin: (res: GoogleLoginResponse | GoogleLoginResponseOffline) => void;
@@ -38,7 +38,6 @@ class Landing extends Component<Props & RouteComponentProps, {}> {
         <br />
         <br />
         <br />
-        <Gallery userId={this.props.userId} />
       </div>
     );
   }

@@ -5,3 +5,8 @@
   border-radius: var(--m);
   padding: var(--s);
 }
+
+.Chat-historyContainer {
+  flex-grow: 1;
+  overflow-y: auto;
+}

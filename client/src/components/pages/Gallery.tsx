@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import Story from "../../../../../shared/Story";
-import { get } from "../../../utilities";
-import SingleStoryCard from "./SingleStoryCard";
-interface Props {
+import Story from "../../../../shared/Story";
+import { get } from "../../utilities";
+import SingleStoryCard from "../../components/modules/../modules/Landing/SingleStoryCard";
+import { RouteComponentProps } from "@reach/router";
+
+interface Props extends RouteComponentProps {
   userId: string;
 }
 interface State {
