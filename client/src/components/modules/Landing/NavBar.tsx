@@ -4,12 +4,9 @@ import { RouteComponentProps, Link } from "@reach/router";
 import GoogleLogin, {
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
-  GoogleLogout,
 } from "react-google-login";
 import ProfileButton from "./ProfileButton";
 const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
-
-import { post } from "../../../utilities"; // TODO: remove on production release
 
 type Props = {
   userId: string;

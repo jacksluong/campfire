@@ -6,7 +6,6 @@ import GoogleLogin, {
   GoogleLogout,
 } from "react-google-login";
 import "./Skeleton.css";
-//TODO(weblab student): REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
 
 type Props = {

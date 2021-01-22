@@ -98,7 +98,7 @@ router.post("/endGameRequest", (req, res) => {
     const socket = socketManager.getSocketFromSocketID(player.socketId);
     if (socket) {
       socket.emit("endGamePrompt", req.body.contributor);
-      setTimeout(() => socket.emit("takeBackEndGameButton"), 15000); // TODO
+      setTimeout(() => socket.emit("takeBackEndGameButton"), 15000);
     }
   }
   res.send({});

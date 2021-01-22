@@ -57,7 +57,6 @@ class App extends Component<{}, State> {
   };
 
   render() {
-    // NOTE:
     return (
       <Router>
         <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />

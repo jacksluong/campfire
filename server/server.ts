@@ -12,9 +12,7 @@ import api from "./api";
 dotenv.config({});
 
 // Server configuration below
-// TODO change connection URL after setting up your team database
 const mongoConnectionURL = process.env.MONGO_SRV;
-// TODO change database name to the name you chose
 const databaseName = "cheesecake";
 
 if (mongoConnectionURL === undefined) {
@@ -60,7 +58,6 @@ app.get("*", (_, res) => {
   res.send({ msg: "hello world." });
 });
 
-// TODO(johancc) - Add an error interface.
 app.use((err: any, _req: Request, res: Response) => {
   const status = err.status || 500;
   if (status === 500) {
