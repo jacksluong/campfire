@@ -14,10 +14,6 @@ const StorySchema = new Schema({
   keywords: [String],
   comments: [Comment],
 });
-export interface Comment extends Document {
-  senderId: string;
-  content: string;
-}
 
 export interface Story extends Document {
   name: string;
@@ -28,6 +24,11 @@ export interface Story extends Document {
   usersThatLiked: string[]; // story IDs
   keywords: string[];
   comments: Comment[];
+}
+
+export interface Comment {
+  senderId: string;
+  content: string;
 }
 
 const StoryModel = model<Story>("Story", StorySchema);

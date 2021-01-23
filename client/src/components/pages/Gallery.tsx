@@ -35,6 +35,7 @@ class Gallery extends Component<Props, State> {
         userId={this.props.userId}
         storyId={story._id}
         key={i}
+        comments={story.comments}
       />
     ));
 

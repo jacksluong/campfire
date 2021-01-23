@@ -3,6 +3,7 @@ import Story from "../../../../../shared/Story";
 import StoryInteractionBar from "./StoryInteractionBar";
 import CommentsBlock from "./CommentsBlock";
 import { post } from "../../../utilities";
+import Comment from "../../../../../shared/Comment";
 interface Props {
   name: string;
   contributors: string[];
@@ -11,6 +12,7 @@ interface Props {
   keywords: string[];
   storyId: string;
   userId: string;
+
   comments: Comment[];
 }
 interface State {
@@ -92,7 +94,7 @@ class SingleStoryCard extends Component<Props, State> {
           onClick={this.likeFunction}
           hasLiked={this.state.hasLiked}
         />
-        <CommentsBlock />
+        <CommentsBlock comments={this.props.comments} />
       </div>
     );
   }
