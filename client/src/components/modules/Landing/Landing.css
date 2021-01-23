@@ -217,6 +217,7 @@ Button {
   border-right-style: hidden;
   border-left-style: hidden;
   border-bottom-style: groove;
+  /* border-style: solid; */
 }
 
 .u-blue {
@@ -234,9 +235,17 @@ Button {
   font-size: 16px;
   margin: auto;
   /* text-align: center; */
+  /* width: fill; */
+  /* flex-grow: 100; */
+  display: relative;
+  text-align: left;
+  margin: 0 2%;
+}
+
+.u-widthfill {
   width: fill;
   flex-grow: 100;
-  display: relative;
+  /* border-style: dotted; */
 }
 
 /*Animations*/

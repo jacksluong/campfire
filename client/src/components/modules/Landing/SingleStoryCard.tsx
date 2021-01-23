@@ -20,6 +20,7 @@ interface Props {
 interface State {
   likes: number;
   hasLiked: boolean;
+  showComments: boolean;
 }
 
 class SingleStoryCard extends Component<Props, State> {
@@ -28,6 +29,7 @@ class SingleStoryCard extends Component<Props, State> {
     this.state = {
       likes: this.props.usersThatLiked.length,
       hasLiked: false,
+      showComments: false,
     };
   }
   componentDidMount() {
@@ -66,6 +68,11 @@ class SingleStoryCard extends Component<Props, State> {
     //console.log(this.props.storyId);
     //console.log(this.props.userId);
   };
+  ShowButtonsClick = () => {
+    // console.log("yeet");
+    this.setState((prevState) => ({ showComments: !prevState.showComments }));
+    console.log(this.state.showComments);
+  };
 
   render() {
     let contributorsElement = null;
@@ -103,8 +110,11 @@ class SingleStoryCard extends Component<Props, State> {
           userId={this.props.userId}
           onClick={this.likeFunction}
           hasLiked={this.state.hasLiked}
+          comments={this.props.comments}
+          onShowButtonsClick={this.ShowButtonsClick}
+          showComments={this.state.showComments}
         />
-        <CommentsBlock comments={this.props.comments} />
+        <CommentsBlock comments={this.props.comments} showComments={this.state.showComments} />
       </div>
     );
   }
