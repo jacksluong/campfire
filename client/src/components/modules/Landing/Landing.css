@@ -102,11 +102,21 @@ Button {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
-.Gallery-title {
-  margin: 0%, auto;
-  width: 100%;
+
+.GalleryTitle-container {
+  line-height: 90vh;
   text-align: center;
-  font-size: 64px;
+  height: 90vh;
+  width: 100vw;
+}
+
+.Gallery-title {
+  margin: auto;
+  /* width: 100%; */
+  /* text-align: center; */
+  vertical-align: middle;
+  display: inline-block;
+  font-size: 80px;
   /* border-style: solid; */
 }
 
@@ -207,6 +217,7 @@ Button {
 .comments-container {
   width: fill;
   flex-grow: 100;
+  display: relative;
   /* border-style: solid; */
   /* padding: auto; */
 }
@@ -216,4 +227,5 @@ Button {
   /* text-align: center; */
   width: fill;
   flex-grow: 100;
+  display: relative;
 }

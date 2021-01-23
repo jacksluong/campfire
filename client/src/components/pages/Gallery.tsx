@@ -41,7 +41,9 @@ class Gallery extends Component<Props, State> {
 
     return (
       <>
-        <div className="Gallery-title">Gallery</div>
+        <div className="GalleryTitle-container">
+          <span className="Gallery-title">Gallery</span>
+        </div>
 
         <div className="Gallery-container">
           {storyListElement === null ? <p>loading</p> : storyListElement}
