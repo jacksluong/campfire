@@ -91,6 +91,7 @@ router.post("/likeStory", (req, res) => {
     } else {
       usersThatLiked.splice(usersThatLiked.indexOf(userId), 1);
     }
+
     story.usersThatLiked = usersThatLiked;
     story.save();
     res.send({ likes: story.usersThatLiked.length, hasLiked: !hasLiked });
@@ -105,9 +106,17 @@ router.post("/newComment", (req, res) => {
   const content = req.body.content;
   // res.send({ name: "potaot" });
   UserModel.findById(userId).then((user: User) => {
-    res.send({
-      userId: userId,
-      name: user.name,
+    let name = user.name;
+    StoryModel.findById(storyId).then((story: Story) => {
+      let storyComments = story.comments.splice(0, 0);
+      let newComment = {
+        name: name,
+        senderId: userId,
+        content: content,
+      };
+      storyComments.push(newComment);
+      story.comments = storyComments;
+      story.save();
     });
   });
   // res.send({ name: name });

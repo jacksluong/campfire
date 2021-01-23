@@ -1,6 +1,7 @@
 import { Schema, model, Document } from "mongoose";
 
 const Comment = new Schema({
+  name: String,
   senderId: String,
   content: String,
 });
@@ -23,10 +24,11 @@ export interface Story extends Document {
   content: string;
   usersThatLiked: string[]; // story IDs
   keywords: string[];
-  comments: { senderId: string; content: string }[];
+  comments: { name: string; senderId: string; content: string }[];
 }
 
 export interface Comment {
+  name: string;
   senderId: string;
   content: string;
 }

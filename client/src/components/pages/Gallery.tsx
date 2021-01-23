@@ -4,6 +4,7 @@ import { get } from "../../utilities";
 import SingleStoryCard from "../../components/modules/../modules/Landing/SingleStoryCard";
 import { RouteComponentProps } from "@reach/router";
 import { Link, animateScroll as scroll } from "react-scroll";
+import Comment from "../../../../shared/Comment";
 
 interface Props extends RouteComponentProps {
   userId: string;
