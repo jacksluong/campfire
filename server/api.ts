@@ -1,11 +1,13 @@
 import express from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
+import UserModel from "./models/User";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
 import Player from "../shared/Player";
 import { isValidObjectId } from "mongoose";
 import Message from "../shared/Message";
+import User from "../shared/User";
 import logic, { GameState } from "./logic";
 
 const router = express.Router();
@@ -36,6 +38,22 @@ router.post("/initsocket", (req, res) => {
 
 router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
+});
+
+// get UserInfo for Profile page
+router.get("/userInfo", (req, res) => {
+  console.log(`Requesting ID: $${req.query.userId}`);
+  UserModel.findById(req.query.userId).then((user: User) => {
+    console.log(`User Found in Database: ${user}`);
+    const userInfo = {
+      name: user.name,
+      wordsTyped: user.wordsTyped,
+      storiesWorkedOn: user.storiesWorkedOn,
+      wordFrequencies: user.wordFrequencies,
+    };
+    console.log(userInfo);
+    res.send(userInfo);
+  });
 });
 
 //post new messages

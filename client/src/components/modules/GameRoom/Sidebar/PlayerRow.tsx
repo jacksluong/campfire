@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import "./SideBar.scss";
 import "../../../../utilities.scss";
 import "./PlayerRow.scss";
+import { navigate } from "@reach/router";
 interface Props {
   userId: string;
   name: string;
@@ -17,10 +18,18 @@ class PlayerDisplay extends Component<Props, State> {
     this.state = {};
   }
 
+  handleClick = (): void => {
+    navigate(`/profile/${this.props.userId}`);
+  };
+
   render() {
     return (
-      <div className={this.props.disconnected ? "PlayerRow-container disconnected" : "PlayerRow-container"}>
-        <span>
+      <div
+        className={
+          this.props.disconnected ? "PlayerRow-container disconnected" : "PlayerRow-container"
+        }
+      >
+        <span onClick={this.handleClick}>
           <b>{this.props.name + " | "}</b>
         </span>
         <span>{this.props.health}</span>
