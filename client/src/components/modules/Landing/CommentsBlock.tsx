@@ -37,7 +37,7 @@ class CommentsBlock extends Component<Props, State> {
           </>
         ) : (
           <button className="CommentButton-container" onClick={this.handleShowButtonsClick}>
-            Show comments
+            Show comments | {commentsElement.length}
           </button>
         )}
       </div>
