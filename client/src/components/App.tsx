@@ -67,7 +67,7 @@ class App extends Component<{}, State> {
         />
         <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
         <Gallery path="/gallery" userId={this.state.userId} />
-        <Profile path="/profile" />
+        <Profile path="/profile/:userId" />
         <End path="/end/:gameId" />
         <NotFound default={true} />
       </Router>

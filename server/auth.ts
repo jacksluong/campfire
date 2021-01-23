@@ -24,6 +24,7 @@ const getOrCreateUser = (user: TokenPayload) => {
         name: user.name,
         googleid: user.sub,
       });
+      console.log(newUser);
       return newUser.save();
     }
   );
@@ -40,6 +41,7 @@ const login = (req: Request, res: Response) => {
         throw new Error("Unable to retrieve user.");
       }
       req.session.user = user;
+      console.log(user);
       res.send(user);
     })
     .catch((err) => {
