@@ -3,8 +3,12 @@ import Story from "../../../../../shared/Story";
 import StoryInteractionBar from "./StoryInteractionBar";
 import CommentsBlock from "./CommentsBlock";
 import { post } from "../../../utilities";
+<<<<<<< HEAD
 import AOS from "aos";
 import "aos/dist/aos.css";
+=======
+import Comment from "../../../../../shared/Comment";
+>>>>>>> comments
 interface Props {
   name: string;
   contributors: string[];
@@ -13,6 +17,11 @@ interface Props {
   keywords: string[];
   storyId: string;
   userId: string;
+<<<<<<< HEAD
+=======
+
+  comments: Comment[];
+>>>>>>> comments
 }
 interface State {
   likes: number;
@@ -103,7 +112,7 @@ class SingleStoryCard extends Component<Props, State> {
           onClick={this.likeFunction}
           hasLiked={this.state.hasLiked}
         />
-        <CommentsBlock />
+        <CommentsBlock comments={this.props.comments} />
       </div>
     );
   }
