@@ -25,7 +25,10 @@ class Gallery extends Component<Props, State> {
   }
 
   render() {
-    let storyListElement = this.state.storyList.map((story, i) => (
+    let storyListSorted = this.state.storyList.slice();
+    storyListSorted.sort((a, b) => (a.usersThatLiked.length < b.usersThatLiked.length ? 1 : -1));
+
+    let storyListElement = storyListSorted.map((story, i) => (
       <SingleStoryCard
         name={story.name}
         contributors={story.contributorNames}
