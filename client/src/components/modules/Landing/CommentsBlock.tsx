@@ -32,14 +32,17 @@ class CommentsBlock extends Component<Props, State> {
   };
   handleNewCommentSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     console.log(this.state.value);
-    const body = {
-      storyId: this.props.storyId,
-      userId: this.props.userId,
-      content: this.state.value,
-    };
-    post("/api/newComment", body).then((response) => {
-      console.log(response);
-    });
+    if (this.props.userId && this.state.value.length > 0) {
+      const body = {
+        storyId: this.props.storyId,
+        userId: this.props.userId,
+        content: this.state.value,
+      };
+      post("/api/newComment", body).then((response) => {
+        console.log(response);
+      });
+    }
+    this.setState({ value: "" });
   };
 
   render() {
