@@ -106,7 +106,7 @@ Button {
 .GalleryTitle-container {
   line-height: 90vh;
   text-align: center;
-  height: 90vh;
+  height: 100vh;
   width: 100vw;
   background: rgb(2, 0, 36);
   background: linear-gradient(
@@ -329,5 +329,46 @@ Button {
   }
   50% {
     border-color: black;
+  }
+}
+
+.boxArrow {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.boxArrow span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-bottom: 3px solid #fff;
+  border-right: 3px solid #fff;
+  transform: rotate(45deg);
+  animation: animate 2s infinite linear;
+}
+.boxArrow:hover > span {
+  border-bottom: 7px solid black;
+  border-right: 7px solid black;
+}
+.boxArrow span:nth-child(2) {
+  animation-delay: -0.2s;
+}
+.boxArrow span:nth-child(3) {
+  animation-delay: -0.4s;
+}
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px);
   }
 }

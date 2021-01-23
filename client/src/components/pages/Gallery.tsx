@@ -3,6 +3,7 @@ import Story from "../../../../shared/Story";
 import { get } from "../../utilities";
 import SingleStoryCard from "../../components/modules/../modules/Landing/SingleStoryCard";
 import { RouteComponentProps } from "@reach/router";
+import { Link, animateScroll as scroll } from "react-scroll";
 
 interface Props extends RouteComponentProps {
   userId: string;
@@ -47,8 +48,22 @@ class Gallery extends Component<Props, State> {
         <div className="GalleryTitle-container">
           <span className="Gallery-title fade-in">Gallery</span>
         </div>
+        <Link
+          activeClass="active"
+          to="gallery"
+          spy={true}
+          smooth={true}
+          offset={-70}
+          duration={1500}
+        >
+          <div className="boxArrow">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </Link>
 
-        <div className="Gallery-container fade-in2">
+        <div className="Gallery-container fade-in2" id="gallery">
           {storyListElement === null ? <p>loading</p> : storyListElement}
         </div>
       </>
