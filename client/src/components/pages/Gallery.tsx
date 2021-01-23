@@ -48,14 +48,7 @@ class Gallery extends Component<Props, State> {
         <div className="GalleryTitle-container">
           <span className="Gallery-title fade-in">Gallery</span>
         </div>
-        <Link
-          activeClass="active"
-          to="gallery"
-          spy={true}
-          smooth={true}
-          offset={-70}
-          duration={1500}
-        >
+        <Link activeClass="active" to="gallery" spy={true} smooth={true} duration={1500}>
           <div className="boxArrow">
             <span></span>
             <span></span>
