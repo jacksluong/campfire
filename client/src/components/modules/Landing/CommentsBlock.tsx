@@ -41,6 +41,8 @@ class CommentsBlock extends Component<Props, State> {
       post("/api/newComment", body).then((response) => {
         console.log(response);
       });
+    } else {
+      alert("Log in/dont leave comments blank");
     }
     this.setState({ value: "" });
   };
