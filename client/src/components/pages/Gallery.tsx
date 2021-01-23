@@ -48,7 +48,7 @@ class Gallery extends Component<Props, State> {
           <span className="Gallery-title fade-in">Gallery</span>
         </div>
 
-        <div className="Gallery-container">
+        <div className="Gallery-container fade-in2">
           {storyListElement === null ? <p>loading</p> : storyListElement}
         </div>
       </>

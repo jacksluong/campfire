@@ -34,7 +34,7 @@ class Main extends Component<Props, State> {
   render() {
     return (
       <div className="Main Container">
-        <div className="Title-container fade-in"> Campfire</div>
+        <div className="Title-container"> Campfire</div>
         <div className="Buttons-container">
           <button
             type="submit"
