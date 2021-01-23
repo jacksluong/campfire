@@ -8,7 +8,7 @@ import PrivateGameButton from "./PrivateGameButton";
 interface Props {
   userId: string;
 }
-interface State { }
+interface State {}
 
 class Main extends Component<Props, State> {
   constructor(props) {
@@ -16,17 +16,17 @@ class Main extends Component<Props, State> {
   }
 
   joinPublicGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    get("/api/matchmaking").then(response => {
+    get("/api/matchmaking").then((response) => {
       console.log("matched me to", response.gameId);
       navigate(`/gameroom/${response.gameId}`);
     });
   };
-  
+
   createPrivateGame = () => {
-    get("/api/createPrivate").then(response => {
+    get("/api/createPrivate").then((response) => {
       console.log("matched me to", response.gameId, "(private)");
       navigate(`/gameroom/${response.gameId}`);
-    })
+    });
   };
 
   handleQuestionClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {};
@@ -34,7 +34,7 @@ class Main extends Component<Props, State> {
   render() {
     return (
       <div className="Main Container">
-        <div className="Title-container"> Campfire</div>
+        <div className="Title-container fade-in"> Campfire</div>
         <div className="Buttons-container">
           <button
             type="submit"

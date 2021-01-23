@@ -45,7 +45,7 @@ class Gallery extends Component<Props, State> {
     return (
       <>
         <div className="GalleryTitle-container">
-          <span className="Gallery-title">Gallery</span>
+          <span className="Gallery-title fade-in">Gallery</span>
         </div>
 
         <div className="Gallery-container">
