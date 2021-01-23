@@ -4,6 +4,8 @@ import Comment from "../../../../../shared/Comment";
 interface Props {
   comments: Comment[];
   showComments: boolean;
+  storyId: string;
+  userId: string;
 }
 interface State {
   // showComments: boolean;
@@ -28,6 +30,11 @@ class CommentsBlock extends Component<Props, State> {
   };
   handleNewCommentSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     console.log(this.state.value);
+    const body = {
+      storyId: this.props.storyId,
+      userId: this.props.userId,
+      content: this.state.value,
+    };
   };
 
   render() {

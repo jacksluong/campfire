@@ -114,7 +114,12 @@ class SingleStoryCard extends Component<Props, State> {
           onShowButtonsClick={this.ShowButtonsClick}
           showComments={this.state.showComments}
         />
-        <CommentsBlock comments={this.props.comments} showComments={this.state.showComments} />
+        <CommentsBlock
+          comments={this.props.comments}
+          showComments={this.state.showComments}
+          userId={this.props.userId}
+          storyId={this.props.storyId}
+        />
       </div>
     );
   }
