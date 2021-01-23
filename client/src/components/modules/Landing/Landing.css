@@ -204,7 +204,16 @@ Button {
   background-color: #29ccc7;
 }
 
+.comments-container {
+  width: fill;
+  flex-grow: 100;
+  /* border-style: solid; */
+  /* padding: auto; */
+}
 .CommentButton-container {
   font-size: 16px;
   margin: auto;
+  /* text-align: center; */
+  width: fill;
+  flex-grow: 100;
 }
