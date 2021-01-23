@@ -45,7 +45,11 @@ class CommentsBlock extends Component<Props, State> {
   render() {
     //get comments
     let commentsElement = null;
-    commentsElement = this.props.comments.map((comment) => <div>{comment.content}</div>);
+    commentsElement = this.props.comments.map((comment) => (
+      <div>
+        {comment.name} | {comment.content}
+      </div>
+    ));
 
     return (
       <div className="CommentsBlock-container">
