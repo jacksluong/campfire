@@ -104,11 +104,10 @@ router.post("/newComment", (req, res) => {
   const storyId = req.body.storyId;
   const userId = req.body.userId;
   const content = req.body.content;
-  // res.send({ name: "potaot" });
   UserModel.findById(userId).then((user: User) => {
     let name = user.name;
     StoryModel.findById(storyId).then((story: Story) => {
-      let storyComments = story.comments.splice(0, 0);
+      let storyComments = [...story.comments];
       let newComment = {
         name: name,
         senderId: userId,
