@@ -87,7 +87,9 @@ class SingleStoryCard extends Component<Props, State> {
     );
 
     return (
-      <div className="SingleStoryCard-container" data-aos="fade-up" data-aos-easing="ease-in-out">
+      <div
+        className="SingleStoryCard-container" /* data-aos="fade-up" data-aos-easing="ease-in-out"*/
+      >
         <div className="SingleStoryCard-StoryTitle">{this.props.name}</div>
         <div className="SingleStoryCard-Contributors">
           By: {"  "}
