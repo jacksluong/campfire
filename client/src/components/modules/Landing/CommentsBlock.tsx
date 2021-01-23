@@ -1,5 +1,7 @@
+import { response } from "express";
 import React, { Component } from "react";
 import Comment from "../../../../../shared/Comment";
+import { post } from "../../../utilities";
 
 interface Props {
   comments: Comment[];
@@ -35,6 +37,9 @@ class CommentsBlock extends Component<Props, State> {
       userId: this.props.userId,
       content: this.state.value,
     };
+    post("/api/newComment", body).then((response) => {
+      console.log(response);
+    });
   };
 
   render() {

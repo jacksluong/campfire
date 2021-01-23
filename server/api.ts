@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
 import UserModel from "./models/User";
@@ -99,7 +99,19 @@ router.post("/likeStory", (req, res) => {
   //1. get the array of users
   //2. update
 });
-
+router.post("/newComment", (req, res) => {
+  const storyId = req.body.storyId;
+  const userId = req.body.userId;
+  const content = req.body.content;
+  // res.send({ name: "potaot" });
+  UserModel.findById(userId).then((user: User) => {
+    res.send({
+      userId: userId,
+      name: user.name,
+    });
+  });
+  // res.send({ name: name });
+});
 router.get("/matchmaking", (req, res) => {
   res.send({ gameId: logic.matchmake(req.user?._id) });
 });
