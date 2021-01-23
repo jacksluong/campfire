@@ -38,11 +38,6 @@ class StoryInteractionBar extends Component<Props, State> {
     // console.log(this.state.showComments);
     this.props.onShowButtonsClick();
   };
-  onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      value: event.target.value,
-    });
-  };
 
   render() {
     return (
