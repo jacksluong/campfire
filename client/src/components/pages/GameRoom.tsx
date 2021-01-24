@@ -45,14 +45,14 @@ class GameRoom extends Component<Props, State> {
   }
 
   componentDidMount() {
-    socket.on("gameUpdate", gameState => {
+    socket.on("gameUpdate", (gameState) => {
       // on game start or player ready
       this.setState({
         readyPlayers: gameState.readyVotes,
-        currentTurn: gameState.currentTurn
-      })
+        currentTurn: gameState.currentTurn,
+      });
       if (gameState.currentTurn !== -1) clearTimeout(this.state.timeout);
-    })
+    });
     socket.on("playersUpdate", (gameState: GameState) => {
       // on player join or leave
       this.setState({
@@ -64,6 +64,7 @@ class GameRoom extends Component<Props, State> {
       // on input submit
       this.setState({
         currentStory: gameState.currentStory,
+        players: gameState.players,
         currentTurn: gameState.currentTurn,
         currentInput: "",
       });
@@ -86,17 +87,27 @@ class GameRoom extends Component<Props, State> {
   }
 
   startTimeout = (): void => {
-    this.setState({ 
-      timeout: setTimeout(() => 
-        navigate("/", { state: { message: "You were idle for too long and kicked out of the game." } })
-    , 1000 * TIMEOUT_SECONDS)
+    this.setState({
+      timeout: setTimeout(
+        () =>
+          navigate("/", {
+            state: { message: "You were idle for too long and kicked out of the game." },
+          }),
+        1000 * TIMEOUT_SECONDS
+      ),
     });
-  }
+  };
 
   resetTimeout = (): void => {
     clearTimeout(this.state.timeout);
-    if (this.state.currentTurn === -1 && !this.state.readyPlayers.includes(this.state.players.findIndex(player => player.socketId === socket.id))) this.startTimeout();
-  }
+    if (
+      this.state.currentTurn === -1 &&
+      !this.state.readyPlayers.includes(
+        this.state.players.findIndex((player) => player.socketId === socket.id)
+      )
+    )
+      this.startTimeout();
+  };
 
   render() {
     return (

@@ -113,7 +113,7 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
       socketId: socketId,
       name: name,
       health: health,
-      wordFrequencies: new Map<string, number>(),
+      wordFrequencies: [],
     });
     gameState.endVotes.push(undefined);
   }
@@ -130,7 +130,9 @@ const disconnectPlayer = (socketId: string): GameState | undefined => {
         if (room.currentTurn === -1) {
           // remove if game hasn't started
           remove(room.readyVotes, i);
-          room.readyVotes = room.readyVotes.map(playerIndex => playerIndex > i ? playerIndex - 1 : playerIndex);
+          room.readyVotes = room.readyVotes.map((playerIndex) =>
+            playerIndex > i ? playerIndex - 1 : playerIndex
+          );
           room.players.splice(i, 1);
         } else {
           // take action if current turn or last active player was this person
@@ -168,6 +170,36 @@ const addToStory = (gameId: string, text: string): GameState => {
   return gameState;
 };
 
+const addToPlayer = (gameId: string, socketId: string, text: string): GameState => {
+  //find room and player to update
+  const room = getRoomById(gameId)!;
+  const updatePlayer = room.players.find((player) => player.socketId === socketId)!;
+
+  //input processing
+  text = text.toLowerCase();
+  let words = text.split(" ");
+  words = words.slice(0, words.length - 1);
+  console.log(words);
+
+  //add each word into wordFrequencies
+  words.forEach((word) => {
+    console.log(`In addToPlayer: ${word}`);
+    let frequentWord = updatePlayer.wordFrequencies.find((pair) => pair.word === word);
+    if (frequentWord) {
+      frequentWord.frequency++;
+      console.log(
+        `In addToPlayer (logic), Word Frequencies update: ${word}: ${frequentWord.frequency}`
+      );
+    } else {
+      let newPair = { word: word, frequency: 1 };
+      updatePlayer.wordFrequencies.push(newPair);
+      console.log(`In addToPlayer (logic), Word Frequencies update: ${word}: ${1}`);
+    }
+  });
+  console.log(updatePlayer.wordFrequencies);
+  return room;
+};
+
 const processReadyVote = (gameId: string, socketId: string): GameState => {
   // identify index of this player in given room
   const gameState = rooms.find((room) => room.gameId == gameId)!; // assume game will be found
@@ -201,10 +233,16 @@ const processEndgameVote = (gameId: string, socketId: string, response: boolean)
   // set player's vote in endVotes
   gameState.endVotes[playerIndex] = response;
   // check for majority of yes/no
-  if (gameState.endVotes.filter(vote => vote).length >= Math.ceil(getConnectedPlayers(gameState).length / 2)) {
+  if (
+    gameState.endVotes.filter((vote) => vote).length >=
+    Math.ceil(getConnectedPlayers(gameState).length / 2)
+  ) {
     gameState.gameOver = true;
     dispose(gameState);
-  } else if (gameState.endVotes.filter(vote => vote === false).length > getConnectedPlayers(gameState).length / 2) {
+  } else if (
+    gameState.endVotes.filter((vote) => vote === false).length >
+    getConnectedPlayers(gameState).length / 2
+  ) {
     gameState.gameOver = false;
     gameState.endVotes = gameState.endVotes.map(() => undefined);
   }
@@ -233,8 +271,10 @@ const processPublishVote = (gameId: string, socketId: string): GameState => {
 };
 
 const startCondition = (gameState: GameState): boolean => {
-  let minimum = gameState.isPrivate ? 2 : 3
-  return gameState.players.length >= minimum && gameState.readyVotes.length === gameState.players.length;
+  let minimum = gameState.isPrivate ? 2 : 3;
+  return (
+    gameState.players.length >= minimum && gameState.readyVotes.length === gameState.players.length
+  );
 };
 
 const dispose = (room: GameState): void => {
@@ -252,7 +292,7 @@ const remove = <T>(array: T[], element: T): boolean => {
     }
   }
   return false;
-}
+};
 
 export default {
   createRoom,
@@ -266,8 +306,8 @@ export default {
   getConnectedPlayers,
 
   addToStory,
+  addToPlayer,
   processReadyVote,
   processEndgameVote,
-  processPublishVote
-
+  processPublishVote,
 };

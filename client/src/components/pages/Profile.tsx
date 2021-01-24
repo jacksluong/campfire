@@ -3,15 +3,18 @@ import StatisticsSection from "../modules/Profile/StatisticsSection";
 import ProfileSection from "../modules/Profile/ProfileSection";
 import { RouteComponentProps } from "@reach/router";
 import { get, post } from "../../../src/utilities";
+import NavBar from "../modules/Landing/NavBar";
 interface State {
   name: string;
   wordsTyped: number;
   storiesWorkedOn: string[];
-  // wordFrequencies: Map<string, number>;
+  wordFrequencies: { word: string; frequency: number }[];
 }
 
 interface Props extends RouteComponentProps {
   userId?: string;
+  handleLogin: any;
+  handleLogout: any;
 }
 
 class Profile extends Component<Props, State> {
@@ -21,31 +24,44 @@ class Profile extends Component<Props, State> {
       name: "",
       wordsTyped: 0,
       storiesWorkedOn: [],
-      // wordFrequencies: ["" : 0],
+      wordFrequencies: [],
     };
   }
+
+  PROFILE_WORDS: number = 5;
 
   componentDidMount() {
     console.log("requesting userinfo");
     get("/api/userInfo", { userId: this.props.userId }).then((user) => {
+      let words =
+        user.wordFrequencies.length <= this.PROFILE_WORDS
+          ? user.wordFrequencies
+          : user.wordFrequencies.slice(0, 5);
       this.setState({
         name: user.name,
         wordsTyped: user.wordsTyped,
         storiesWorkedOn: user.storiesWorkedOn,
-        // wordFrequencies: user.wordFrequencies,
+        wordFrequencies: words,
       });
     });
   }
 
   render() {
     return (
-      <div className="Profile-container">
-        <ProfileSection name={this.state.name} />
-        <StatisticsSection
-          wordsTyped={this.state.wordsTyped}
-          storiesWorkedOn={this.state.storiesWorkedOn}
-          // wordFrequencies={this.state.wordFrequencies}
+      <div>
+        <NavBar
+          handleLogin={this.props.handleLogin}
+          handleLogout={this.props.handleLogout}
+          userId={this.props.userId}
         />
+        <div className="Profile-container">
+          <ProfileSection name={this.state.name} />
+          <StatisticsSection
+            wordsTyped={this.state.wordsTyped}
+            storiesWorkedOn={this.state.storiesWorkedOn}
+            wordFrequencies={this.state.wordFrequencies}
+          />
+        </div>
       </div>
     );
   }

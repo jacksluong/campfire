@@ -15,8 +15,12 @@ class ProfileSection extends Component<Props, {}> {
         <div className="ProfilePicture-container">
           <div className="ProfilePicture-avatar" />
         </div>
-        <div className="AboutMe-container">About me: {this.props.name}</div>
-        <div className="AboutMeDescription-container">AboutMeDescription</div>
+        <div className="AboutMe-container">
+          <h1>{this.props.name}</h1>
+        </div>
+        <div className="AboutMeDescription-container">
+          Are you oxygen? Cuz I can't live without u
+        </div>
       </div>
     );
   }

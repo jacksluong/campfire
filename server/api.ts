@@ -42,7 +42,7 @@ router.get("/stories", (req, res) => {
 
 // get UserInfo for Profile page
 router.get("/userInfo", (req, res) => {
-  console.log(`Requesting ID: $${req.query.userId}`);
+  console.log(`Requesting ID: ${req.query.userId}`);
   UserModel.findById(req.query.userId).then((user: User) => {
     console.log(`User Found in Database: ${user}`);
     const userInfo = {
@@ -127,8 +127,10 @@ router.post("/inputSubmit", (req, res) => {
   let newInput = {
     content: req.body.content + " ",
     gameId: req.body.gameId,
+    socketId: req.body.socketId,
   };
-  const newGameState = logic.addToStory(req.body.gameId, newInput.content);
+  let newGameState = logic.addToStory(req.body.gameId, newInput.content);
+  newGameState = logic.addToPlayer(req.body.gameId, req.body.socketId, newInput.content);
   socketManager.emitToRoom("storyUpdate", newGameState);
   res.send({});
 });
@@ -167,6 +169,30 @@ router.post("/voteEndGame", (req, res) => {
     req.body.response === "y"
   );
   if (newGameState.gameOver) {
+    console.log(`Made it to gameOver emit`);
+    const room: GameState = logic.getRoomById(req.body.gameId)!;
+    //for each player in the room who is not a guest, add info into word map in database
+    room.players.forEach((player: Player) => {
+      if (player.userId !== "guest") {
+        UserModel.findById(player.userId).then((user: User) => {
+          let topWords = player.wordFrequencies.sort((word) => word.frequency);
+          topWords.reverse();
+          let numWords = 0;
+          for (let frequentWord of topWords) {
+            let pair = user.wordFrequencies.find((wordFreq) => wordFreq.word === frequentWord.word);
+            if (pair) {
+              pair.frequency += 1;
+            } else {
+              let newPair = { word: frequentWord.word, frequency: 1 };
+              user.wordFrequencies.push(newPair);
+            }
+            numWords += frequentWord.frequency;
+          }
+          user.wordsTyped ? (user.wordsTyped += numWords) : (user.wordsTyped = numWords);
+          user.save();
+        });
+      }
+    });
     socketManager.emitToRoom("gameOver", newGameState);
   } else if (newGameState.gameOver === false) {
     socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
@@ -194,6 +220,7 @@ router.post("/votePublish", (req, res) => {
     });
     newStory.save().then((story) => {
       socketManager.getIo().emit("storyPublished");
+      // logic.addStoryToPlayer(story._id, gameState);
       console.log("story saved: ", story);
     });
   }

@@ -1,4 +1,4 @@
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import React, { Component } from "react";
 
 interface Props {
@@ -16,7 +16,11 @@ class ProfileButton extends Component<Props, State> {
 
   toggleDropdown = (): void => {
     document.getElementById("dropdown").classList.toggle("show");
-  }
+  };
+
+  handleProfile = (): void => {
+    navigate(`/profile/${this.props.userId}`);
+  };
 
   render() {
     return (
@@ -25,8 +29,12 @@ class ProfileButton extends Component<Props, State> {
           Dropdown
         </button>
         <div id="dropdown" className="Dropdown-content">
-          <Link to="/profile" className="Dropdown-item">Profile</Link>
-          <a className="Dropdown-item" onClick={this.props.handleLogout}>Logout</a>
+          <a className="Dropdown-item" onClick={this.handleProfile}>
+            Profile
+          </a>
+          <a className="Dropdown-item" onClick={this.props.handleLogout}>
+            Logout
+          </a>
         </div>
       </div>
     );

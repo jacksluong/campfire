@@ -75,6 +75,7 @@ class GameInputField extends Component<Props, State> {
         post("/api/inputSubmit", {
           content: this.state.value,
           gameId: this.props.gameId,
+          socketId: socket.id,
         }).then(() => this.setState({ value: "" }));
       }
     }
@@ -85,7 +86,7 @@ class GameInputField extends Component<Props, State> {
     let enabled = this.props.enabled;
     console.log("enabled and endGameRequester is ", enabled, this.state.endGameRequester);
     if (this.state.endGameRequester.length > 0) {
-      console.log("thinks request is still active")
+      console.log("thinks request is still active");
       placeholder = enabled
         ? ""
         : `${this.state.endGameRequester} requested to end the story here. If you agree, type "y" and press enter.`; // TODO: update handleSubmit with this
