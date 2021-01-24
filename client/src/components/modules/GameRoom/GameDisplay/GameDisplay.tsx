@@ -4,7 +4,6 @@ import Gathering from "./Gathering";
 import GameInputField from "./GameInputField";
 import Player from "../../../../../../shared/Player";
 import { socket } from "../../../../client-socket";
-import "./GameDisplay.scss";
 
 interface Props {
   resetTimeout: () => void;
@@ -45,7 +44,7 @@ class GameDisplay extends Component<Props, State> {
       );
     }
     return (
-      <div className="GameDisplay-container">
+      <div className="GameDisplay container">
         <StoryText currentStory={this.props.currentStory} currentInput={this.props.currentInput} />
         <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
         {input}

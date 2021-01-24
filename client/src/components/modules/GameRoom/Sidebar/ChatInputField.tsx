@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./ChatInputField.scss";
 import { get, post } from "../../../../../src/utilities";
 import { socket } from "../../../../client-socket";
 
@@ -26,28 +25,36 @@ class ChatInputField extends Component<Props, State> {
     this.props.resetTimeout();
   };
 
+  handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key == 'Enter' && this.state.value.length > 0) {
+      const body = { 
+        gameId: this.props.gameId, 
+        socketId: socket.id, 
+        content: this.state.value 
+      };
+      post("/api/message", body);
+      this.setState({
+        value: "",
+      });
+      this.props.resetTimeout();
+    }
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
-    const body = { gameId: this.props.gameId, socketId: socket.id, content: this.state.value };
-    post("/api/message", body);
-    this.setState({
-      value: "",
-    });
-    this.props.resetTimeout();
   };
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          maxLength={100}
-          placeholder="Enter Chat Message"
-          value={this.state.value}
-          onChange={this.handleChange}
-          className="ChatInputField-textbox"
-        />
-      </form>
+      <input
+        type="text"
+        maxLength={100}
+        placeholder="Enter Chat Message"
+        value={this.state.value}
+        onChange={this.handleChange}
+        onKeyPress={this.handleKeyPress}
+        className="ChatInputField"
+      />
     );
   }
 }

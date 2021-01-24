@@ -1,0 +1,378 @@
+.Main.container {
+  height: 100%;
+  text-align: center;
+  color: white;
+}
+.Main .background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-image: url("../assets/campfire.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+.Main .subtitle {
+  /* opacity: 0; */
+  transition: 1.5s;
+}
+
+.Buttons-container {
+  margin: auto auto 18% auto;
+  opacity: 0;
+  transition: 1.5s;
+  /* text-align: center; */
+  display: flex;
+  justify-content: space-between;
+  /* border-style: solid; */
+  width: 50%;
+  height: 40%;
+}
+
+Button {
+  /* width: 120px; */
+  /* height:10%; */
+  font-size: 24px;
+  border-radius: 8px;
+}
+
+.Title-container {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 160px;
+}
+
+.u-small-radius {
+  border-radius: 16px;
+}
+
+.Help-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 98%;
+  margin: auto;
+}
+
+.Dropbutton {
+  background-color: #3498db;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.Dropbutton:hover,
+.Dropbutton:focus {
+  background-color: #2980b9;
+}
+
+.Dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.Dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.Dropdown-content .Dropdown-item {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.Dropdown .Dropdown-item:hover {
+  background-color: #ddd;
+}
+
+.show {
+  display: block;
+}
+
+#codeButton {
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.Gallery-title {
+  margin: 0%, auto;
+  width: 100%;
+  text-align: center;
+  font-size: 64px;
+  /* border-style: solid; */
+}
+
+.Gallery-container {
+  width: 100vw;
+  /* text-align: center; */
+  display: flex;
+  flex-direction: row;
+  border-style: solid;
+  flex-wrap: wrap;
+  /* height: 3500px; */
+  justify-content: space-around;
+  /* justify-content: safe; */
+  /* flex-basis: 2000px; */
+  flex-grow: unset;
+  /* flex-grow: 80; */
+}
+
+/* Single Story Styling*/
+.SingleStoryCard-container {
+  border-style: solid;
+  margin: 2%;
+  min-width: 20%;
+  max-width: 30%;
+  text-align: left;
+  max-height: 20%;
+  padding: 0.5%;
+  flex-grow: 1;
+  /* display: inline; */
+}
+
+.SingleStoryCard-StoryTitle {
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.SingleStoryCard-Contributors {
+  font-style: italic;
+  margin: auto 10px;
+}
+
+.SingleStoryCard-Content {
+  margin: auto 10px;
+}
+
+/* 
+.SingleStoryCard-usersThatLiked {
+}
+
+.SingleStoryCard-Keywords {
+} */
+.StoryInteractionBar-container {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-around; */
+}
+
+.LikeButton-container {
+  font-size: 16px;
+}
+
+.NewComment-container {
+  margin: auto 3%;
+  width: fill;
+  flex-grow: 100;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+}
+
+.u-blue {
+  background-color: #29ccc7;
+}
+
+.GameRoom.container {
+  display: flex;
+  flex-direction: row;
+  min-height: 650px;
+  height: 100vh;
+  color: black;
+}
+.GameRoom .Sidebar.container {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 300px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 300px;
+  background-color: #994287;
+  padding: 5px 10px 10px 10px;
+}
+.GameRoom .Sidebar .heading {
+  display: inline;
+  line-height: 0px;
+  font-weight: bold;
+}
+.GameRoom .Sidebar .PlayerDisplay.container {
+  flex-basis: 300px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  border-bottom: 2px solid black;
+  vertical-align: center;
+}
+.GameRoom .Sidebar .PlayerDisplay .header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.GameRoom .Sidebar .PlayerDisplay .header img {
+  margin: 0px 3px 0px 10px;
+}
+.GameRoom .Sidebar .PlayerDisplay .PlayerRow {
+  display: flex;
+  align-items: center;
+  margin: 2px 0px;
+  padding: 2px 8px;
+}
+.GameRoom .Sidebar .PlayerDisplay .PlayerRow .name {
+  width: 70%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  color: #d9d9d9;
+  font-size: 11pt;
+}
+.GameRoom .Sidebar .PlayerDisplay .PlayerRow.disconnected {
+  color: #969696;
+}
+.GameRoom .Sidebar .PlayerDisplay .PlayerRow .health {
+  flex-grow: 1;
+  height: 12px;
+  padding: 0px 5px;
+  font-size: 8pt;
+  line-height: 16pt;
+  border-radius: 10px;
+  background: linear-gradient(to right, lightgreen);
+}
+.GameRoom .Sidebar .Chat.container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  height: 300px;
+  /* not sure why I need this but without some small value, chat does not recognize overflow */
+  margin-top: 5px;
+}
+.GameRoom .Sidebar .Chat .messagesContainer {
+  flex-grow: 1;
+  width: 100%;
+  padding: 8px 10px 4px 10px;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #803770;
+  overflow-y: scroll;
+}
+.GameRoom .Sidebar .Chat .SingleMessage {
+  color: #d9d9d9;
+  overflow-wrap: break-word;
+  margin-bottom: 4px;
+  font-size: 10pt;
+}
+.GameRoom .Sidebar .Chat .SingleMessage .sender {
+  color: #969696;
+  font-weight: bold;
+}
+.GameRoom .Sidebar .Chat .ChatInputField {
+  flex-basis: 30px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  margin: 0px 0px 3px 0px;
+  border-radius: 0px 0px 6px 6px;
+}
+.GameRoom .GameDisplay.container {
+  display: flex;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-direction: column;
+  background-color: #062F4F;
+}
+.GameRoom .GameDisplay > * {
+  padding: 15px;
+  margin: 15px;
+  border-radius: 15px;
+}
+.GameRoom .GameDisplay .StoryText.container {
+  flex-basis: 150px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow-y: scroll;
+  background-color: #032540;
+  color: #d9d9d9;
+  box-shadow: 0px 4px 8px #035a9e;
+}
+.GameRoom .GameDisplay .StoryText span {
+  overflow-wrap: break-word;
+}
+.GameRoom .GameDisplay .StoryText .story {
+  color: #969696;
+}
+.GameRoom .GameDisplay .Gathering.container {
+  flex-grow: 1;
+  padding: 0px;
+  margin: 0px;
+}
+.GameRoom .GameDisplay .GameInputField.primary {
+  flex-basis: 40px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-self: center;
+  width: 90%;
+  border-radius: 20px;
+  outline: none;
+}
+.GameRoom .GameDisplay .GameInputField.ready {
+  position: relative;
+  padding: 0px;
+  background-color: #00fa50;
+  color: #474747;
+  cursor: pointer;
+  box-shadow: 0 5px 3px #1c1c1c;
+  animation: floating 1.25s infinite;
+}
+@keyframes floating {
+  0% {
+    top: 0px;
+    box-shadow: 0px 5px 3px #1c1c1c;
+  }
+  50% {
+    top: -3px;
+    box-shadow: 0px 7px 4px #1c1c1c;
+  }
+  100% {
+    top: 0px;
+    box-shadow: 0px 5px 3px #1c1c1c;
+  }
+}
+.GameRoom .GameDisplay .GameInputField.ready:hover {
+  box-shadow: 0 4px 2px #1c1c1c;
+  animation: none;
+  transition: 0.1s;
+}
+.GameRoom .GameDisplay .GameInputField.ready:active {
+  box-shadow: 0 2px 2px #1c1c1c;
+  animation: none;
+}
+.GameRoom .GameDisplay .GameInputField.ready.clicked {
+  box-shadow: 0 2px 2px #1c1c1c;
+  animation: none;
+  background-color: #06c443;
+}
+.GameRoom .GameDisplay .GameInputField.input {
+  border-radius: 50px;
+  padding: 0px 10px;
+  border: none;
+  background-color: white;
+  transition: 0.3s;
+}
+.GameRoom .GameDisplay .GameInputField.input:disabled {
+  background-color: lightgray;
+}
+
+/*# sourceMappingURL=output.css.map */

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./StoryText.scss";
 
 interface Props {
   currentStory: string;
@@ -11,11 +10,23 @@ class StoryText extends Component<Props, {}> {
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    window.addEventListener('resize', this.setStoryTextWidth);
+  }
+
+  componentDidUpdate() {
+    this.setStoryTextWidth();
+  }
+
+  setStoryTextWidth = (): void => {
+    document.getElementById("storyText").style.width = (window.innerWidth - 300 - 30 - 30 - 20) + "px";
+  }
 
   render() {
     return (
-      <div className="StoryText-container">{this.props.currentStory + this.props.currentInput}</div>
+      <div className="StoryText container" id="storyText">
+        <span className="story">{this.props.currentStory + " "}</span>
+        <span className="input">{this.props.currentInput}</span></div>
     );
   }
 }

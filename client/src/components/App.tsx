@@ -6,6 +6,7 @@ import { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-lo
 import { socket } from "../client-socket";
 import User from "../../../shared/User";
 import "../utilities.scss";
+import "../styles/output.css";
 import GameRoom from "./pages/GameRoom";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";

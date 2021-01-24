@@ -4,12 +4,8 @@ import GameDisplay from "../modules/GameRoom/GameDisplay/GameDisplay";
 import { navigate, RouteComponentProps } from "@reach/router";
 import Player from "../../../../shared/Player";
 import { socket } from "../../client-socket";
-import "../../../src/components/modules/GameRoom/GameRoom.scss";
-import "../../../src/components/modules/GameRoom/Sidebar/Sidebar.scss";
-import "../../../src/components/modules/GameRoom/GameDisplay/GameDisplay.scss";
 
 import { get, post } from "../../utilities";
-import { GameState } from "../../../../server/logic";
 
 interface Props extends RouteComponentProps {
   gameId?: string;
@@ -17,6 +13,7 @@ interface Props extends RouteComponentProps {
 } // replaced "Props & RouteComponentProps" with "RouteComponentProps" because that's the primary way we are receiving props for this component
 
 interface State {
+  isPrivate: boolean;
   timeout: any;
   userId: string;
   players: Player[];
@@ -33,6 +30,7 @@ class GameRoom extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
+      isPrivate: false,
       timeout: undefined,
       userId: "",
       players: [],
@@ -53,14 +51,18 @@ class GameRoom extends Component<Props, State> {
       })
       if (gameState.currentTurn !== -1) clearTimeout(this.state.timeout);
     })
-    socket.on("playersUpdate", (gameState: GameState) => {
+    socket.on("playersUpdate", (gameState) => {
       // on player join or leave
       this.setState({
+        isPrivate: gameState.isPrivate,
         players: gameState.players,
+        readyPlayers: gameState.readyVotes,
+        currentTurn: gameState.currentTurn,
         spectators: gameState.spectators,
       });
+      if (!gameState.isPrivate) this.resetTimeout();
     });
-    socket.on("storyUpdate", (gameState: GameState) => {
+    socket.on("storyUpdate", (gameState) => {
       // on input submit
       this.setState({
         currentStory: gameState.currentStory,
@@ -78,7 +80,6 @@ class GameRoom extends Component<Props, State> {
       navigate(`/end/${this.props.gameId}`);
     });
     socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId });
-    this.startTimeout();
   }
 
   componentWillUnmount() {
@@ -94,34 +95,33 @@ class GameRoom extends Component<Props, State> {
   }
 
   resetTimeout = (): void => {
-    clearTimeout(this.state.timeout);
-    if (this.state.currentTurn === -1 && !this.state.readyPlayers.includes(this.state.players.findIndex(player => player.socketId === socket.id))) this.startTimeout();
+    if (this.state.timeout) clearTimeout(this.state.timeout);
+    if (!this.state.isPrivate &&
+      this.state.currentTurn === -1 && 
+      !this.state.readyPlayers.includes(this.state.players.findIndex(player => player.socketId === socket.id))) 
+      this.startTimeout();
   }
 
   render() {
     return (
-      <div className="GameRoom-container">
-        <div className="Sidebar-container">
-          <Sidebar
-            resetTimeout={this.resetTimeout}
-            gameId={this.props.gameId}
-            players={this.state.players}
-            readyPlayers={this.state.readyPlayers}
-            currentTurn={this.state.currentTurn}
-            spectators={this.state.spectators}
-          />
-        </div>
-        <div className="GameDisplay-container">
-          <GameDisplay
-            resetTimeout={this.resetTimeout}
-            players={this.state.players}
-            currentStory={this.state.currentStory}
-            currentTurn={this.state.currentTurn}
-            currentInput={this.state.currentInput}
-            gameId={this.props.gameId}
-            userId={this.props.userId}
-          />
-        </div>
+      <div className="GameRoom container">
+        <Sidebar
+          resetTimeout={this.resetTimeout}
+          gameId={this.props.gameId}
+          players={this.state.players}
+          readyPlayers={this.state.readyPlayers}
+          currentTurn={this.state.currentTurn}
+          spectators={this.state.spectators}
+        />
+        <GameDisplay
+          resetTimeout={this.resetTimeout}
+          players={this.state.players}
+          currentStory={this.state.currentStory}
+          currentTurn={this.state.currentTurn}
+          currentInput={this.state.currentInput}
+          gameId={this.props.gameId}
+          userId={this.props.userId}
+        />
       </div>
     );
   }

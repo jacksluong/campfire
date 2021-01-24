@@ -1,29 +1,39 @@
 import React, { Component } from "react";
-// import "./SideBar.scss";
-import "../../../../utilities.scss";
-import "./PlayerRow.scss";
 interface Props {
-  userId: string;
   name: string;
   health: number;
+  isTyping: boolean;
   disconnected: boolean;
 }
 
-interface State {}
+const MAX_HEALTH = 150; // seconds
 
-class PlayerDisplay extends Component<Props, State> {
+class PlayerDisplay extends Component<Props, {}> {
   constructor(props) {
     super(props);
-    this.state = {};
+  }
+
+  componentDidMount() {
+    if (this.props.isTyping) this.animateDecreaseHealth(this.props.health);
+    else {
+      document.getElementById("sidebarHealthBar").style.background = `linear-gradient(to right, lightgreen, lightgreen ${this.props.health}%, red ${this.props.health}%)`;
+    }
+  }
+
+  animateDecreaseHealth = (health: number): void => {
+    document.getElementById("sidebarHealthBar").style.background = `linear-gradient(to right, lightgreen, lightgreen ${health}%, red ${health}%)`;
+    setTimeout(() => {
+      this.animateDecreaseHealth(health - 1);
+    }, 1000 * (100 / MAX_HEALTH));
   }
 
   render() {
     return (
-      <div className={this.props.disconnected ? "PlayerRow-container disconnected" : "PlayerRow-container"}>
-        <span>
-          <b>{this.props.name + " | "}</b>
-        </span>
-        <span>{this.props.health}</span>
+      <div className={this.props.disconnected ? "PlayerRow disconnected" : "PlayerRow"}>
+        <div className="name">
+          {this.props.name}
+        </div>
+        <div className="health" id="sidebarHealthBar"></div>
       </div>
     );
   }

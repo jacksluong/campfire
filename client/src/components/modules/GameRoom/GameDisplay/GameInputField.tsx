@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { post } from "../../../../utilities";
-import "./GameInputField.css";
 import { socket } from "../../../../client-socket";
-import { navigate } from "@reach/router";
 
 interface Props {
   resetTimeout: () => void;
@@ -83,15 +81,12 @@ class GameInputField extends Component<Props, State> {
   render() {
     let placeholder: string;
     let enabled = this.props.enabled;
-    console.log("enabled and endGameRequester is ", enabled, this.state.endGameRequester);
     if (this.state.endGameRequester.length > 0) {
-      console.log("thinks request is still active")
-      placeholder = enabled
-        ? ""
-        : `${this.state.endGameRequester} requested to end the story here. If you agree, type "y" and press enter.`; // TODO: update handleSubmit with this
+      placeholder = enabled ?
+        "" :
+        `${this.state.endGameRequester} requested to end the story here. If you agree, type "y" and press enter.`; // TODO: update handleSubmit with this
       enabled = !enabled && !this.state.voted; // person's turn cannot respond to prompt, everyone else can
     } else {
-      console.log("knows request is not active");
       placeholder = enabled ? "Craft your sentence here" : "It's someone else's turn right now!";
     }
     let display = !this.props.started ? (

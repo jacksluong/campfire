@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import "./SingleMessage.scss";
 import Message from "../../../../../../shared/Message";
 
 interface Props {
@@ -13,9 +12,9 @@ class SingleMessage extends Component<Props, {}> {
 
   render() {
     return (
-      <div className={"u-flex u-flex-alignCenter SingleMessage-container"}>
-        <span className=" SingleMessage-sender u-bold">{this.props.message.sender + ":"}</span>
-        <span className="SingleMessage-content">{this.props.message.content}</span>
+      <div className={"SingleMessage container"}>
+        <span className="sender">{this.props.message.sender + ": "}</span>
+        <span className="content">{this.props.message.content}</span>
       </div>
     );
   }

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Player from "../../../../../../shared/Player";
-import "./Gathering.scss";
 
 interface Props {
   players: Player[];
@@ -13,7 +12,11 @@ class Gathering extends Component<Props, {}> {
   }
 
   render() {
-    return <div className="Gathering-container">Gathering Container</div>;
+    return (
+      <div className="Gathering container">
+        
+      </div>
+    );
   }
 }
 

@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import ChatInputField from "./ChatInputField";
 import Player from "../../../../../../shared/Player";
-import "./Chat.scss";
-import { get, post } from "../../../../../src/utilities";
-import { GameState } from "../../../../../../server/logic";
 import SingleMessage from "./SingleMessage";
 
 import Message from "../../../../../../shared/Message";
@@ -19,6 +16,8 @@ interface State {
   messages: Message[];
 }
 class Chat extends Component<Props, State> {
+  chatBottom: HTMLDivElement;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,17 +30,18 @@ class Chat extends Component<Props, State> {
       this.setState({
         messages: this.state.messages.concat([message]),
       });
+      this.chatBottom.scrollIntoView();
     });
   }
 
   render() {
     return (
-      <div className="Chat-container">
-        <h2>Chat</h2>
-        <div className="Chat-historyContainer">
+      <div className="Chat container">
+        <div className="messagesContainer">
           {this.state.messages.map((m, i) => (
             <SingleMessage message={m} key={i} />
           ))}
+          <div ref={element => this.chatBottom = element}></div>
         </div>
         <ChatInputField resetTimeout={this.props.resetTimeout} gameId={this.props.gameId} />
       </div>

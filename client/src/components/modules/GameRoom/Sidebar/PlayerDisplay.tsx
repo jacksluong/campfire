@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import Chat from "./Chat";
 import Player from "../../../../../../shared/Player";
 import PlayerRow from "./PlayerRow";
-// import "./SideBar.scss";
-import "./PlayerDisplay.scss";
+
+const SPECTATOR_IMAGE = "https://imgur.com/nNut6eg.png";
 interface Props {
   players: Player[];
   readyPlayers: number[];
@@ -20,11 +19,27 @@ class PlayerDisplay extends Component<Props, State> {
   }
 
   render() {
+    let header = this.props.spectators === 0 ? (
+      <div className="header">
+        <h2 className="heading">Players</h2>
+      </div>
+    ) : (
+      <div className="header">
+        <h2 className="heading">Players</h2>
+        <img src={SPECTATOR_IMAGE} height="25" />
+        <span>{this.props.spectators}</span>
+      </div>
+    )
     return (
-      <div className="PlayerDisplay-container">
-        <h2>Players with {this.props.spectators} spectators</h2>
+      <div className="PlayerDisplay container">
+        {header}
         {this.props.players.map((player, i) => (
-          <PlayerRow userId={player.userId} name={player.name} health={player.health} disconnected={player.disconnected ?? false} key={i} />
+          <PlayerRow 
+            name={player.name} 
+            health={player.health} 
+            disconnected={player.disconnected ?? false} 
+            isTyping={this.props.currentTurn === i}
+            key={i} />
         ))}
       </div>
     );
