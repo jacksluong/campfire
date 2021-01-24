@@ -17,7 +17,7 @@ class Main extends Component<Props, State> {
     this.state = { typeAnimation: "________" }
   }
 
-  /* componentDidMount() {
+  componentDidMount() {
     let children = document.getElementById("mainContainer").children;
     for (let i = 0; i < 8; i++) {
       setTimeout(() => this.setState({ typeAnimation: "Campfire".slice(0, i + 1) + "_".repeat(7 - i) }), 150 * i + 250);
@@ -27,7 +27,7 @@ class Main extends Component<Props, State> {
         (children[i] as HTMLElement).style.opacity = "1";
       }, 1000 * i - 400);
     }
-  } */
+  }
 
   joinPublicGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     get("/api/matchmaking").then(response => {
@@ -48,28 +48,29 @@ class Main extends Component<Props, State> {
   render() {
     return (
       <div className="Main container" id="mainContainer">
-        <div className="background"></div>
-        <div className="Title-container">{this.state.typeAnimation}</div>
-        <h2 className="subtitle" id="landingSubtitle">Everyone has an imaginative spark waiting to be manifested. Find yours in this collaborative storytelling game.</h2>
-        <div className="Buttons-container" id="landingButtons">
+        <div className="backgroundImg"></div>
+        <div className="backgroundColor"></div>
+        <div className="title">{this.state.typeAnimation}</div>
+        <h3 className="subtitle" id="landingSubtitle">Everyone has an imaginative spark waiting to be manifested. Find yours in this collaborative storytelling game.</h3>
+        <div className="buttonsContainer" id="landingButtons">
           <button
             type="submit"
             value="Create Game"
-            className="Button"
+            className="gameButton"
             onClick={this.joinPublicGame}
           >
-            Quick play
+            Quick Play
           </button>
           <PrivateGameButton
             userId={this.props.userId}
             createPrivateGame={this.createPrivateGame}
           />
         </div>
-        <div className="Help-container" id="helpButton">
+        {/* <div className="Help-container" id="helpButton">
           <button className="u-small-radius" onClick={this.handleQuestionClick}>
             ?
           </button>
-        </div>
+        </div> */}
       </div>
     );
   }

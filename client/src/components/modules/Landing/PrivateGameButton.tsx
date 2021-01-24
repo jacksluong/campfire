@@ -8,8 +8,8 @@ interface Props {
 }
 
 interface State {
-  clicked: boolean,
-  codeInput: string | undefined
+  clicked: boolean;
+  codeInput: string;
 }
 
 class PrivateGameButton extends Component<Props, State> {
@@ -17,7 +17,7 @@ class PrivateGameButton extends Component<Props, State> {
     super(props);
     this.state = {
       clicked: false,
-      codeInput: undefined
+      codeInput: ""
     };
   }
 
@@ -36,49 +36,31 @@ class PrivateGameButton extends Component<Props, State> {
     });
   }
 
-  handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement,MouseEvent>) => {
-    this.setState({ codeInput: "" });
-  }
-
-  handleMouseLeave = (event: React.MouseEvent<HTMLButtonElement,MouseEvent>) => {
-    if (this.state.codeInput.length === 0) this.setState({ codeInput: undefined });
-  }
-
   handleInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
     this.setState({ codeInput: event.currentTarget.value });
   }
 
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (this.state.codeInput?.length !== 0) navigate(`/gameroom/${this.state.codeInput}`);
+  handleSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key == 'Enter' && this.state.codeInput.length !== 0) navigate(`/gameroom/${this.state.codeInput}`);
   }
 
   render() {
-    let secondButton;
-    if (!this.state.clicked) secondButton = "";
-    else if (this.state.codeInput !== undefined) {
-      secondButton = (
-        <>
-          <br />
-          <form onSubmit={this.handleSubmit}>
-            <input type="text" id="codeButton" onInput={this.handleInput} className="Button" onMouseLeave={this.handleMouseLeave} />
-          </form>
-        </>
-      )
-    } else {
-      secondButton = (
-        <>
-          <br />
-          <button id="codeButton" className="Button" onMouseEnter={this.handleMouseEnter}>
-          Enter Code
-          </button>
-        </>
-      )
-    }
+    let secondButton = !this.state.clicked ? "" :
+      (<>
+        <div style={{ textAlign: "center", margin: "5px 0px" }}>or</div>
+        <input 
+          type="text" 
+          id="codeButton" 
+          className="gameButton input" 
+          maxLength={7}
+          placeholder="Enter code"
+          onInput={this.handleInput}
+          onKeyPress={this.handleSubmit} 
+        />
+      </>)
     return (
-      <div className="">
-        <button id="createButton" onClick={this.firstClick} className="Button">
+      <div className="PrivateGameButton container">
+        <button id="createButton" onClick={this.firstClick} className="gameButton">
           Private Game
         </button>
         {secondButton}
