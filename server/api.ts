@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
 import UserModel from "./models/User";
@@ -91,6 +91,7 @@ router.post("/likeStory", (req, res) => {
     } else {
       usersThatLiked.splice(usersThatLiked.indexOf(userId), 1);
     }
+
     story.usersThatLiked = usersThatLiked;
     story.save();
     res.send({ likes: story.usersThatLiked.length, hasLiked: !hasLiked });
@@ -99,7 +100,27 @@ router.post("/likeStory", (req, res) => {
   //1. get the array of users
   //2. update
 });
-
+router.post("/newComment", (req, res) => {
+  const storyId = req.body.storyId;
+  const userId = req.body.userId;
+  const content = req.body.content;
+  UserModel.findById(userId).then((user: User) => {
+    let name = user.name;
+    StoryModel.findById(storyId).then((story: Story) => {
+      let storyComments = [...story.comments];
+      let newComment = {
+        name: name,
+        senderId: userId,
+        content: content,
+      };
+      storyComments.push(newComment);
+      story.comments = storyComments;
+      res.send(newComment);
+      story.save();
+    });
+  });
+  // res.send({ name: name });
+});
 router.get("/matchmaking", (req, res) => {
   res.send({ gameId: logic.matchmake(req.user?._id) });
 });

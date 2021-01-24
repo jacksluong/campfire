@@ -11,6 +11,7 @@ interface Props {
   hasLiked: boolean;
   comments: Comment[];
   showComments: boolean;
+  temporaryExtraCommentLength: number;
 }
 interface State {
   value: string;
@@ -53,7 +54,7 @@ class StoryInteractionBar extends Component<Props, State> {
           </>
         ) : (
           <button className="CommentButton-container" onClick={this.handleShowButtonsClick}>
-            Show comments | {this.props.comments.length}
+            Show comments | {this.props.comments.length + this.props.temporaryExtraCommentLength}
           </button>
         )}
       </div>
