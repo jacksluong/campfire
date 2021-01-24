@@ -1,11 +1,13 @@
-import express from "express";
+import express, { response } from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
+import UserModel from "./models/User";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
 import Player from "../shared/Player";
 import { isValidObjectId } from "mongoose";
 import Message from "../shared/Message";
+import User from "../shared/User";
 import logic, { GameState } from "./logic";
 
 const router = express.Router();
@@ -36,6 +38,22 @@ router.post("/initsocket", (req, res) => {
 
 router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
+});
+
+// get UserInfo for Profile page
+router.get("/userInfo", (req, res) => {
+  console.log(`Requesting ID: ${req.query.userId}`);
+  UserModel.findById(req.query.userId).then((user: User) => {
+    console.log(`User Found in Database: ${user}`);
+    const userInfo = {
+      name: user.name,
+      wordsTyped: user.wordsTyped,
+      storiesWorkedOn: user.storiesWorkedOn,
+      wordFrequencies: user.wordFrequencies,
+    };
+    console.log(userInfo);
+    res.send(userInfo);
+  });
 });
 
 //post new messages
@@ -73,6 +91,7 @@ router.post("/likeStory", (req, res) => {
     } else {
       usersThatLiked.splice(usersThatLiked.indexOf(userId), 1);
     }
+
     story.usersThatLiked = usersThatLiked;
     story.save();
     res.send({ likes: story.usersThatLiked.length, hasLiked: !hasLiked });
@@ -81,7 +100,27 @@ router.post("/likeStory", (req, res) => {
   //1. get the array of users
   //2. update
 });
-
+router.post("/newComment", (req, res) => {
+  const storyId = req.body.storyId;
+  const userId = req.body.userId;
+  const content = req.body.content;
+  UserModel.findById(userId).then((user: User) => {
+    let name = user.name;
+    StoryModel.findById(storyId).then((story: Story) => {
+      let storyComments = [...story.comments];
+      let newComment = {
+        name: name,
+        senderId: userId,
+        content: content,
+      };
+      storyComments.push(newComment);
+      story.comments = storyComments;
+      res.send(newComment);
+      story.save();
+    });
+  });
+  // res.send({ name: name });
+});
 router.get("/matchmaking", (req, res) => {
   res.send({ gameId: logic.matchmake(req.user?._id) });
 });
@@ -109,8 +148,10 @@ router.post("/inputSubmit", (req, res) => {
   let newInput = {
     content: req.body.content + " ",
     gameId: req.body.gameId,
+    socketId: req.body.socketId,
   };
-  const newGameState = logic.addToStory(req.body.gameId, newInput.content);
+  let newGameState = logic.addToStory(req.body.gameId, newInput.content);
+  newGameState = logic.addToPlayer(req.body.gameId, req.body.socketId, newInput.content);
   socketManager.emitToRoom("storyUpdate", newGameState);
   res.send({});
 });
@@ -149,6 +190,30 @@ router.post("/voteEndGame", (req, res) => {
     req.body.response === "y"
   );
   if (newGameState.gameOver) {
+    console.log(`Made it to gameOver emit`);
+    const room: GameState = logic.getRoomById(req.body.gameId)!;
+    //for each player in the room who is not a guest, add info into word map in database
+    room.players.forEach((player: Player) => {
+      if (player.userId !== "guest") {
+        UserModel.findById(player.userId).then((user: User) => {
+          let topWords = player.wordFrequencies.sort((word) => word.frequency);
+          topWords.reverse();
+          let numWords = 0;
+          for (let frequentWord of topWords) {
+            let pair = user.wordFrequencies.find((wordFreq) => wordFreq.word === frequentWord.word);
+            if (pair) {
+              pair.frequency += 1;
+            } else {
+              let newPair = { word: frequentWord.word, frequency: 1 };
+              user.wordFrequencies.push(newPair);
+            }
+            numWords += frequentWord.frequency;
+          }
+          user.wordsTyped ? (user.wordsTyped += numWords) : (user.wordsTyped = numWords);
+          user.save();
+        });
+      }
+    });
     socketManager.emitToRoom("gameOver", newGameState);
   } else if (newGameState.gameOver === false) {
     socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
@@ -176,6 +241,7 @@ router.post("/votePublish", (req, res) => {
     });
     newStory.save().then((story) => {
       socketManager.getIo().emit("storyPublished");
+      // logic.addStoryToPlayer(story._id, gameState);
       console.log("story saved: ", story);
     });
   }

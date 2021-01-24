@@ -1,5 +1,5 @@
 {
-  "name": "hotbotato",
+  "name": "campfire",
   "version": "1.0.0",
   "description": "Starter template for weblab students",
   "scripts": {
@@ -40,6 +40,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-google-login": "^5.2.2",
+    "react-scroll": "^1.8.1",
     "socket.io": "^3.0.5",
     "socket.io-client": "^3.0.5",
     "ts-node": "^9.1.1",

@@ -3,6 +3,8 @@ import Story from "../../../../shared/Story";
 import { get } from "../../utilities";
 import SingleStoryCard from "../../components/modules/../modules/Landing/SingleStoryCard";
 import { RouteComponentProps } from "@reach/router";
+import { Link, animateScroll as scroll } from "react-scroll";
+import Comment from "../../../../shared/Comment";
 
 interface Props extends RouteComponentProps {
   userId: string;
@@ -25,7 +27,10 @@ class Gallery extends Component<Props, State> {
   }
 
   render() {
-    let storyListElement = this.state.storyList.map((story, i) => (
+    let storyListSorted = this.state.storyList.slice();
+    storyListSorted.sort((a, b) => (a.usersThatLiked.length < b.usersThatLiked.length ? 1 : -1));
+
+    let storyListElement = storyListSorted.map((story, i) => (
       <SingleStoryCard
         name={story.name}
         contributors={story.contributorNames}
@@ -35,14 +40,24 @@ class Gallery extends Component<Props, State> {
         userId={this.props.userId}
         storyId={story._id}
         key={i}
+        comments={story.comments}
       />
     ));
 
     return (
       <>
-        <div className="Gallery-title">Gallery</div>
+        <div className="GalleryTitle-container">
+          <span className="Gallery-title fade-in">Gallery</span>
+        </div>
+        <Link activeClass="active" to="gallery" spy={true} smooth={true} duration={1500}>
+          <div className="boxArrow">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </Link>
 
-        <div className="Gallery-container">
+        <div className="Gallery-container fade-in2" id="gallery">
           {storyListElement === null ? <p>loading</p> : storyListElement}
         </div>
       </>

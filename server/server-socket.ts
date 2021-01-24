@@ -55,8 +55,12 @@ export const init = (server: http.Server): void => {
 };
 
 const emitToRoom = (message: string, room: GameState, content: any = undefined): void => {
-  for (let player of room.players) getSocketFromSocketID(player.socketId)?.emit(message, content ?? room);
-  for (let spectator of room.spectators) getSocketFromSocketID(spectator)?.emit(message, content ?? room);
+  if (room) {
+    for (let player of room.players)
+      getSocketFromSocketID(player.socketId)?.emit(message, content ?? room);
+    for (let spectator of room.spectators)
+      getSocketFromSocketID(spectator)?.emit(message, content ?? room);
+  }
 };
 
 export const getIo = () => io;

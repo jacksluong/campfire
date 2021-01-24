@@ -30,17 +30,17 @@ class Main extends Component<Props, State> {
   }
 
   joinPublicGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    get("/api/matchmaking").then(response => {
+    get("/api/matchmaking").then((response) => {
       console.log("matched me to", response.gameId);
       navigate(`/gameroom/${response.gameId}`);
     });
   };
-  
+
   createPrivateGame = () => {
-    get("/api/createPrivate").then(response => {
+    get("/api/createPrivate").then((response) => {
       console.log("matched me to", response.gameId, "(private)");
       navigate(`/gameroom/${response.gameId}`);
-    })
+    });
   };
 
   handleQuestionClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {};

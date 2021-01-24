@@ -2,8 +2,8 @@ import { Schema, model, Document } from "mongoose";
 
 const FrequentWord = new Schema({
   word: String,
-  frequency: Number
-})
+  frequency: Number,
+});
 
 const UserSchema = new Schema({
   name: String,
@@ -11,7 +11,7 @@ const UserSchema = new Schema({
   wordsTyped: Number,
   storiesWorkedOn: [String], // story IDs
   storiesLiked: [String], // story IDs
-  wordFrequencies: [FrequentWord]
+  wordFrequencies: [FrequentWord],
 });
 
 export interface User extends Document {
@@ -20,8 +20,8 @@ export interface User extends Document {
   _id: string;
   wordsTyped: number;
   storiesWorkedOn: string[];
-  storiesLiked: string[]; 
-  wordFrequencies: Map<string, number>; // functions like a dictionary
+  storiesLiked: string[];
+  wordFrequencies: { word: string; frequency: number }[]; // functions like a dictionary
 }
 
 const UserModel = model<User>("User", UserSchema);

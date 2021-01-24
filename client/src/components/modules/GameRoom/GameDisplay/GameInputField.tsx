@@ -73,6 +73,7 @@ class GameInputField extends Component<Props, State> {
         post("/api/inputSubmit", {
           content: this.state.value,
           gameId: this.props.gameId,
+          socketId: socket.id,
         }).then(() => this.setState({ value: "" }));
       }
     }
