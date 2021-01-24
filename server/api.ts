@@ -115,6 +115,7 @@ router.post("/newComment", (req, res) => {
       };
       storyComments.push(newComment);
       story.comments = storyComments;
+      res.send(newComment);
       story.save();
     });
   });

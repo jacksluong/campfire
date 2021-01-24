@@ -21,6 +21,7 @@ interface State {
   likes: number;
   hasLiked: boolean;
   showComments: boolean;
+  temporaryExtraCommentLength: number;
 }
 
 class SingleStoryCard extends Component<Props, State> {
@@ -30,6 +31,7 @@ class SingleStoryCard extends Component<Props, State> {
       likes: this.props.usersThatLiked.length,
       hasLiked: false,
       showComments: false,
+      temporaryExtraCommentLength: 0,
     };
   }
   componentDidMount() {

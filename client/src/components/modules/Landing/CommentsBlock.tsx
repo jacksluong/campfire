@@ -10,15 +10,15 @@ interface Props {
   userId: string;
 }
 interface State {
-  // showComments: boolean;
   value: string;
+  newComments: Comment[];
 }
 class CommentsBlock extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      // showComments: false,
       value: "",
+      newComments: [],
     };
   }
 
@@ -31,7 +31,7 @@ class CommentsBlock extends Component<Props, State> {
     });
   };
   handleNewCommentSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log(this.state.value);
+    // console.log(this.state.value);
     if (this.props.userId && this.state.value.length > 0) {
       const body = {
         storyId: this.props.storyId,
@@ -39,7 +39,12 @@ class CommentsBlock extends Component<Props, State> {
         content: this.state.value,
       };
       post("/api/newComment", body).then((response) => {
-        console.log(response);
+        //response is a new comment with name, senderId, content
+        // console.log(response);
+        let newComments = [...this.state.newComments];
+        newComments.push(response);
+        this.setState({ newComments: newComments });
+        // console.log(this.state.newComments);
       });
     } else {
       alert("Log in/dont leave comments blank");
@@ -50,7 +55,9 @@ class CommentsBlock extends Component<Props, State> {
   render() {
     //get comments
     let commentsElement = null;
-    commentsElement = this.props.comments.map((comment) => (
+    let totalComments = [...this.props.comments].concat([...this.state.newComments]);
+    // console.log(totalComments);
+    commentsElement = totalComments.map((comment) => (
       <div>
         {comment.name} | {comment.content}
       </div>
