@@ -34,6 +34,11 @@ class SingleStoryCard extends Component<Props, State> {
       temporaryExtraCommentLength: 0,
     };
   }
+  incrementTemporaryExtraCommentLength = () => {
+    this.setState((prevState) => ({
+      temporaryExtraCommentLength: prevState.temporaryExtraCommentLength + 1,
+    }));
+  };
   componentDidMount() {
     const script = document.createElement("script");
     script.src = "https://unpkg.com/aos@next/dist/aos.css";
@@ -115,12 +120,14 @@ class SingleStoryCard extends Component<Props, State> {
           comments={this.props.comments}
           onShowButtonsClick={this.ShowButtonsClick}
           showComments={this.state.showComments}
+          temporaryExtraCommentLength={this.state.temporaryExtraCommentLength}
         />
         <CommentsBlock
           comments={this.props.comments}
           showComments={this.state.showComments}
           userId={this.props.userId}
           storyId={this.props.storyId}
+          incrementTemporaryExtraCommentLength={this.incrementTemporaryExtraCommentLength}
         />
       </div>
     );

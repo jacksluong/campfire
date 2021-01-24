@@ -8,6 +8,7 @@ interface Props {
   showComments: boolean;
   storyId: string;
   userId: string;
+  incrementTemporaryExtraCommentLength: () => void;
 }
 interface State {
   value: string;
@@ -45,6 +46,7 @@ class CommentsBlock extends Component<Props, State> {
         newComments.push(response);
         this.setState({ newComments: newComments });
         // console.log(this.state.newComments);
+        this.props.incrementTemporaryExtraCommentLength();
       });
     } else {
       alert("Log in/dont leave comments blank");
