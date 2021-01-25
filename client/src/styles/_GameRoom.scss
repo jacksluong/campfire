@@ -167,7 +167,7 @@
     & .EndGameComponent {
       &.container {
         flex-basis: 150px;
-        flex-grow: 0;
+        flex-grow: 1;
         flex-shrink: 0;
         border-style: solid;
 
@@ -176,6 +176,13 @@
         background-color: white;
         // color: u.$offwhite;
         box-shadow: 0px 4px 8px #035a9e;
+        .Title {
+          font-weight: bold;
+          font-size: 32px;
+        }
+        .Contributors {
+          font-style: italic;
+        }
       }
     }
     & .Gathering {

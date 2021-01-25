@@ -16,14 +16,18 @@ class GameEndComponent extends Component<Props, State> {
   componentDidMount() {}
 
   render() {
-    let playersElement = this.props.players.map((player) => <div>{player.name}</div>);
+    let lastElement = this.props.players[this.props.players.length - 1];
+    let playersElement = this.props.players.map((player) => <span>{`${player.name}, `}</span>);
+    playersElement.pop();
+    playersElement.push(<span>{` and ${lastElement.name}`}</span>);
+
     return (
       <div className="EndGameComponent container">
-        <div className="Story Title">{`Temporary Title`}</div>
+        <div className="Title">{`Temporary Title`}</div>
+        <div className="Contributors">By {playersElement}</div>
 
         <div className="Story Content"> </div>
         {this.props.currentStory}
-        <div className="Story contributors">{playersElement}</div>
         {/* <div className = "s "></div> */}
       </div>
     );

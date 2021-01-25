@@ -5,6 +5,8 @@ import GameInputField from "./GameInputField";
 import Player from "../../../../../../shared/Player";
 import { socket } from "../../../../client-socket";
 import GameEndComponent from "./GameEndComponent";
+import { get, post } from "../../../../utilities";
+import { navigate } from "@reach/router";
 
 interface Props {
   resetTimeout: () => void;
@@ -25,6 +27,22 @@ class GameDisplay extends Component<Props, State> {
     super(props);
     this.state = {};
   }
+  handleHome = () => {
+    navigate(`/`);
+  };
+
+  handlePublish = () => {
+    console.log("gameId", this.props.gameId);
+    post("/api/votePublish", { gameId: this.props.gameId, socketId: socket.id });
+    navigate(`/gallery`);
+  };
+
+  handlePlayAgain = (): void => {
+    get("/api/matchmaking").then((response) => {
+      console.log("play again! matched me to", response.gameId);
+      navigate(`/gameroom/${response.gameId}`);
+    });
+  };
 
   render() {
     let input: any = "";
@@ -59,7 +77,16 @@ class GameDisplay extends Component<Props, State> {
         ) : (
           <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
         )}
-        {input}
+        {this.props.ended ? (
+          <span>
+            <button onClick={this.handlePublish}>Publish</button>
+            <button onClick={this.handleHome}>Home</button>
+            <button onClick={this.handlePlayAgain}>Again</button>
+          </span>
+        ) : (
+          input
+        )}
+        {/* {input} */}
       </div>
     );
   }
