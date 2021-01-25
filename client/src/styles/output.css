@@ -325,6 +325,16 @@
 .GameRoom .GameDisplay .StoryText .story {
   color: #969696;
 }
+.GameRoom .GameDisplay .EndGameComponent.container {
+  flex-basis: 150px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  border-style: solid;
+  overflow-y: scroll;
+  border-color: black;
+  background-color: white;
+  box-shadow: 0px 4px 8px #035a9e;
+}
 .GameRoom .GameDisplay .Gathering.container {
   flex-grow: 1;
   padding: 0px;

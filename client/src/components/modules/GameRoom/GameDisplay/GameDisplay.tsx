@@ -4,6 +4,7 @@ import Gathering from "./Gathering";
 import GameInputField from "./GameInputField";
 import Player from "../../../../../../shared/Player";
 import { socket } from "../../../../client-socket";
+import GameEndComponent from "./GameEndComponent";
 
 interface Props {
   resetTimeout: () => void;
@@ -13,6 +14,8 @@ interface Props {
   currentInput: string;
   gameId: string;
   userId: string;
+
+  ended: boolean;
 }
 
 interface State {}
@@ -46,7 +49,16 @@ class GameDisplay extends Component<Props, State> {
     return (
       <div className="GameDisplay container">
         <StoryText currentStory={this.props.currentStory} currentInput={this.props.currentInput} />
-        <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
+        {/* Check if the game is ended */}
+        {this.props.ended ? (
+          <GameEndComponent
+            gameId={this.props.gameId}
+            players={this.props.players}
+            currentStory={this.props.currentStory}
+          />
+        ) : (
+          <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
+        )}
         {input}
       </div>
     );

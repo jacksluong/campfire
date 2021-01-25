@@ -22,6 +22,8 @@ interface State {
   currentStory: string;
   currentTurn: number;
   currentInput: string;
+
+  ended: boolean;
 }
 
 const TIMEOUT_SECONDS = 60;
@@ -39,6 +41,8 @@ class GameRoom extends Component<Props, State> {
       currentStory: "",
       currentTurn: -1,
       currentInput: "",
+      //control game display
+      ended: false,
     };
   }
 
@@ -50,7 +54,7 @@ class GameRoom extends Component<Props, State> {
         currentTurn: gameState.currentTurn,
       });
       if (gameState.currentTurn !== -1) clearTimeout(this.state.timeout);
-    })
+    });
     socket.on("playersUpdate", (gameState) => {
       // on player join or leave
       this.setState({
@@ -77,9 +81,13 @@ class GameRoom extends Component<Props, State> {
         currentInput: content,
       });
     });
+
+    //Game over here
     socket.on("gameOver", () => {
-      navigate(`/end/${this.props.gameId}`);
+      // navigate(`/end/${this.props.gameId}`);
+      this.setState({ ended: true });
     });
+
     socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId });
   }
 
@@ -101,11 +109,15 @@ class GameRoom extends Component<Props, State> {
 
   resetTimeout = (): void => {
     if (this.state.timeout) clearTimeout(this.state.timeout);
-    if (!this.state.isPrivate &&
-      this.state.currentTurn === -1 && 
-      !this.state.readyPlayers.includes(this.state.players.findIndex(player => player.socketId === socket.id))) 
+    if (
+      !this.state.isPrivate &&
+      this.state.currentTurn === -1 &&
+      !this.state.readyPlayers.includes(
+        this.state.players.findIndex((player) => player.socketId === socket.id)
+      )
+    )
       this.startTimeout();
-  }
+  };
 
   render() {
     return (
@@ -126,6 +138,7 @@ class GameRoom extends Component<Props, State> {
           currentInput={this.state.currentInput}
           gameId={this.props.gameId}
           userId={this.props.userId}
+          ended={this.state.ended}
         />
       </div>
     );
