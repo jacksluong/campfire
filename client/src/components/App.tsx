@@ -12,9 +12,11 @@ import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import Gallery from "./pages/Gallery";
 import End from "./pages/End";
+declare var gapi: any;
 
 type State = {
   userId: string;
+  userPfp: string;
 };
 
 class App extends Component<{}, State> {
@@ -22,6 +24,7 @@ class App extends Component<{}, State> {
     super(props);
     this.state = {
       userId: undefined,
+      userPfp: undefined
     };
   }
 
@@ -50,6 +53,7 @@ class App extends Component<{}, State> {
         post("/api/initsocket", { socketid: socket.id });
       });
     }
+    this.setState({ userPfp: gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getImageUrl() });
   };
 
   handleLogout = () => {
@@ -62,9 +66,10 @@ class App extends Component<{}, State> {
       <Router>
         <Landing
           path="/"
+          userId={this.state.userId}
+          pfp={this.state.userPfp}
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
-          userId={this.state.userId}
         />
         <GameRoom 
           path="/gameroom/:gameId" 
@@ -72,12 +77,15 @@ class App extends Component<{}, State> {
         />
         <Gallery 
           path="/gallery" 
+          userId={this.state.userId} 
+          pfp={this.state.userPfp}
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
-          userId={this.state.userId} 
         />
         <Profile
+          userId={this.state.userId}
           path="/profile/:userId"
+          pfp={this.state.userPfp}
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
         />

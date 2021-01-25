@@ -24,7 +24,7 @@
   }
 
   & .ProfileButton {
-    & > .toggler {
+    & > #toggler {
       width: 40px;
       height: 40px;
       padding: 20px;
@@ -37,7 +37,7 @@
       cursor: pointer;
     }
 
-    & .content {
+    & .dropdown {
       display: none;
       position: absolute;
       width: 100px;
@@ -47,9 +47,11 @@
 
       & .item {
         display: block;
+        position: relative;
         padding: 6px 16px;
         margin: 4px 0px;
         color: white;
+        opacity: 0;
         background-color: u.$darkposy;
         border-radius: 28px;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -65,6 +67,23 @@
 
       &.show {
         display: block;
+
+        & > * {
+          animation: fadeIn 0.5s ease forwards;
+
+          &#secondDropdownItem {
+            animation-delay: 0.2s;
+          }
+        }
+
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
       }
     }
     

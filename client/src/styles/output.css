@@ -284,7 +284,7 @@
   font-size: gray;
   cursor: pointer;
 }
-.NavBar .ProfileButton > .toggler {
+.NavBar .ProfileButton > #toggler {
   width: 40px;
   height: 40px;
   padding: 20px;
@@ -295,18 +295,20 @@
   border: none;
   cursor: pointer;
 }
-.NavBar .ProfileButton .content {
+.NavBar .ProfileButton .dropdown {
   display: none;
   position: absolute;
   width: 100px;
   margin-left: -60px;
   z-index: 3;
 }
-.NavBar .ProfileButton .content .item {
+.NavBar .ProfileButton .dropdown .item {
   display: block;
+  position: relative;
   padding: 6px 16px;
   margin: 4px 0px;
   color: white;
+  opacity: 0;
   background-color: #803770;
   border-radius: 28px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -315,11 +317,25 @@
   font-size: 16pt;
   transition: 0.2s;
 }
-.NavBar .ProfileButton .content .item:hover {
+.NavBar .ProfileButton .dropdown .item:hover {
   background-color: #696969;
 }
-.NavBar .ProfileButton .content.show {
+.NavBar .ProfileButton .dropdown.show {
   display: block;
+}
+.NavBar .ProfileButton .dropdown.show > * {
+  animation: fadeIn 0.5s ease forwards;
+}
+.NavBar .ProfileButton .dropdown.show > *#secondDropdownItem {
+  animation-delay: 0.2s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /*# sourceMappingURL=output.css.map */

@@ -9,6 +9,7 @@ import NavBar from "../modules/Landing/NavBar";
 
 interface Props extends RouteComponentProps {
   userId: string;
+  pfp: string;
   handleLogin: any;
   handleLogout: any;
 }
@@ -50,6 +51,7 @@ class Gallery extends Component<Props, State> {
     return (
       <>
         <NavBar
+          pfp={this.props.pfp}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}

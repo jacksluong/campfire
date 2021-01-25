@@ -12,7 +12,8 @@ interface State {
 }
 
 interface Props extends RouteComponentProps {
-  userId?: string;
+  userId: string;
+  pfp: string;
   handleLogin: any;
   handleLogout: any;
 }
@@ -50,6 +51,7 @@ class Profile extends Component<Props, State> {
     return (
       <div>
         <NavBar
+          pfp={this.props.pfp}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}
