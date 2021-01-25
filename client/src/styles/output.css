@@ -21,14 +21,17 @@
   z-index: -1;
 }
 .Main .title {
-  padding-top: 20px;
+  padding-top: 16vh;
   font-size: 100pt;
+  font-family: monospace;
+  letter-spacing: 10px;
 }
 .Main .subtitle {
   opacity: 0;
   padding: 0px 100px;
   margin: 10px auto 100px;
   transition: 1.5s;
+  font-size: 15pt;
 }
 .Main .buttonsContainer {
   display: flex;
@@ -59,145 +62,20 @@
   margin-top: 10px;
   font-size: 12pt;
 }
+.Main .gameButton.input#codeButton {
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
 /* .Help-container {
   display: flex;
   justify-content: flex-end;
   width: 98%;
   margin: auto;
 } */
-.Dropbutton {
-  background-color: #3498db;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-.Dropbutton:hover,
-.Dropbutton:focus {
-  background-color: #2980b9;
-}
-
-.Dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.Dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-.Dropdown-content .Dropdown-item {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.Dropdown .Dropdown-item:hover {
-  background-color: #ddd;
-}
-
-.show {
-  display: block;
-}
-
-#codeButton {
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-.Gallery-title {
-  margin: 0%, auto;
-  width: 100%;
-  text-align: center;
-  font-size: 64px;
-  /* border-style: solid; */
-}
-
-.Gallery-container {
-  width: 100vw;
-  /* text-align: center; */
-  display: flex;
-  flex-direction: row;
-  border-style: solid;
-  flex-wrap: wrap;
-  /* height: 3500px; */
-  justify-content: space-around;
-  /* justify-content: safe; */
-  /* flex-basis: 2000px; */
-  flex-grow: unset;
-  /* flex-grow: 80; */
-}
-
-/* Single Story Styling*/
-.SingleStoryCard-container {
-  border-style: solid;
-  margin: 2%;
-  min-width: 20%;
-  max-width: 30%;
-  text-align: left;
-  max-height: 20%;
-  padding: 0.5%;
-  flex-grow: 1;
-  /* display: inline; */
-}
-
-.SingleStoryCard-StoryTitle {
-  font-weight: bold;
-  font-size: 32px;
-}
-
-.SingleStoryCard-Contributors {
-  font-style: italic;
-  margin: auto 10px;
-}
-
-.SingleStoryCard-Content {
-  margin: auto 10px;
-}
-
-/* 
-.SingleStoryCard-usersThatLiked {
-}
-
-.SingleStoryCard-Keywords {
-} */
-.StoryInteractionBar-container {
-  display: flex;
-  flex-direction: row;
-  /* justify-content: space-around; */
-}
-
-.LikeButton-container {
-  font-size: 16px;
-}
-
-.NewComment-container {
-  margin: auto 3%;
-  width: fill;
-  flex-grow: 100;
-  border-top-style: hidden;
-  border-right-style: hidden;
-  border-left-style: hidden;
-  border-bottom-style: groove;
-}
-
-.u-blue {
-  background-color: #29ccc7;
-}
-
 .GameRoom.container {
   display: flex;
   flex-direction: row;
@@ -385,6 +263,63 @@
 }
 .GameRoom .GameDisplay .GameInputField.input:disabled {
   background-color: lightgray;
+}
+
+.NavBar.container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  padding: 15px 30px;
+  box-sizing: border-box;
+  background-color: transparent;
+  justify-content: space-between;
+}
+.NavBar .link {
+  font-size: 20pt;
+  display: block;
+  color: #969696;
+  text-decoration: none;
+  font-size: gray;
+  cursor: pointer;
+}
+.NavBar .ProfileButton > .toggler {
+  width: 40px;
+  height: 40px;
+  padding: 20px;
+  border-radius: 50%;
+  background-image: url("../assets/blankpfp.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+}
+.NavBar .ProfileButton .content {
+  display: none;
+  position: absolute;
+  width: 100px;
+  margin-left: -60px;
+  z-index: 3;
+}
+.NavBar .ProfileButton .content .item {
+  display: block;
+  padding: 6px 16px;
+  margin: 4px 0px;
+  color: white;
+  background-color: #803770;
+  border-radius: 28px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  text-align: center;
+  font-size: 16pt;
+  transition: 0.2s;
+}
+.NavBar .ProfileButton .content .item:hover {
+  background-color: #696969;
+}
+.NavBar .ProfileButton .content.show {
+  display: block;
 }
 
 /*# sourceMappingURL=output.css.map */

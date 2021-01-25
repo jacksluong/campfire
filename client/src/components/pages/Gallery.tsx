@@ -5,9 +5,12 @@ import SingleStoryCard from "../../components/modules/../modules/Landing/SingleS
 import { RouteComponentProps } from "@reach/router";
 import { Link, animateScroll as scroll } from "react-scroll";
 import Comment from "../../../../shared/Comment";
+import NavBar from "../modules/Landing/NavBar";
 
 interface Props extends RouteComponentProps {
   userId: string;
+  handleLogin: any;
+  handleLogout: any;
 }
 interface State {
   storyList: Story[];
@@ -46,6 +49,13 @@ class Gallery extends Component<Props, State> {
 
     return (
       <>
+        <NavBar
+          handleLogin={this.props.handleLogin}
+          handleLogout={this.props.handleLogout}
+          userId={this.props.userId}
+          leftButtonText="home"
+          leftButtonPath="/"
+        />
         <div className="GalleryTitle-container">
           <span className="Gallery-title fade-in">Gallery</span>
         </div>
