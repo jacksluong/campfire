@@ -203,6 +203,23 @@
 .GameRoom .GameDisplay .StoryText .story {
   color: #969696;
 }
+.GameRoom .GameDisplay .EndGameComponent.container {
+  flex-basis: 150px;
+  flex-grow: 1;
+  flex-shrink: 0;
+  border-style: solid;
+  overflow-y: scroll;
+  border-color: black;
+  background-color: white;
+  box-shadow: 0px 4px 8px #035a9e;
+}
+.GameRoom .GameDisplay .EndGameComponent.container .Title {
+  font-weight: bold;
+  font-size: 32px;
+}
+.GameRoom .GameDisplay .EndGameComponent.container .Contributors {
+  font-style: italic;
+}
 .GameRoom .GameDisplay .Gathering.container {
   flex-grow: 1;
   padding: 0px;
