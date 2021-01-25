@@ -84,7 +84,6 @@ class GameRoom extends Component<Props, State> {
 
     //Game over here
     socket.on("gameOver", () => {
-      // navigate(`/end/${this.props.gameId}`);
       this.setState({ ended: true });
     });
 

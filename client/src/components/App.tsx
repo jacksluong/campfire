@@ -11,7 +11,6 @@ import GameRoom from "./pages/GameRoom";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import Gallery from "./pages/Gallery";
-import End from "./pages/End";
 declare var gapi: any;
 
 type State = {
@@ -89,7 +88,6 @@ class App extends Component<{}, State> {
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
         />
-        <End path="/end/:gameId" />
         <NotFound default={true} />
       </Router>
     );

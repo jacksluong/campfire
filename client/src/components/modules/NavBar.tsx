@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./Landing.css";
 import { RouteComponentProps, Link } from "@reach/router";
 import GoogleLogin from "react-google-login";
 import ProfileButton from "./ProfileButton";

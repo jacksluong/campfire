@@ -3,7 +3,7 @@ import StatisticsSection from "../modules/Profile/StatisticsSection";
 import ProfileSection from "../modules/Profile/ProfileSection";
 import { RouteComponentProps } from "@reach/router";
 import { get, post } from "../../../src/utilities";
-import NavBar from "../modules/Landing/NavBar";
+import NavBar from "../modules/NavBar";
 interface State {
   name: string;
   wordsTyped: number;

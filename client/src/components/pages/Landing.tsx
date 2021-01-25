@@ -2,7 +2,7 @@ import { navigate, RouteComponentProps } from "@reach/router";
 import React, { Component } from "react";
 
 import Main from "../modules/Landing/Main";
-import NavBar from "../modules/Landing/NavBar";
+import NavBar from "../modules/NavBar";
 
 type Props = {
   userId: string;

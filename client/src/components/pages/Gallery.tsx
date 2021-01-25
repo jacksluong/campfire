@@ -5,7 +5,7 @@ import SingleStoryCard from "../../components/modules/../modules/Landing/SingleS
 import { RouteComponentProps } from "@reach/router";
 import { Link, animateScroll as scroll } from "react-scroll";
 import Comment from "../../../../shared/Comment";
-import NavBar from "../modules/Landing/NavBar";
+import NavBar from "../modules/NavBar";
 
 interface Props extends RouteComponentProps {
   userId: string;

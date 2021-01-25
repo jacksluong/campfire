@@ -25,10 +25,10 @@ class ProfileButton extends Component<Props, State> {
   }
 
   toggleDropdown = (): void => {
-    if (!this.state.show) {
-      this.setState({ show: true });
-      document.getElementById("dropdown").classList.toggle("show");
-    }
+    this.setState(prevState => ({
+      show: !prevState.show
+    }));
+    document.getElementById("dropdown").classList.toggle("show");
   };
 
   handleMouseLeave = (): void => {
