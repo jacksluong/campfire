@@ -88,9 +88,7 @@ class GameDisplay extends Component<Props, State> {
             <button onClick={this.handleHome}>Home</button>
             <button onClick={this.handlePlayAgain}>Again</button>
           </span>
-        ) : (
-          input
-        )}
+        ) : (input)}
         {/* {input} */}
       </div>
     );

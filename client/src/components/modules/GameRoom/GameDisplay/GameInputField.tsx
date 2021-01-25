@@ -53,31 +53,32 @@ class GameInputField extends Component<Props, State> {
     }
   };
 
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (this.state.endGameRequester.length > 0) {
-      // someone requested to end game
-      post("/api/voteEndGame", {
-        gameId: this.props.gameId,
-        socketId: socket.id,
-        response: this.state.value.toLowerCase(),
-      }).then(() => {
-        this.setState({ voted: true });
-      });
-    } else {
-      if (this.state.value.toLowerCase() === "end") {
-        post("/api/endGameRequest", { socketId: socket.id, gameId: this.props.gameId }).then(() =>
-          this.setState({ value: "" })
-        );
-      } else {
-        post("/api/inputSubmit", {
-          content: this.state.value,
+  handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key == 'Enter' && this.state.value.length > 0) {
+      if (this.state.endGameRequester.length > 0) {
+        // someone requested to end game
+        post("/api/voteEndGame", {
           gameId: this.props.gameId,
           socketId: socket.id,
-        }).then(() => this.setState({ value: "" }));
+          response: this.state.value.toLowerCase(),
+        }).then(() => {
+          this.setState({ voted: true });
+        });
+      } else {
+        if (this.state.value.toLowerCase() === "end") {
+          post("/api/endGameRequest", { socketId: socket.id, gameId: this.props.gameId }).then(() =>
+            this.setState({ value: "" })
+          );
+        } else {
+          post("/api/inputSubmit", {
+            content: this.state.value,
+            gameId: this.props.gameId,
+            socketId: socket.id,
+          }).then(() => this.setState({ value: "" }));
+        }
       }
     }
-  };
+  }
 
   render() {
     let placeholder: string;
@@ -98,17 +99,16 @@ class GameInputField extends Component<Props, State> {
         READY
       </button>
     ) : (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          maxLength={100}
-          placeholder={placeholder}
-          value={this.state.value}
-          onChange={this.handleChange}
-          className="GameInputField primary input"
-          disabled={!enabled}
-        />
-      </form>
+      <input
+        type="text"
+        maxLength={100}
+        placeholder={placeholder}
+        value={this.state.value}
+        onChange={this.handleChange}
+        onKeyPress={this.handleKeyPress}
+        className="GameInputField primary input"
+        disabled={!enabled}
+      />
     );
     return display;
   }

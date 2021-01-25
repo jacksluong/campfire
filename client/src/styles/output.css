@@ -181,6 +181,7 @@
   flex-basis: 0;
   flex-grow: 1;
   flex-direction: column;
+  align-items: center;
   background-color: #062F4F;
 }
 .GameRoom .GameDisplay > * {
@@ -224,6 +225,8 @@
   flex-grow: 1;
   padding: 0px;
   margin: 0px;
+  width: 100%;
+  background-color: blue;
 }
 .GameRoom .GameDisplay .GameInputField.primary {
   flex-basis: 40px;
@@ -272,10 +275,13 @@
   background-color: #06c443;
 }
 .GameRoom .GameDisplay .GameInputField.input {
-  border-radius: 50px;
   padding: 0px 10px;
+  width: 90%;
+  line-height: 10px;
   border: none;
+  border-radius: 50px;
   background-color: white;
+  font-size: 10pt;
   transition: 0.3s;
 }
 .GameRoom .GameDisplay .GameInputField.input:disabled {
