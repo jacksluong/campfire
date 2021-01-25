@@ -60,6 +60,8 @@ class Profile extends Component<Props, State> {
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}
+          leftButtonText="home"
+          leftButtonPath="/"
         />
         <div className="Profile-container">
           <ProfileSection name={this.state.name} />

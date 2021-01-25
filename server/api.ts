@@ -262,7 +262,7 @@ router.post("/votePublish", (req, res) => {
       keywords: ["keyword1", "keyword2", "keyword3"],
     });
     newStory.save().then((story) => {
-      socketManager.getIo().emit("storyPublished");
+      socketManager.emitToRoom("storyPublished", gameState, undefined);
       gameState.players.forEach((player: Player) => {
         if (player.userId !== "guest") {
           UserModel.findById(player.userId).then((user: User) => {
@@ -274,7 +274,9 @@ router.post("/votePublish", (req, res) => {
       console.log("story saved: ", story);
     });
   }
-  res.send({});
+  // console.log(gameState.publishVotes);
+  // res.send({ votecount: gameState.publishVotes.length });
+  socketManager.emitToRoom("updatePublishVotes", gameState, gameState.publishVotes.length);
 });
 
 /** End */

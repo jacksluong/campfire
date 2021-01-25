@@ -66,8 +66,16 @@ class App extends Component<{}, State> {
           handleLogout={this.handleLogout}
           userId={this.state.userId}
         />
-        <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
-        <Gallery path="/gallery" userId={this.state.userId} />
+        <GameRoom 
+          path="/gameroom/:gameId" 
+          userId={this.state.userId} 
+        />
+        <Gallery 
+          path="/gallery" 
+          handleLogin={this.handleLogin}
+          handleLogout={this.handleLogout}
+          userId={this.state.userId} 
+        />
         <Profile
           path="/profile/:userId"
           handleLogin={this.handleLogin}

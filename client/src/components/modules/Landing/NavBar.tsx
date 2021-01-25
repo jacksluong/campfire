@@ -9,6 +9,8 @@ type Props = {
   userId: string;
   handleLogin: any;
   handleLogout: any;
+  leftButtonText: string;
+  leftButtonPath: string;
 };
 
 type State = {
@@ -22,8 +24,11 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
 
   render() {
     return (
-      <div className="NavBar-container">
-        <span className="NavBar-link">
+      <div className="NavBar container">
+      <Link to={this.props.leftButtonPath} className="link">
+        {this.props.leftButtonText}
+      </Link>
+        <span className="link">
           {this.props.userId ? (
             <ProfileButton
               userId={this.props.userId}
@@ -39,9 +44,6 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
             />
           )}
         </span>
-        <Link to="/gallery" className="NavBar-link">
-          Explore
-        </Link>
       </div>
     );
   }
