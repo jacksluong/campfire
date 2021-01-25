@@ -20,12 +20,14 @@ interface Props {
   ended: boolean;
 }
 
-interface State {}
+interface State {
+  published: boolean;
+}
 
 class GameDisplay extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { published: false };
   }
   handleHome = () => {
     navigate(`/`);
@@ -34,7 +36,7 @@ class GameDisplay extends Component<Props, State> {
   handlePublish = () => {
     console.log("gameId", this.props.gameId);
     post("/api/votePublish", { gameId: this.props.gameId, socketId: socket.id });
-    navigate(`/gallery`);
+    // navigate(`/gallery`);
   };
 
   handlePlayAgain = (): void => {
@@ -44,6 +46,9 @@ class GameDisplay extends Component<Props, State> {
     });
   };
 
+  componentDidMount() {
+    socket.on("storyPublished", () => this.setState({ published: true }));
+  }
   render() {
     let input: any = "";
     if (
