@@ -40,6 +40,27 @@ router.get("/stories", (req, res) => {
   StoryModel.find({}).then((stories: Story[]) => res.send(stories));
 });
 
+router.get("/profileStories", (req, res) => {
+  let storiesToReturn: Story[] = [];
+  const stories: string[] = (req.query.storiesWorkedOn as string).split(",");
+  let promises: any[] = [];
+  console.log("in profile stories");
+  console.log(`in get call: ${req.query.storiesWorkedOn}`);
+  console.log(stories);
+  stories.forEach((storyId) => {
+    console.log(storyId);
+    promises.push(StoryModel.findById(storyId));
+  });
+  // console.log("End of API get call");
+  // console.log(storiesToReturn);
+  Promise.all(promises)
+    .then((allStories: Story[]) => {
+      console.log(allStories);
+      res.send(allStories);
+    })
+    .catch((err) => console.log(err));
+});
+
 // get UserInfo for Profile page
 router.get("/userInfo", (req, res) => {
   console.log(`Requesting ID: ${req.query.userId}`);
@@ -197,6 +218,7 @@ router.post("/voteEndGame", (req, res) => {
       if (player.userId !== "guest") {
         UserModel.findById(player.userId).then((user: User) => {
           let topWords = player.wordFrequencies.sort((word) => word.frequency);
+          topWords = topWords.length >= 3 ? topWords.slice(0, 3) : topWords;
           topWords.reverse();
           let numWords = 0;
           for (let frequentWord of topWords) {
@@ -241,7 +263,14 @@ router.post("/votePublish", (req, res) => {
     });
     newStory.save().then((story) => {
       socketManager.emitToRoom("storyPublished", gameState, undefined);
-      // logic.addStoryToPlayer(story._id, gameState);
+      gameState.players.forEach((player: Player) => {
+        if (player.userId !== "guest") {
+          UserModel.findById(player.userId).then((user: User) => {
+            user.storiesWorkedOn.push(story._id);
+            user.save();
+          });
+        }
+      });
       console.log("story saved: ", story);
     });
   }
