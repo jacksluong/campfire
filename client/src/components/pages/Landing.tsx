@@ -25,18 +25,15 @@ class Landing extends Component<Props & RouteComponentProps, {}> {
 
   render() {
     return (
-      <div>
+      <div style={{ minWidth: "1000px" }}>
         <NavBar
+          userId={this.props.userId}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
-          userId={this.props.userId}
+          leftButtonText="explore"
+          leftButtonPath="/gallery"
         />
         <Main userId={this.props.userId} />
-        <br />
-        {/* Edit later */}
-        <br />
-        <br />
-        <br />
       </div>
     );
   }

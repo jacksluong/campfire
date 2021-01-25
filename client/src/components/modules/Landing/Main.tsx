@@ -9,7 +9,7 @@ interface Props {
 }
 interface State {
   typeAnimation: string;
-}
+} 
 
 class Main extends Component<Props, State> {
   constructor(props) {
@@ -20,12 +20,12 @@ class Main extends Component<Props, State> {
   componentDidMount() {
     let children = document.getElementById("mainContainer").children;
     for (let i = 0; i < 8; i++) {
-      setTimeout(() => this.setState({ typeAnimation: "Campfire".slice(0, i + 1) + "_".repeat(7 - i) }), 150 * i + 250);
+      setTimeout(() => this.setState({ typeAnimation: "campfire".slice(0, i + 1) + "_".repeat(7 - i) }), 150 * i + 250);
     }
     for (let i = 2; i < children.length; i++) {
       setTimeout(() => {
         (children[i] as HTMLElement).style.opacity = "1";
-      }, 1000 * i - 400);
+      }, 1000 * i - 1500);
     }
   }
 

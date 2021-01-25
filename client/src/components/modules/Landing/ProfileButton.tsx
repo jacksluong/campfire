@@ -24,17 +24,15 @@ class ProfileButton extends Component<Props, State> {
 
   render() {
     return (
-      <div className="">
-        <button onClick={this.toggleDropdown} className="Dropbutton">
-          Dropdown
-        </button>
-        <div id="dropdown" className="Dropdown-content">
-          <a className="Dropdown-item" onClick={this.handleProfile}>
-            Profile
-          </a>
-          <a className="Dropdown-item" onClick={this.props.handleLogout}>
-            Logout
-          </a>
+      <div className="ProfileButton">
+        <button onClick={this.toggleDropdown} className="toggler"></button>
+        <div id="dropdown" className="content">
+          <div className="item" onClick={this.handleProfile}>
+            profile
+          </div>
+          <div className="item" onClick={this.props.handleLogout}>
+            logout
+          </div>
         </div>
       </div>
     );
