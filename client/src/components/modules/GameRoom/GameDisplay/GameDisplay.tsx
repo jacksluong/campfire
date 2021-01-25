@@ -22,12 +22,13 @@ interface Props {
 
 interface State {
   published: boolean;
+  numPublishVotes: number;
 }
 
 class GameDisplay extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { published: false };
+    this.state = { published: false, numPublishVotes: 0 };
   }
   handleHome = () => {
     navigate(`/`);
@@ -35,7 +36,14 @@ class GameDisplay extends Component<Props, State> {
 
   handlePublish = () => {
     console.log("gameId", this.props.gameId);
-    post("/api/votePublish", { gameId: this.props.gameId, socketId: socket.id });
+    post("/api/votePublish", { gameId: this.props.gameId, socketId: socket.id }).then(
+      (response) => {
+        // console.log(response.votecount);
+        this.setState((prevState) => ({
+          numPublishVotes: response.votecount,
+        }));
+      }
+    );
     // navigate(`/gallery`);
   };
 
@@ -48,6 +56,10 @@ class GameDisplay extends Component<Props, State> {
 
   componentDidMount() {
     socket.on("storyPublished", () => this.setState({ published: true }));
+    socket.on("updatePublishVotes", (numPublishVotes) => {
+      // console.log(numPublishVotes);
+      this.setState({ numPublishVotes: numPublishVotes });
+    });
   }
   render() {
     let input: any = "";
@@ -69,6 +81,10 @@ class GameDisplay extends Component<Props, State> {
         />
       );
     }
+    let voteTrackerAndPublishedButton =
+      this.state.numPublishVotes >= Math.ceil(this.props.players.length / 2)
+        ? `Published!`
+        : `Publish ${this.state.numPublishVotes} / ${Math.ceil(this.props.players.length / 2)}`;
     return (
       <div className="GameDisplay container">
         <StoryText currentStory={this.props.currentStory} currentInput={this.props.currentInput} />
@@ -84,7 +100,7 @@ class GameDisplay extends Component<Props, State> {
         )}
         {this.props.ended ? (
           <span>
-            <button onClick={this.handlePublish}>Publish</button>
+            <button onClick={this.handlePublish}>{voteTrackerAndPublishedButton}</button>
             <button onClick={this.handleHome}>Home</button>
             <button onClick={this.handlePlayAgain}>Again</button>
           </span>

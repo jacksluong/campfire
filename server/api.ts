@@ -240,12 +240,14 @@ router.post("/votePublish", (req, res) => {
       keywords: ["keyword1", "keyword2", "keyword3"],
     });
     newStory.save().then((story) => {
-      socketManager.getIo().emit("storyPublished");
+      socketManager.emitToRoom("storyPublished", gameState, undefined);
       // logic.addStoryToPlayer(story._id, gameState);
       console.log("story saved: ", story);
     });
   }
-  res.send({});
+  // console.log(gameState.publishVotes);
+  // res.send({ votecount: gameState.publishVotes.length });
+  socketManager.emitToRoom("updatePublishVotes", gameState, gameState.publishVotes.length);
 });
 
 /** End */
