@@ -15,7 +15,7 @@ interface Props {
   currentTurn: number;
   currentInput: string;
   taggedPlayer: number;
-  
+
   gameId: string;
   userId: string;
 
@@ -104,27 +104,17 @@ class GameDisplay extends Component<Props, State> {
             players={this.props.players}
             currentStory={this.props.currentStory}
           />
-<<<<<<< Updated upstream
-        ) : (<>
-          <Gathering 
-            gameId={this.props.gameId}
-            players={this.props.players} 
-            currentTurn={this.props.currentTurn} 
-            taggedPlayer={this.props.taggedPlayer}
-            handlePlayerClick={this.props.handlePlayerClick}
-          />
-        </>)}
-=======
         ) : (
           <>
             <Gathering
               gameId={this.props.gameId}
               players={this.props.players}
               currentTurn={this.props.currentTurn}
+              taggedPlayer={this.props.taggedPlayer}
+              handlePlayerClick={this.props.handlePlayerClick}
             />
           </>
         )}
->>>>>>> Stashed changes
         {this.props.ended ? (
           <span>
             <button onClick={this.handlePublish}>{voteTrackerAndPublishedButton}</button>
