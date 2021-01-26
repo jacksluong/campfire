@@ -8,9 +8,16 @@ import Player from "../shared/Player";
 import Message from "../shared/Message";
 import User from "../shared/User";
 import logic, { GameState } from "./logic";
+import dotenv from "dotenv";
+dotenv.config({});
 import { RESERVED_EVENTS } from "socket.io/dist/socket";
 
 const router = express.Router();
+
+//using Natural Language Processing API
+const MonkeyLearn = require("monkeylearn");
+const ml = new MonkeyLearn(process.env.MONKEYLEARN_APIKEY);
+let model_id = process.env.MONKEYLEARN_MODELID;
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -22,15 +29,6 @@ router.get("/whoami", (req, res) => {
   res.send(req.user);
 });
 
-// router.get("/whoisthis", (req, res) => {
-//   UserInferface.findById(req.query.userId).then((findUser: User | undefined) => {
-//     if (findUser) {
-//       res.send(findUser);
-//     } else {
-//       res.send({});
-//     }
-//   });
-// });
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
   if (req.user) {
@@ -260,39 +258,41 @@ router.post("/voteEndGame", (req, res) => {
 
 router.post("/votePublish", (req, res) => {
   const gameState = logic.processPublishVote(req.body.gameId, req.body.socketId);
-  let tempTitle = null;
-  if (gameState.currentStory.length >= 3) {
-    tempTitle = gameState.currentStory.split(" ").slice(0, 3).join(" ");
-  } else {
-    tempTitle = gameState.currentStory;
-  }
+  let keywords: string[] = [];
+  let newStory: Story;
   if (gameState.isPublished) {
     const guests = gameState.players.find((player) => player.userId == "guest") ? "guests" : "";
-    const newStory = new StoryModel({
-      name: tempTitle,
-      contributorNames: gameState.players
-        .filter((player) => player.userId != "guest")
-        .map((player) => player.name)
-        .concat(guests),
-      contributorIds: gameState.players
-        .filter((player) => player.userId != "guest")
-        .map((player) => player.userId),
-      content: gameState.currentStory,
-      usersThatLiked: ["bydefaultthereshouldbenouserslikedatpublish"],
-      keywords: ["keyword1", "keyword2", "keyword3"],
-    });
-    newStory.save().then((story) => {
-      socketManager.emitToRoom("storyPublished", gameState, undefined);
-      gameState.players.forEach((player: Player) => {
-        if (player.userId !== "guest") {
-          UserInferface.findById(player.userId).then((user: User) => {
-            user.storiesWorkedOn.push(story._id);
-            user.save();
-          });
-        }
+    ml.extractors.extract(model_id, [gameState.currentStory]).then((res: any) => {
+      console.log("in Vote Publish api call");
+      console.log(JSON.stringify(res.body[0].extractions));
+      let extractions = res.body[0].extractions.splice(0, 3);
+      extractions.forEach((data: any) => keywords.push(data.parsed_value));
+      let newStory = new StoryModel({
+        name: keywords[0],
+        contributorNames: gameState.players
+          .filter((player) => player.userId != "guest")
+          .map((player) => player.name)
+          .concat(guests),
+        contributorIds: gameState.players
+          .filter((player) => player.userId != "guest")
+          .map((player) => player.userId),
+        content: gameState.currentStory,
+        usersThatLiked: ["bydefaultthereshouldbenouserslikedatpublish"],
+        keywords: keywords,
       });
-      console.log("story saved: ", story);
+      newStory.save().then((story) => {
+        socketManager.emitToRoom("storyPublished", gameState, undefined);
+        gameState.players.forEach((player: Player) => {
+          if (player.userId !== "guest") {
+            UserInferface.findById(player.userId).then((user: User) => {
+              user.storiesWorkedOn.push(story._id);
+              user.save();
+            });
+          }
+        });
+      });
     });
+    res.send({});
   }
   // console.log(gameState.publishVotes);
   // res.send({ votecount: gameState.publishVotes.length });
