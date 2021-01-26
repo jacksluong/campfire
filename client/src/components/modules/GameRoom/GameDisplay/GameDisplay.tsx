@@ -104,6 +104,7 @@ class GameDisplay extends Component<Props, State> {
             players={this.props.players}
             currentStory={this.props.currentStory}
           />
+<<<<<<< Updated upstream
         ) : (<>
           <Gathering 
             gameId={this.props.gameId}
@@ -113,6 +114,17 @@ class GameDisplay extends Component<Props, State> {
             handlePlayerClick={this.props.handlePlayerClick}
           />
         </>)}
+=======
+        ) : (
+          <>
+            <Gathering
+              gameId={this.props.gameId}
+              players={this.props.players}
+              currentTurn={this.props.currentTurn}
+            />
+          </>
+        )}
+>>>>>>> Stashed changes
         {this.props.ended ? (
           <span>
             <button onClick={this.handlePublish}>{voteTrackerAndPublishedButton}</button>
@@ -120,7 +132,9 @@ class GameDisplay extends Component<Props, State> {
             <button onClick={this.handlePlayAgain}>Again</button>
             <button onClick={this.handleGallery}>Gallery</button>
           </span>
-        ) : (input)}
+        ) : (
+          input
+        )}
       </div>
     );
   }
