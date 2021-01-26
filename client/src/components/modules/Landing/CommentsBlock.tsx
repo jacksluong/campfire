@@ -71,22 +71,24 @@ class CommentsBlock extends Component<Props, State> {
         <div className="comments-container">
           {/* <br></br> */}
           {this.props.showComments ? commentsElement : null}
-          <span>
-            <input
-              className="NewComment-container"
-              type="text"
-              placeholder="Write a comment"
-              onChange={this.onChange}
-            ></input>
-            <button
-              className="NewCommentButton-container"
-              type="submit"
-              value=""
-              onClick={this.handleNewCommentSubmit}
-            >
-              Submit
-            </button>
-          </span>
+          {this.props.userId ? (
+            <span>
+              <input
+                className="NewComment-container"
+                type="text"
+                placeholder="Write a comment"
+                onChange={this.onChange}
+              ></input>
+              <button
+                className="NewCommentButton-container"
+                type="submit"
+                value=""
+                onClick={this.handleNewCommentSubmit}
+              >
+                Submit
+              </button>
+            </span>
+          ) : null}
         </div>
       </div>
     );
