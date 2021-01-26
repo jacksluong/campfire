@@ -4,8 +4,10 @@ import ProfileSection from "../modules/Profile/ProfileSection";
 import { RouteComponentProps } from "@reach/router";
 import { get, post } from "../../../src/utilities";
 import NavBar from "../modules/NavBar";
+import User from "../../../../shared/User";
 interface State {
   name: string;
+  pfp: string;
   wordsTyped: number;
   storiesWorkedOn: string[];
   wordFrequencies: { word: string; frequency: number }[];
@@ -13,7 +15,6 @@ interface State {
 
 interface Props extends RouteComponentProps {
   userId: string;
-  pfp: string;
   handleLogin: any;
   handleLogout: any;
 }
@@ -23,6 +24,7 @@ class Profile extends Component<Props, State> {
     super(props);
     this.state = {
       name: "",
+      pfp: "",
       wordsTyped: 0,
       storiesWorkedOn: [],
       wordFrequencies: [],
@@ -32,7 +34,14 @@ class Profile extends Component<Props, State> {
   PROFILE_WORDS: number = 5;
 
   componentDidMount() {
-    console.log("requesting userinfo");
+    get("/api/whoami").then((user: User) => {
+      if (user._id) {
+        // They are registered in the database and currently logged in.
+        this.setState({ pfp: user.pfp });
+        console.log("In Profile.tsx cdm");
+        console.log(this.state.pfp);
+      }
+    });
     get("/api/userInfo", { userId: this.props.userId }).then((user) => {
       let words =
         user.wordFrequencies.length <= this.PROFILE_WORDS
@@ -50,12 +59,10 @@ class Profile extends Component<Props, State> {
   }
 
   render() {
-    console.log("in render of profile");
-    console.log(this.state.storiesWorkedOn);
     return (
       <div>
         <NavBar
-          pfp={this.props.pfp}
+          pfp={this.state.pfp}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}
@@ -63,7 +70,7 @@ class Profile extends Component<Props, State> {
           leftButtonPath="/"
         />
         <div className="Profile container">
-          <ProfileSection name={this.state.name} />
+          <ProfileSection name={this.state.name} pfp={this.state.pfp} />
           <StatisticsSection
             userId={this.props.userId}
             wordsTyped={this.state.wordsTyped}

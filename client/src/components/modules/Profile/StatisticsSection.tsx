@@ -14,8 +14,6 @@ class StatisticsSection extends Component<Props, {}> {
   }
 
   render() {
-    console.log("in render of stats");
-    console.log(this.props.storiesWorkedOn);
     return (
       <div className="StatisticsSection container">
         <div className="BasicStats container">
