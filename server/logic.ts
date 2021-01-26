@@ -159,13 +159,11 @@ const getConnectedPlayers = (room: GameState): Player[] => {
 
 /** Gamewide Actions */
 
-const addToStory = (gameId: string, text: string): GameState => {
+const addToStory = (gameId: string, text: string, nextPlayer: number): GameState => {
   const gameState = getRoomById(gameId)!;
 
   gameState.currentStory += text;
-  gameState.currentTurn = (gameState.currentTurn + 1) % gameState.players.length;
-  while (gameState.players[gameState.currentTurn].disconnected)
-    gameState.currentTurn = (gameState.currentTurn + 1) % gameState.players.length;
+  gameState.currentTurn = nextPlayer;
 
   return gameState;
 };

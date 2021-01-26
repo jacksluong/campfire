@@ -1,7 +1,7 @@
 import express from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
-import UserModel from "./models/User";
+import UserInferface from "./models/User";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
 import Player from "../shared/Player";
@@ -64,7 +64,7 @@ router.get("/profileStories", (req, res) => {
 // get UserInfo for Profile page
 router.get("/userInfo", (req, res) => {
   console.log(`Requesting ID: ${req.query.userId}`);
-  UserModel.findById(req.query.userId).then((user: User) => {
+  UserInferface.findById(req.query.userId).then((user: User) => {
     console.log(`User Found in Database: ${user}`);
     const userInfo = {
       name: user.name,
@@ -111,7 +111,7 @@ router.post("/newComment", (req, res) => {
   const storyId = req.body.storyId;
   const userId = req.body.userId;
   const content = req.body.content;
-  UserModel.findById(userId).then((user: User) => {
+  UserInferface.findById(userId).then((user: User) => {
     let name = user.name;
     StoryModel.findById(storyId).then((story: Story) => {
       let storyComments = [...story.comments];
@@ -147,10 +147,11 @@ router.post("/inputChange", (req, res) => {
 router.post("/inputSubmit", (req, res) => {
   let newInput = {
     content: req.body.content + " ",
+    nextPlayer: req.body.nextPlayer,
     gameId: req.body.gameId,
-    socketId: req.body.socketId,
+    socketId: req.body.socketId
   };
-  let newGameState = logic.addToStory(req.body.gameId, newInput.content);
+  let newGameState = logic.addToStory(req.body.gameId, newInput.content, newInput.nextPlayer);
   newGameState = logic.addToPlayer(req.body.gameId, req.body.socketId, newInput.content);
   socketManager.emitToRoom("storyUpdate", newGameState);
   res.send({});
@@ -215,7 +216,7 @@ router.post("/voteEndGame", (req, res) => {
     //for each player in the room who is not a guest, add info into word map in database
     room.players.forEach((player: Player) => {
       if (player.userId !== "guest") {
-        UserModel.findById(player.userId).then((user: User) => {
+        UserInferface.findById(player.userId).then((user: User) => {
           let topWords = player.wordFrequencies.sort((word) => word.frequency);
           topWords = topWords.length >= 3 ? topWords.slice(0, 3) : topWords;
           topWords.reverse();
@@ -264,7 +265,7 @@ router.post("/votePublish", (req, res) => {
       socketManager.emitToRoom("storyPublished", gameState, undefined);
       gameState.players.forEach((player: Player) => {
         if (player.userId !== "guest") {
-          UserModel.findById(player.userId).then((user: User) => {
+          UserInferface.findById(player.userId).then((user: User) => {
             user.storiesWorkedOn.push(story._id);
             user.save();
           });

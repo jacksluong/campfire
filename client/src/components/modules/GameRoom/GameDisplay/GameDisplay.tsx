@@ -14,10 +14,14 @@ interface Props {
   currentStory: string;
   currentTurn: number;
   currentInput: string;
+  taggedPlayer: number;
+  
   gameId: string;
   userId: string;
 
   ended: boolean;
+  handlePlayerClick: (number) => void;
+  handleStoryInputSubmit: (string) => Promise<any>;
 }
 
 interface State {
@@ -82,6 +86,7 @@ class GameDisplay extends Component<Props, State> {
             this.props.currentTurn !== -1 &&
             this.props.players[this.props.currentTurn].socketId === socket.id
           }
+          handleInputSubmit={this.props.handleStoryInputSubmit}
         />
       );
     }
@@ -104,6 +109,8 @@ class GameDisplay extends Component<Props, State> {
             gameId={this.props.gameId}
             players={this.props.players} 
             currentTurn={this.props.currentTurn} 
+            taggedPlayer={this.props.taggedPlayer}
+            handlePlayerClick={this.props.handlePlayerClick}
           />
         </>)}
         {this.props.ended ? (

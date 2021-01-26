@@ -18,10 +18,15 @@ const verify = (token: string) => {
 const getOrCreateUser = (user: TokenPayload) => {
   return User.findOne({ googleid: user.sub }).then(
     (existingUser: UserInterface | null | undefined) => {
-      if (existingUser !== null && existingUser !== undefined) return existingUser;
+      if (existingUser !== null && existingUser !== undefined) {
+        existingUser.pfp = user.picture!;
+        existingUser.save()
+        return existingUser;
+      }
       const newUser = new User({
         name: user.name,
         googleid: user.sub,
+        pfp: user.picture
       });
       return newUser.save();
     }

@@ -10,18 +10,18 @@ import { get, post } from "../../utilities";
 interface Props extends RouteComponentProps {
   gameId?: string;
   userId: string;
-} // replaced "Props & RouteComponentProps" with "RouteComponentProps" because that's the primary way we are receiving props for this component
+}
 
 interface State {
   isPrivate: boolean;
   timeout: any;
-  userId: string;
   players: Player[];
   readyPlayers: number[];
   spectators: string[];
   currentStory: string;
   currentTurn: number;
   currentInput: string;
+  taggedPlayer: number; // index of this player
 
   ended: boolean;
 }
@@ -34,13 +34,13 @@ class GameRoom extends Component<Props, State> {
     this.state = {
       isPrivate: false,
       timeout: undefined,
-      userId: "",
       players: [],
       readyPlayers: [],
       spectators: [],
       currentStory: "",
       currentTurn: -1,
       currentInput: "",
+      taggedPlayer: -1,
       //control game display
       ended: false,
     };
@@ -68,11 +68,24 @@ class GameRoom extends Component<Props, State> {
     });
     socket.on("storyUpdate", (gameState) => {
       // on input submit
+      let highestHealthIndex = -1;
+      let highestHealth = -1;
+      for (let i = 0; i < gameState.players.length; i++) {
+        if (gameState.players[i].socketId === socket.id) continue;
+        else if (highestHealth === -1) {
+          highestHealthIndex = i;
+          highestHealth = gameState.players[i].health;
+        } else if (gameState.players[i].health > highestHealth) {
+          highestHealthIndex = i;
+          highestHealth = gameState.players[i].health;
+        }
+      }
       this.setState({
         currentStory: gameState.currentStory,
         players: gameState.players,
         currentTurn: gameState.currentTurn,
         currentInput: "",
+        taggedPlayer: highestHealthIndex
       });
     });
     socket.on("inputUpdate", (content: string) => {
@@ -120,6 +133,19 @@ class GameRoom extends Component<Props, State> {
       this.startTimeout();
   };
 
+  handlePlayerClick = (index: number) => {
+    this.setState({ taggedPlayer: index });
+  }
+
+  handleStoryInputSubmit = (text: string): Promise<any> => {
+    return post("/api/inputSubmit", {
+      content: text,
+      nextPlayer: this.state.taggedPlayer,
+      gameId: this.props.gameId,
+      socketId: socket.id,
+    });
+  }
+
   render() {
     return (
       <div className="GameRoom container">
@@ -137,9 +163,12 @@ class GameRoom extends Component<Props, State> {
           currentStory={this.state.currentStory}
           currentTurn={this.state.currentTurn}
           currentInput={this.state.currentInput}
+          taggedPlayer={this.state.taggedPlayer}
           gameId={this.props.gameId}
           userId={this.props.userId}
           ended={this.state.ended}
+          handlePlayerClick={this.handlePlayerClick}
+          handleStoryInputSubmit={this.handleStoryInputSubmit}
         />
       </div>
     );

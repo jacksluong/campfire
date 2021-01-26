@@ -40,7 +40,7 @@ class SingleStoryCard extends Component<Props, State> {
     }));
   };
   componentDidMount() {
-    const script = document.createElement("script");
+    /* const script = document.createElement("script");
     script.src = "https://unpkg.com/aos@next/dist/aos.css";
     script.innerHTML = AOS.init({
       offset: 200,
@@ -50,7 +50,7 @@ class SingleStoryCard extends Component<Props, State> {
     document.body.appendChild(script);
     if (this.props.userId && this.props.usersThatLiked.includes(this.props.userId)) {
       this.setState({ hasLiked: true });
-    }
+    } */
   }
   likeFunction = () => {
     //Like function

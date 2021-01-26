@@ -2,7 +2,7 @@ import type http from "http";
 import { Server, Socket } from "socket.io";
 import User from "../shared/User";
 import logic, { GameState } from "./logic";
-import UserModel from "./models/User";
+import UserInferface from "./models/User";
 
 let io: Server;
 
@@ -45,7 +45,7 @@ export const init = (server: http.Server): void => {
     });
 
     socket.on("join", (info: { userId: string; gameId: string }) => {
-      UserModel.findById(info.userId).then((user: User) => {
+      UserInferface.findById(info.userId).then((user: User) => {
         const gameState = logic.addPlayer(info.gameId, user, socket.id);
         if (!gameState) socket.emit("redirectHome");
         else emitToRoom("playersUpdate", gameState);

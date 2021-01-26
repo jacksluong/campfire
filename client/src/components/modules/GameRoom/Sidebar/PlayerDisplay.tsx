@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Player from "../../../../../../shared/Player";
+import { socket } from "../../../../client-socket";
 import PlayerRow from "./PlayerRow";
 
 const SPECTATOR_IMAGE = "https://imgur.com/nNut6eg.png";
@@ -35,8 +36,11 @@ class PlayerDisplay extends Component<Props, State> {
         {header}
         {this.props.players.map((player, i) => (
           <PlayerRow 
+            index={i}
+            isMe={player.socketId == socket.id}
             name={player.name} 
             health={player.health} 
+            maxHealth={170 - 10 * this.props.players.length}
             disconnected={player.disconnected ?? false} 
             isTyping={this.props.currentTurn === i}
             key={i} />

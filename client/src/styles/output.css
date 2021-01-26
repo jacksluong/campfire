@@ -145,7 +145,7 @@ body {
 .Main.container {
   height: 100%;
   text-align: center;
-  color: white;
+  color: #E4A292;
 }
 .Main .backgroundImg {
   width: 100%;
@@ -258,13 +258,16 @@ body {
   align-items: center;
   margin: 2px 0px;
   padding: 2px 8px;
+  color: #d9d9d9;
 }
 .GameRoom .Sidebar .PlayerDisplay .PlayerRow .name {
   flex-basis: 70%;
   flex-grow: 0;
   flex-shrink: 0;
-  color: #d9d9d9;
   font-size: 11pt;
+}
+.GameRoom .Sidebar .PlayerDisplay .PlayerRow.me {
+  color: #032540;
 }
 .GameRoom .Sidebar .PlayerDisplay .PlayerRow.disconnected {
   color: #969696;
@@ -366,6 +369,12 @@ body {
   padding: 0px;
   margin: 0px;
   width: 100%;
+}
+.GameRoom .GameDisplay .Gathering .GatheringPlayer.container {
+  display: inline-block;
+  padding: 40px;
+  border-radius: 50%;
+  background-color: red;
 }
 .GameRoom .GameDisplay .GameInputField.primary {
   flex-basis: 40px;

@@ -49,12 +49,16 @@
         align-items: center;
         margin: 2px 0px;
         padding: 2px 8px;
+        color: u.$offwhite;
 
         .name {
           @include u.flex-fixed-size(70%);
 
-          color: u.$offwhite;
           font-size: 11pt;
+        }
+        
+        &.me {
+          color: u.$darkink;
         }
 
         &.disconnected {
@@ -183,6 +187,15 @@
         padding: 0px;
         margin: 0px;
         width: 100%;
+      }
+
+      .GatheringPlayer {
+        &.container {
+          display: inline-block;
+          padding: 40px;
+          border-radius: 50%;
+          background-color: red;
+        }
       }
     }
     .GameInputField {
