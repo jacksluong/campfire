@@ -34,6 +34,10 @@ class GameDisplay extends Component<Props, State> {
     navigate(`/`);
   };
 
+  handleGallery = () => {
+    navigate("/gallery");
+  };
+
   handlePublish = () => {
     console.log("gameId", this.props.gameId);
     post("/api/votePublish", { gameId: this.props.gameId, socketId: socket.id }).then(
@@ -107,6 +111,7 @@ class GameDisplay extends Component<Props, State> {
             <button onClick={this.handlePublish}>{voteTrackerAndPublishedButton}</button>
             <button onClick={this.handleHome}>Home</button>
             <button onClick={this.handlePlayAgain}>Again</button>
+            <button onClick={this.handleGallery}>Gallery</button>
           </span>
         ) : (input)}
       </div>
