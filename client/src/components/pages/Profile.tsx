@@ -36,18 +36,25 @@ class Profile extends Component<Props, State> {
     get("/api/userInfo", { userId: this.props.userId }).then((user) => {
       let words =
         user.wordFrequencies.length <= this.PROFILE_WORDS
-          ? user.wordFrequencies
-          : user.wordFrequencies.slice(0, 5);
+          ? user.wordFrequencies.sort((word) => word.frequency).reverse()
+          : user.wordFrequencies
+              .sort((word) => word.frequency)
+              .reverse()
+              .slice(0, 5);
       this.setState({
         name: user.name,
         wordsTyped: user.wordsTyped,
         storiesWorkedOn: user.storiesWorkedOn,
         wordFrequencies: words,
       });
+      console.log(`In Profile.tsx" ${user.storiesWorkedOn as string[]}`);
+      console.log(user.storiesWorkedOn);
     });
   }
 
   render() {
+    console.log("in render of profile");
+    console.log(this.state.storiesWorkedOn);
     return (
       <div>
         <NavBar
@@ -61,6 +68,7 @@ class Profile extends Component<Props, State> {
         <div className="Profile-container">
           <ProfileSection name={this.state.name} />
           <StatisticsSection
+            userId={this.props.userId}
             wordsTyped={this.state.wordsTyped}
             storiesWorkedOn={this.state.storiesWorkedOn}
             wordFrequencies={this.state.wordFrequencies}
