@@ -18,18 +18,19 @@ class Gathering extends Component<Props, {}> {
   }
 
   render() {
-    console.log("something is happening");
-    console.log(this.props);
     return (
       <div className="Gathering container">
         {this.props.players.map((p, i) => <GatheringPlayer
           index={i}
           totalNumber={this.props.players.length}
+          cursorPointer={this.props.players[this.props.currentTurn]?.socketId === socket.id}
           player={p}
           tagged={i === this.props.taggedPlayer && this.props.players[this.props.currentTurn].socketId === socket.id}
           handleClick={this.props.handlePlayerClick}
           currentTurn={this.props.currentTurn}
+          key={i}
         />)}
+        <div id="potato" className={this.props.currentTurn !== -1 ? "show" : ""}></div>
         <HelpButton gameId={this.props.gameId} />
       </div>
     );

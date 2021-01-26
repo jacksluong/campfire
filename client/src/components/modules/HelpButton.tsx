@@ -30,7 +30,7 @@ class HelpButton extends Component<Props, State> {
             <p>When a game is finished, all players can choose to vote whether or not the story is published publicly. Hit the <strong>Explore</strong> button to check out stories other people have made!</p>
           </>) : (<>
             <h2>Inviting Others</h2>
-            <p>The game code for this room is <strong><em>{this.props.gameId}</em></strong>. You can also invite others by sending them the current URL.</p>
+            <p>The game code for this room is <strong><em>{this.props.gameId}</em></strong> — they can enter this room by entering the code in the landing page.</p>
             <h2>Instructions</h2>
             <p>When it's your turn, type into the input field on the bottom and press enter to submit your contribution <em>(max 100 characters)</em> for your turn. You can <strong>tag</strong> the next person to go by clicking on their character in the visual!</p>
             <h2>Start/End</h2>

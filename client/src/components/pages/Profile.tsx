@@ -12,7 +12,7 @@ interface State {
 }
 
 interface Props extends RouteComponentProps {
-  userId: string;
+  userId?: string;
   pfp: string;
   handleLogin: any;
   handleLogout: any;

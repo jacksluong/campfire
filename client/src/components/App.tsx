@@ -79,7 +79,6 @@ class App extends Component<{}, State> {
           handleLogout={this.handleLogout}
         />
         <Profile
-          userId={this.state.userId}
           path="/profile/:userId"
           pfp={this.state.userPfp}
           handleLogin={this.handleLogin}

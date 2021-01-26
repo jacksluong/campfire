@@ -187,16 +187,78 @@
         padding: 0px;
         margin: 0px;
         width: 100%;
+        background-image: url("../assets/campfire2.gif");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100px;
       }
 
       .GatheringPlayer {
         &.container {
-          display: inline-block;
           position: absolute;
-          padding: 40px;
-          border-radius: 50%;
+          display: flex; // inline-flex?
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-around;
+          height: 120px;
+
+          border-radius: 5px;
+        }
+
+        #gpIndicator {
+          @keyframes bobbing {
+            0% {
+              top: -10px;
+            }
+            50% {
+              top: -15px;
+            }
+            100% {
+              top: -10px;
+            }
+          }
+
+          position: absolute;
+          width: 0px;
+          height: 0px;
+
+          border-left: 7px solid transparent;
+          border-right: 7px solid transparent;
+          border-top: 10px solid white; 
+          animation: bobbing 1s infinite;
+        }
+        .gpHealth {
+          padding: 5px 30px;
+          background-color: gray;
+          border-radius: 5px;
+        }
+        .gpGraphic {
+          padding: 30px;
+          background-color: u.$darkgray;
           background-image: url("../assets/blankpfp.png");
+          border-radius: 50%;
           background-size: contain;
+          z-index: 10;
+        }
+        .gpName {
+          padding: 0px 4px;
+          font-size: 10pt;
+          color: u.$peach;
+        }
+      }
+
+      #potato {
+        display: none;
+        padding: 25px;
+        background-image: url("../assets/potato.png");
+        background-size: contain;
+        left: 50%;
+        top: 50%;
+        transition: 0s;
+
+        &.show {
+          display: inline-block;
+          z-index: 999;
         }
       }
     }
@@ -236,12 +298,6 @@
         cursor: pointer;
         box-shadow: 0 5px 3px #1c1c1c;
         animation: floating 1.25s infinite;
-
-        &:hover {
-          box-shadow: 0 4px 2px #1c1c1c;
-          animation: none;
-          transition: 0.1s;
-        }
 
         &:active {
           box-shadow: 0 2px 2px #1c1c1c;

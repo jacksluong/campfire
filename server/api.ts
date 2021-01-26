@@ -131,6 +131,20 @@ router.post("/newComment", (req, res) => {
 
 /** Gameplay */
 
+router.post("/join", (req, res) => {
+
+  UserInferface.findById(req.user?._id).then((user: User) => {
+    console.log("socketId is", req.body.socketId)
+    let socket = socketManager.getSocketFromSocketID(req.body.socketId)!;
+    const gameState = logic.addPlayer(req.body.gameId, user, req.body.socketId);
+    console.log("logic is");
+    console.log(gameState);
+    if (!gameState) socket.emit("redirectHome");
+    else socketManager.emitToRoom("playersUpdate", gameState);
+  });
+  res.send({});
+})
+
 router.post("/leaveGame", (req, res) => {
   // When a player disconnects without closing the tab (i.e. socket remains connected)
   const newGameState = logic.disconnectPlayer(req.body.socketId)!;

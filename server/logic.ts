@@ -89,7 +89,7 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
 
   // check if user was in-game (by socket or id)
   const existingPlayer: Player | undefined = gameState.players.find(
-    (player) => player.socketId == socketId || player.userId == user?._id
+    (player) => player.socketId === socketId || player.userId === user?._id
   );
   if (existingPlayer) {
     console.log(`returning ${existingPlayer.name} to game`);

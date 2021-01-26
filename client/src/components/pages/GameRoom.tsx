@@ -45,7 +45,7 @@ class GameRoom extends Component<Props, State> {
       ended: false,
     };
   }
-
+  
   componentDidMount() {
     socket.on("gameUpdate", (gameState) => {
       // on game start or player ready
@@ -57,6 +57,7 @@ class GameRoom extends Component<Props, State> {
       if (gameState.currentTurn !== -1) clearTimeout(this.state.timeout);
     });
     socket.on("playersUpdate", (gameState) => {
+      console.log("received players update");
       // on player join or leave
       this.setState({
         isPrivate: gameState.isPrivate,
@@ -88,7 +89,6 @@ class GameRoom extends Component<Props, State> {
         currentInput: "",
         taggedPlayer: highestHealthIndex
       });
-      console.log("received input submit");
     });
     socket.on("inputUpdate", (content: string) => {
       // on type
@@ -102,7 +102,15 @@ class GameRoom extends Component<Props, State> {
       this.setState({ ended: true });
     });
 
-    socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId });
+    this.joinGame();
+  }
+
+  joinGame = () => {
+    if (socket.id !== undefined) {
+      post("/api/join", { gameId: this.props.gameId, socketId: socket.id });
+    } else {
+      setTimeout(this.joinGame, 80);
+    }
   }
 
   componentWillUnmount() {
