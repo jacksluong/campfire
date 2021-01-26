@@ -52,6 +52,7 @@ class GameRoom extends Component<Props, State> {
       this.setState({
         readyPlayers: gameState.readyVotes,
         currentTurn: gameState.currentTurn,
+        taggedPlayer: gameState.currentTurn === -1 ? -1 : (gameState.currentTurn + 1) % gameState.players.length
       });
       if (gameState.currentTurn !== -1) clearTimeout(this.state.timeout);
     });
@@ -87,6 +88,7 @@ class GameRoom extends Component<Props, State> {
         currentInput: "",
         taggedPlayer: highestHealthIndex
       });
+      console.log("received input submit");
     });
     socket.on("inputUpdate", (content: string) => {
       // on type
@@ -134,7 +136,7 @@ class GameRoom extends Component<Props, State> {
   };
 
   handlePlayerClick = (index: number) => {
-    this.setState({ taggedPlayer: index });
+    if (this.state.currentTurn !== -1) this.setState({ taggedPlayer: index });
   }
 
   handleStoryInputSubmit = (text: string): Promise<any> => {

@@ -192,9 +192,11 @@
       .GatheringPlayer {
         &.container {
           display: inline-block;
+          position: absolute;
           padding: 40px;
           border-radius: 50%;
-          background-color: red;
+          background-image: url("../assets/blankpfp.png");
+          background-size: contain;
         }
       }
     }

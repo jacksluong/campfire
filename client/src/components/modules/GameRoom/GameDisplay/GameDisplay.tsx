@@ -69,6 +69,7 @@ class GameDisplay extends Component<Props, State> {
       this.setState({ numPublishVotes: numPublishVotes });
     });
   }
+  
   render() {
     let input: any = "";
     if (

@@ -111,6 +111,7 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
     gameState.players.push({
       userId: userId,
       socketId: socketId,
+      pfp: user?.pfp,
       name: name,
       health: health,
       wordFrequencies: [],

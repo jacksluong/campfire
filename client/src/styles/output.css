@@ -372,9 +372,11 @@ body {
 }
 .GameRoom .GameDisplay .Gathering .GatheringPlayer.container {
   display: inline-block;
+  position: absolute;
   padding: 40px;
   border-radius: 50%;
-  background-color: red;
+  background-image: url("../assets/blankpfp.png");
+  background-size: contain;
 }
 .GameRoom .GameDisplay .GameInputField.primary {
   flex-basis: 40px;
