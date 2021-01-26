@@ -111,6 +111,7 @@
         margin-top: 50px;
         font-size: 20px;
         display: flex;
+        flex-direction: row;
         // border: solid;
       }
       .KeywordText {
@@ -119,7 +120,6 @@
         margin: 20px;
         border-radius: 15px;
         padding: 20px;
-        flex-direction: row;
         border: solid;
         justify-content: center;
       }

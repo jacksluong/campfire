@@ -18,10 +18,14 @@ interface State {
   players: Player[];
   readyPlayers: number[];
   spectators: string[];
-  currentStory: string;
   currentTurn: number;
   currentInput: string;
   taggedPlayer: number; // index of this player
+
+  //story state vars
+  currentStory: string;
+  title: string;
+  keywords: string[];
 
   ended: boolean;
 }
@@ -37,10 +41,15 @@ class GameRoom extends Component<Props, State> {
       players: [],
       readyPlayers: [],
       spectators: [],
-      currentStory: "",
       currentTurn: -1,
       currentInput: "",
       taggedPlayer: -1,
+
+      //story info
+      currentStory: "",
+      title: "",
+      keywords: [],
+
       //control game display
       ended: false,
     };
@@ -85,7 +94,7 @@ class GameRoom extends Component<Props, State> {
         players: gameState.players,
         currentTurn: gameState.currentTurn,
         currentInput: "",
-        taggedPlayer: highestHealthIndex
+        taggedPlayer: highestHealthIndex,
       });
     });
     socket.on("inputUpdate", (content: string) => {
@@ -96,8 +105,15 @@ class GameRoom extends Component<Props, State> {
     });
 
     //Game over here
-    socket.on("gameOver", () => {
-      this.setState({ ended: true });
+    socket.on("gameOver", (data) => {
+      this.setState({
+        ended: true,
+        title: data.title,
+        keywords: data.keywords,
+      });
+      console.log("in gameroom gameover socket");
+      console.log(`title: ${data.title}`);
+      console.log(`keywords: ${data.keywords}`);
     });
 
     socket.emit("join", { userId: this.props.userId, gameId: this.props.gameId });
@@ -135,7 +151,7 @@ class GameRoom extends Component<Props, State> {
 
   handlePlayerClick = (index: number) => {
     this.setState({ taggedPlayer: index });
-  }
+  };
 
   handleStoryInputSubmit = (text: string): Promise<any> => {
     return post("/api/inputSubmit", {
@@ -144,7 +160,7 @@ class GameRoom extends Component<Props, State> {
       gameId: this.props.gameId,
       socketId: socket.id,
     });
-  }
+  };
 
   render() {
     return (
@@ -166,6 +182,8 @@ class GameRoom extends Component<Props, State> {
           taggedPlayer={this.state.taggedPlayer}
           gameId={this.props.gameId}
           userId={this.props.userId}
+          title={this.state.title}
+          keywords={this.state.keywords}
           ended={this.state.ended}
           handlePlayerClick={this.handlePlayerClick}
           handleStoryInputSubmit={this.handleStoryInputSubmit}

@@ -6,7 +6,6 @@ const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.goo
 
 type Props = {
   userId: string;
-  pfp: string;
   handleLogin: any;
   handleLogout: any;
   leftButtonText: string;
@@ -25,17 +24,12 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
   render() {
     return (
       <div className="NavBar container">
-      <Link to={this.props.leftButtonPath} className="link">
-        {this.props.leftButtonText}
-      </Link>
+        <Link to={this.props.leftButtonPath} className="link">
+          {this.props.leftButtonText}
+        </Link>
         <span className="link">
           {this.props.userId ? (
-            <ProfileButton
-              userId={this.props.userId}
-              pfp={this.props.pfp}
-              imageUrl="check this out https://developers.google.com/identity/sign-in/web/people"
-              handleLogout={this.props.handleLogout}
-            />
+            <ProfileButton userId={this.props.userId} handleLogout={this.props.handleLogout} />
           ) : (
             <GoogleLogin
               clientId={GOOGLE_CLIENT_ID}

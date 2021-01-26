@@ -1,33 +1,29 @@
 import { Link, navigate } from "@reach/router";
 import React, { Component } from "react";
+import { get, post } from "../../../src/utilities";
 
 interface Props {
   userId: string;
-  pfp: string;
-  imageUrl: string;
   handleLogout: () => void;
 }
 
 interface State {
   show: boolean;
+  pfp: string;
 }
 
 class ProfileButton extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { show: false };
-  }
-
-  componentDidUpdate() {
-    if (this.props.pfp) {
-      document.getElementById("toggler").style.backgroundImage = `url(${this.props.pfp})`;
-    }
+    this.state = { show: false, pfp: undefined };
   }
 
   componentDidMount() {
-    if (this.props.pfp) {
-      document.getElementById("toggler").style.backgroundImage = `url(${this.props.pfp})`;
-    }
+    get("/api/whoami").then((user) => {
+      this.setState({
+        pfp: user.pfp,
+      });
+    });
   }
 
   toggleDropdown = (): void => {
@@ -49,6 +45,9 @@ class ProfileButton extends Component<Props, State> {
   };
 
   render() {
+    if (this.state.pfp) {
+      document.getElementById("toggler").style.backgroundImage = `url(${this.state.pfp})`;
+    }
     return (
       <div className="ProfileButton" onMouseLeave={this.handleMouseLeave}>
         <button onClick={this.toggleDropdown} id="toggler"></button>

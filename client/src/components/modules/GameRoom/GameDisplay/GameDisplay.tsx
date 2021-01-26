@@ -19,6 +19,10 @@ interface Props {
   gameId: string;
   userId: string;
 
+  //story info
+  title: string;
+  keywords: string[];
+
   ended: boolean;
   handlePlayerClick: (number) => void;
   handleStoryInputSubmit: (string) => Promise<any>;
@@ -44,14 +48,17 @@ class GameDisplay extends Component<Props, State> {
 
   handlePublish = () => {
     console.log("gameId", this.props.gameId);
-    post("/api/votePublish", { gameId: this.props.gameId, socketId: socket.id }).then(
-      (response) => {
-        // console.log(response.votecount);
-        this.setState((prevState) => ({
-          numPublishVotes: response.votecount,
-        }));
-      }
-    );
+    post("/api/votePublish", {
+      gameId: this.props.gameId,
+      socketId: socket.id,
+      title: this.props.title,
+      keywords: this.props.keywords,
+    }).then((response) => {
+      // console.log(response.votecount);
+      this.setState((prevState) => ({
+        numPublishVotes: response.votecount,
+      }));
+    });
     // navigate(`/gallery`);
   };
 
@@ -101,6 +108,8 @@ class GameDisplay extends Component<Props, State> {
         {this.props.ended ? (
           <GameEndComponent
             gameId={this.props.gameId}
+            title={this.props.title}
+            keywords={this.props.keywords}
             players={this.props.players}
             currentStory={this.props.currentStory}
           />

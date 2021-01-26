@@ -248,7 +248,19 @@ router.post("/voteEndGame", (req, res) => {
         });
       }
     });
-    socketManager.emitToRoom("gameOver", newGameState);
+    let keywords: string[] = [];
+    ml.extractors.extract(model_id, [newGameState.currentStory]).then((res: any) => {
+      console.log("in api");
+      console.log(JSON.stringify(res.body[0].extractions));
+      console.log(JSON.parse(JSON.stringify(res.body[0].extractions)));
+      let extractions = res.body[0].extractions.slice(0, 3);
+      extractions.forEach((data: any) => keywords.push(data.parsed_value));
+      console.log(keywords);
+      socketManager.emitToRoom("gameOver", newGameState, {
+        title: keywords[0],
+        keywords: keywords,
+      });
+    });
   } else if (newGameState.gameOver === false) {
     socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
     newGameState.gameOver = undefined;
@@ -258,38 +270,31 @@ router.post("/voteEndGame", (req, res) => {
 
 router.post("/votePublish", (req, res) => {
   const gameState = logic.processPublishVote(req.body.gameId, req.body.socketId);
-  let keywords: string[] = [];
   let newStory: Story;
   if (gameState.isPublished) {
     const guests = gameState.players.find((player) => player.userId == "guest") ? "guests" : "";
-    ml.extractors.extract(model_id, [gameState.currentStory]).then((res: any) => {
-      console.log("in Vote Publish api call");
-      console.log(JSON.stringify(res.body[0].extractions));
-      let extractions = res.body[0].extractions.splice(0, 3);
-      extractions.forEach((data: any) => keywords.push(data.parsed_value));
-      let newStory = new StoryModel({
-        name: keywords[0],
-        contributorNames: gameState.players
-          .filter((player) => player.userId != "guest")
-          .map((player) => player.name)
-          .concat(guests),
-        contributorIds: gameState.players
-          .filter((player) => player.userId != "guest")
-          .map((player) => player.userId),
-        content: gameState.currentStory,
-        usersThatLiked: ["bydefaultthereshouldbenouserslikedatpublish"],
-        keywords: keywords,
-      });
-      newStory.save().then((story) => {
-        socketManager.emitToRoom("storyPublished", gameState, undefined);
-        gameState.players.forEach((player: Player) => {
-          if (player.userId !== "guest") {
-            UserInferface.findById(player.userId).then((user: User) => {
-              user.storiesWorkedOn.push(story._id);
-              user.save();
-            });
-          }
-        });
+    let newStory = new StoryModel({
+      name: req.body.title,
+      contributorNames: gameState.players
+        .filter((player) => player.userId != "guest")
+        .map((player) => player.name)
+        .concat(guests),
+      contributorIds: gameState.players
+        .filter((player) => player.userId != "guest")
+        .map((player) => player.userId),
+      content: gameState.currentStory,
+      usersThatLiked: [],
+      keywords: req.body.keywords,
+    });
+    newStory.save().then((story) => {
+      socketManager.emitToRoom("storyPublished", gameState, undefined);
+      gameState.players.forEach((player: Player) => {
+        if (player.userId !== "guest") {
+          UserInferface.findById(player.userId).then((user: User) => {
+            user.storiesWorkedOn.push(story._id);
+            user.save();
+          });
+        }
       });
     });
     res.send({});

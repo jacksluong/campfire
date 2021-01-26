@@ -5,7 +5,8 @@ interface Props {
   gameId: string;
   players: Player[];
   currentStory: String;
-  // title: string;
+  title: string;
+  keywords: string[];
 }
 interface State {}
 class GameEndComponent extends Component<Props, State> {
@@ -24,16 +25,12 @@ class GameEndComponent extends Component<Props, State> {
 
     return (
       <div className="EndGameComponent container">
-        <div className="Title">
-          {this.props.currentStory.length >= 3
-            ? this.props.currentStory.split(" ").slice(0, 3).join(" ")
-            : this.props.currentStory}
-        </div>
+        <div className="Title">{this.props.title}</div>
         <div className="Contributors">By {playersElement}</div>
 
-        <div className="Story Content"> </div>
-        {this.props.currentStory}
-        {/* <div className = "s "></div> */}
+        <div className="Story Content">{this.props.currentStory}</div>
+
+        <div className="keywords">Keywords: {this.props.title}</div>
       </div>
     );
   }

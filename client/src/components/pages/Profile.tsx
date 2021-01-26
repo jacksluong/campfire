@@ -8,14 +8,13 @@ import User from "../../../../shared/User";
 interface State {
   name: string;
   viewingPfp: string;
-  loggedInPfp: string;
   wordsTyped: number;
   storiesWorkedOn: string[];
   wordFrequencies: { word: string; frequency: number }[];
 }
 
 interface Props extends RouteComponentProps {
-  userId: string;
+  userId?: string;
   handleLogin: any;
   handleLogout: any;
 }
@@ -26,7 +25,6 @@ class Profile extends Component<Props, State> {
     this.state = {
       name: "",
       viewingPfp: "",
-      loggedInPfp: "",
       wordsTyped: 0,
       storiesWorkedOn: [],
       wordFrequencies: [],
@@ -36,12 +34,6 @@ class Profile extends Component<Props, State> {
   PROFILE_WORDS: number = 5;
 
   componentDidMount() {
-    get("/api/whoami").then((user: User) => {
-      if (user._id) {
-        // They are registered in the database and currently logged in.
-        this.setState({ loggedInPfp: user.pfp });
-      }
-    });
     get("/api/userInfo", { userId: this.props.userId }).then((user) => {
       let words =
         user.wordFrequencies.length <= this.PROFILE_WORDS
@@ -63,7 +55,6 @@ class Profile extends Component<Props, State> {
     return (
       <div>
         <NavBar
-          pfp={this.state.loggedInPfp}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}
