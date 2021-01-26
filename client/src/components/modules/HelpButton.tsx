@@ -11,8 +11,22 @@ class HelpButton extends Component<Props, State> {
     super(props);
   }
 
+  handleSpace = (event: KeyboardEvent) => {
+    console.log(event);
+    if (event.key == ' ') {
+      this.toggleShow();
+      window.removeEventListener('keypress', this.handleSpace);
+    }
+  }
+
+  handleButtonClick = () => {
+    this.toggleShow();
+    window.addEventListener('keypress', this.handleSpace);
+  }
+
   toggleShow = () => {
-    document.getElementById("instructions").classList.toggle("show");
+    document.getElementById("instructions").classList. toggle("show");
+    
   }
 
   render() {
@@ -42,10 +56,10 @@ class HelpButton extends Component<Props, State> {
       </div>
     );
     return <div className={"HelpButton container" + (this.props.gameId.length > 0 ? " position2" : "")}>
-      <button onClick={this.toggleShow}>?</button>
-      <div className="tint" id="instructions" onClick={this.toggleShow}>
+      <button onClick={this.handleButtonClick}>?</button>
+      <div className="tint" id="instructions">
         {instructions}
-        <div className="closeText">(Click anywhere to close.)</div>
+        <div className="closeText">(Press space to close.)</div>
       </div>
     </div>;
   }

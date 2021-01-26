@@ -132,7 +132,6 @@ router.post("/newComment", (req, res) => {
 /** Gameplay */
 
 router.post("/join", (req, res) => {
-
   UserInferface.findById(req.user?._id).then((user: User) => {
     console.log("socketId is", req.body.socketId)
     let socket = socketManager.getSocketFromSocketID(req.body.socketId)!;

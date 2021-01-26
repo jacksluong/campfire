@@ -43,14 +43,6 @@ export const init = (server: http.Server): void => {
       const gameState = logic.disconnectPlayer(socket.id);
       if (gameState) emitToRoom("playersUpdate", gameState);
     });
-
-    socket.on("join", (info: { userId: string; gameId: string }) => {
-      UserInferface.findById(info.userId).then((user: User) => {
-        const gameState = logic.addPlayer(info.gameId, user, socket.id);
-        if (!gameState) socket.emit("redirectHome");
-        else emitToRoom("playersUpdate", gameState);
-      });
-    });
   });
 };
 
