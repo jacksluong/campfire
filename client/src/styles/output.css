@@ -793,6 +793,7 @@ body {
 .boxArrow:hover > span {
   border-bottom: 7px solid black;
   border-right: 7px solid black;
+  cursor: pointer;
 }
 
 .boxArrow span:nth-child(2) {
