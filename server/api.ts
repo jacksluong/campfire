@@ -246,10 +246,16 @@ router.post("/voteEndGame", (req, res) => {
 
 router.post("/votePublish", (req, res) => {
   const gameState = logic.processPublishVote(req.body.gameId, req.body.socketId);
+  let tempTitle = null;
+  if (gameState.currentStory.length >= 3) {
+    tempTitle = gameState.currentStory.split(" ").slice(0, 3).join(" ");
+  } else {
+    tempTitle = gameState.currentStory;
+  }
   if (gameState.isPublished) {
     const guests = gameState.players.find((player) => player.userId == "guest") ? "guests" : "";
     const newStory = new StoryModel({
-      name: "TITLE",
+      name: tempTitle,
       contributorNames: gameState.players
         .filter((player) => player.userId != "guest")
         .map((player) => player.name)
