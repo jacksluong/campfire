@@ -99,9 +99,13 @@ class GameDisplay extends Component<Props, State> {
             players={this.props.players}
             currentStory={this.props.currentStory}
           />
-        ) : (
-          <Gathering players={this.props.players} currentTurn={this.props.currentTurn} />
-        )}
+        ) : (<>
+          <Gathering 
+            gameId={this.props.gameId}
+            players={this.props.players} 
+            currentTurn={this.props.currentTurn} 
+          />
+        </>)}
         {this.props.ended ? (
           <span>
             <button onClick={this.handlePublish}>{voteTrackerAndPublishedButton}</button>
@@ -109,10 +113,7 @@ class GameDisplay extends Component<Props, State> {
             <button onClick={this.handlePlayAgain}>Again</button>
             <button onClick={this.handleGallery}>Gallery</button>
           </span>
-        ) : (
-          input
-        )}
-        {/* {input} */}
+        ) : (input)}
       </div>
     );
   }

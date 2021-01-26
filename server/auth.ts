@@ -2,7 +2,6 @@ import { OAuth2Client, TokenPayload } from "google-auth-library";
 import { NextFunction, Request, Response } from "express";
 import User from "./models/User";
 import UserInterface from "../shared/User";
-import session from "express-session";
 
 const CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.googleusercontent.com";
 const client = new OAuth2Client(CLIENT_ID);
@@ -58,7 +57,6 @@ const populateCurrentUser = (req: Request, _res: Response, next: NextFunction) =
   next();
 };
 
-// We use any because
 const ensureLoggedIn = (req: Request, res: Response, next: NextFunction) => {
   if (!req.user) {
     return res.status(401).send({ err: "Not logged in." });

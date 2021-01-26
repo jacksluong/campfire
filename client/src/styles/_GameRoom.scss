@@ -10,55 +10,48 @@
     color: black;
   }
 
-  & .Sidebar {
+  .Sidebar {
     &.container {
+      @include u.flex-fixed-size(300px);
       display: flex;
       flex-direction: column;
-      flex-basis: 300px;
-      flex-grow: 0;
-      flex-shrink: 0;
-      width: 300px;
 
       background-color: u.$posy;
       padding: 5px 10px 10px 10px;
     }
 
-    & .heading {
+    .heading {
       display: inline;
       line-height: 0px;
       font-weight: bold;
     }
 
-    & .PlayerDisplay {
+    .PlayerDisplay {
       &.container {
-        flex-basis: 300px;
-        flex-grow: 0;
-        flex-shrink: 0;
+        @include u.flex-fixed-size(300px);
 
         border-bottom: 2px solid black;
         vertical-align: center;
       }
 
-      & .header {
+      .header {
         display: flex;
         align-items: center;
         justify-content: center;
 
-        & img {
+        img {
           margin: 0px 3px 0px 10px;
         }
       }
 
-      & .PlayerRow {
+      .PlayerRow {
         display: flex;
         align-items: center;
         margin: 2px 0px;
         padding: 2px 8px;
 
-        & .name {
-          width: 70%;
-          flex-grow: 0;
-          flex-shrink: 0;
+        .name {
+          @include u.flex-fixed-size(70%);
 
           color: u.$offwhite;
           font-size: 11pt;
@@ -68,7 +61,7 @@
           color: u.$gray;
         }
 
-        & .health {
+        .health {
           flex-grow: 1;
           height: 12px;
 
@@ -81,18 +74,18 @@
       }
     }
 
-    & .Chat {
+    .Chat {
       &.container {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
         align-items: center;
-        height: 300px; /* not sure why I need this but without some small value, chat does not recognize overflow */
+        height: 300px; // not sure why I need this but without some small value, chat does not recognize overflow
 
         margin-top: 5px;
       }
 
-      & .messagesContainer {
+      .messagesContainer {
         flex-grow: 1;
         width: 100%;
 
@@ -103,22 +96,20 @@
         overflow-y: scroll;
       }
 
-      & .SingleMessage {
+      .SingleMessage {
         color: u.$offwhite;
         overflow-wrap: break-word;
         margin-bottom: 4px;
         font-size: 10pt;
 
-        & .sender {
+        .sender {
           color: u.$gray;
           font-weight: bold;
         }
       }
 
-      & .ChatInputField {
-        flex-basis: 30px;
-        flex-grow: 0;
-        flex-shrink: 0;
+      .ChatInputField {
+        @include u.flex-fixed-size(30px);
         width: 100%;
         box-sizing: border-box;
 
@@ -129,26 +120,27 @@
     }
   }
 
-  & .GameDisplay {
+  .GameDisplay {
     &.container {
       display: flex;
       flex-basis: 0;
       flex-grow: 1;
       flex-direction: column;
+      align-items: center;
+      min-width: 600px;
+
       background-color: u.$ink;
     }
 
-    & > * {
+    > * {
       padding: 15px;
       margin: 15px;
       border-radius: 15px;
     }
 
-    & .StoryText {
+    .StoryText {
       &.container {
-        flex-basis: 150px;
-        flex-grow: 0;
-        flex-shrink: 0;
+        @include u.flex-fixed-size(150px);
 
         overflow-y: scroll;
         background-color: u.$darkink;
@@ -156,15 +148,15 @@
         box-shadow: 0px 4px 8px #035a9e;
       }
 
-      & span {
+      span {
         overflow-wrap: break-word;
       }
 
-      & .story {
+      .story {
         color: u.$gray;
       }
     }
-    & .EndGameComponent {
+    .EndGameComponent {
       &.container {
         flex-basis: 150px;
         flex-grow: 1;
@@ -185,24 +177,23 @@
         }
       }
     }
-    & .Gathering {
+    .Gathering {
       &.container {
         flex-grow: 1;
         padding: 0px;
         margin: 0px;
+        width: 100%;
       }
     }
     .GameInputField {
       $height: 40px;
 
       &.primary {
-        flex-basis: $height;
-        flex-grow: 0;
-        flex-shrink: 0;
+        @include u.flex-fixed-size($height);
         align-self: center;
         width: 90%;
 
-        border-radius: $height / 2; // NOTE: this should be more a percentage of the height than a specific value
+        border-radius: $height / 2;
         outline: none;
       }
 
@@ -224,6 +215,7 @@
 
         position: relative;
         padding: 0px;
+        font-size: 13pt;
         background-color: #00fa50;
         color: #474747;
         cursor: pointer;
@@ -249,10 +241,14 @@
       }
 
       &.input {
-        border-radius: 50px;
         padding: 0px 10px;
+        width: 90%;
+        line-height: 10px;
+        
         border: none;
+        border-radius: 50px;
         background-color: white;
+        font-size: 10pt;
         transition: 0.3s;
 
         &:disabled {

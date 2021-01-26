@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Player from "../../../../../../shared/Player";
+import HelpButton from "../../../modules/HelpButton";
 
 interface Props {
+  gameId: string;
   players: Player[];
   currentTurn: number;
 }
@@ -15,6 +17,7 @@ class Gathering extends Component<Props, {}> {
     return (
       <div className="Gathering container">
         
+        <HelpButton gameId={this.props.gameId} />
       </div>
     );
   }

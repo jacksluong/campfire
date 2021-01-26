@@ -22,11 +22,6 @@ class Main extends Component<Props, State> {
     for (let i = 0; i < 8; i++) {
       setTimeout(() => this.setState({ typeAnimation: "campfire".slice(0, i + 1) + "_".repeat(7 - i) }), 150 * i + 250);
     }
-    for (let i = 2; i < children.length; i++) {
-      setTimeout(() => {
-        (children[i] as HTMLElement).style.opacity = "1";
-      }, 1000 * i - 1500);
-    }
   }
 
   joinPublicGame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
@@ -51,7 +46,7 @@ class Main extends Component<Props, State> {
         <div className="backgroundImg"></div>
         <div className="backgroundColor"></div>
         <div className="title">{this.state.typeAnimation}</div>
-        <h3 className="subtitle" id="landingSubtitle">Everyone has an imaginative spark waiting to be manifested. Find yours in this collaborative storytelling game.</h3>
+        <h3 className="subtitle" id="landingSubtitle">find your inner creative spark in this collaborative storytelling game.</h3>
         <div className="buttonsContainer" id="landingButtons">
           <button
             type="submit"
@@ -59,18 +54,13 @@ class Main extends Component<Props, State> {
             className="gameButton"
             onClick={this.joinPublicGame}
           >
-            Quick Play
+            QUICK PLAY
           </button>
           <PrivateGameButton
             userId={this.props.userId}
             createPrivateGame={this.createPrivateGame}
           />
         </div>
-        {/* <div className="Help-container" id="helpButton">
-          <button className="u-small-radius" onClick={this.handleQuestionClick}>
-            ?
-          </button>
-        </div> */}
       </div>
     );
   }

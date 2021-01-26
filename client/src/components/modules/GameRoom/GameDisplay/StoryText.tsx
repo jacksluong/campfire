@@ -19,7 +19,7 @@ class StoryText extends Component<Props, {}> {
   }
 
   setStoryTextWidth = (): void => {
-    document.getElementById("storyText").style.width = (window.innerWidth - 300 - 30 - 30 - 20) + "px";
+    document.getElementById("storyText").style.width = (Math.max(window.innerWidth, 920) - 300 - 30 - 30 - 20) + "px";
   }
 
   render() {

@@ -59,7 +59,7 @@ const matchmake = (userId: string | undefined = undefined): string => {
   // if a user was in a game that's still in progress, return them there
   if (userId) {
     let room = getRoomByPlayer(userId);
-    if (room) return room.gameId;
+    if (room?.gameOver === false) return room.gameId;
   }
 
   // otherwise find next open room

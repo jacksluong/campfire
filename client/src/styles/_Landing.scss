@@ -34,10 +34,8 @@
   }
 
   & .subtitle {
-    opacity: 0;
     padding: 0px 100px;
-    margin: 10px auto 100px;
-    transition: 1.5s;
+    margin: 20px auto 100px;
     font-size: 15pt;
   }
 
@@ -47,9 +45,7 @@
     width: 50%;
 
     margin: 0 auto;
-    opacity: 0;
     text-align: left;
-    transition: 1.5s;
     justify-content: space-between;
   }
 
@@ -59,7 +55,7 @@
     margin-bottom: 10px;
     background-color: u.$gray;
     border-radius: 20px;
-    font-size: 15pt;
+    font-size: 14pt;
     transition: 0.25s;
     cursor: pointer;
 
@@ -82,9 +78,6 @@
         z-index: 1;
       }
     }
-  }
-
-  & .PrivateGameButton {
   }
 
 }

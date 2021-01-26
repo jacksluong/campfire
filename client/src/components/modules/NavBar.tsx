@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./Landing.css";
 import { RouteComponentProps, Link } from "@reach/router";
 import GoogleLogin from "react-google-login";
 import ProfileButton from "./ProfileButton";
@@ -7,6 +6,7 @@ const GOOGLE_CLIENT_ID = "764920232948-so38c4gjndve7ragljpbecqtchmojc2a.apps.goo
 
 type Props = {
   userId: string;
+  pfp: string;
   handleLogin: any;
   handleLogout: any;
   leftButtonText: string;
@@ -32,6 +32,7 @@ class NavBar extends Component<Props & RouteComponentProps, State> {
           {this.props.userId ? (
             <ProfileButton
               userId={this.props.userId}
+              pfp={this.props.pfp}
               imageUrl="check this out https://developers.google.com/identity/sign-in/web/people"
               handleLogout={this.props.handleLogout}
             />

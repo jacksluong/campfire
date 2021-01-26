@@ -5,10 +5,11 @@ import SingleStoryCard from "../../components/modules/../modules/Landing/SingleS
 import { RouteComponentProps } from "@reach/router";
 import { Link, animateScroll as scroll } from "react-scroll";
 import Comment from "../../../../shared/Comment";
-import NavBar from "../modules/Landing/NavBar";
+import NavBar from "../modules/NavBar";
 
 interface Props extends RouteComponentProps {
   userId: string;
+  pfp: string;
   handleLogin: any;
   handleLogout: any;
 }
@@ -51,6 +52,7 @@ class Gallery extends Component<Props, State> {
     return (
       <>
         <NavBar
+          pfp={this.props.pfp}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}

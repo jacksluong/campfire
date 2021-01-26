@@ -1,11 +1,12 @@
 import { navigate, RouteComponentProps } from "@reach/router";
 import React, { Component } from "react";
-
+import HelpButton from "../modules/HelpButton";
 import Main from "../modules/Landing/Main";
-import NavBar from "../modules/Landing/NavBar";
+import NavBar from "../modules/NavBar";
 
 type Props = {
   userId: string;
+  pfp: string;
   handleLogin: any;
   handleLogout: any;
 };
@@ -28,12 +29,14 @@ class Landing extends Component<Props & RouteComponentProps, {}> {
       <div style={{ minWidth: "1000px" }}>
         <NavBar
           userId={this.props.userId}
+          pfp={this.props.pfp}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           leftButtonText="explore"
           leftButtonPath="/gallery"
         />
         <Main userId={this.props.userId} />
+        <HelpButton gameId={""} />
       </div>
     );
   }

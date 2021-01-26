@@ -1,11 +1,10 @@
-import express, { response } from "express";
+import express from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
 import UserModel from "./models/User";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
 import Player from "../shared/Player";
-import { isValidObjectId } from "mongoose";
 import Message from "../shared/Message";
 import User from "../shared/User";
 import logic, { GameState } from "./logic";
@@ -30,18 +29,19 @@ router.post("/initsocket", (req, res) => {
   res.send({});
 });
 
-// |------------------------------|
-// | write your API methods below!|
-// |------------------------------|
-
 /** Landing */
 
-router.get("/stories", (req, res) => {
-  StoryModel.find({}).then((stories: Story[]) => res.send(stories));
+router.get("/matchmaking", (req, res) => {
+  res.send({ gameId: logic.matchmake(req.user?._id) });
 });
 
+router.get("/createPrivate", (req, res) => {
+  res.send({ gameId: logic.createRoom(true).gameId });
+});
+
+/** Profile */
+
 router.get("/profileStories", (req, res) => {
-  let storiesToReturn: Story[] = [];
   const stories: string[] = (req.query.storiesWorkedOn as string).split(",");
   let promises: any[] = [];
   console.log("in profile stories");
@@ -77,24 +77,10 @@ router.get("/userInfo", (req, res) => {
   });
 });
 
-//post new messages
-router.post("/message", (req, res) => {
-  const room: GameState = logic.getRoomById(req.body.gameId)!;
-  let sender: Player | undefined = room.players.find((player) => {
-    return player.socketId == req.body.socketId;
-  });
-  let senderName: string;
-  if (!sender) {
-    //spectator is sending message
-    const spectatorIndex: number = room.spectators.indexOf(req.body.socketId);
-    senderName = "Spectator " + spectatorIndex + 1;
-  } else {
-    senderName = sender.name;
-  }
-  const message: Message = { sender: senderName, content: req.body.content };
-  console.log(`New message by ${senderName}: ${req.body.content}`);
-  socketManager.emitToRoom("newMessage", room, message);
-  res.send({});
+/** Gallery */
+
+router.get("/stories", (req, res) => {
+  StoryModel.find({}).then((stories: Story[]) => res.send(stories));
 });
 
 //like a specific story
@@ -142,13 +128,6 @@ router.post("/newComment", (req, res) => {
   });
   // res.send({ name: name });
 });
-router.get("/matchmaking", (req, res) => {
-  res.send({ gameId: logic.matchmake(req.user?._id) });
-});
-
-router.get("/createPrivate", (req, res) => {
-  res.send({ gameId: logic.createRoom(true).gameId });
-});
 
 /** Gameplay */
 
@@ -193,6 +172,26 @@ router.post("/endGameRequest", (req, res) => {
       }, 15000);
     }
   });
+  res.send({});
+});
+
+//post new messages
+router.post("/message", (req, res) => {
+  const room: GameState = logic.getRoomById(req.body.gameId)!;
+  let sender: Player | undefined = room.players.find((player) => {
+    return player.socketId == req.body.socketId;
+  });
+  let senderName: string;
+  if (!sender) {
+    //spectator is sending message
+    const spectatorIndex: number = room.spectators.indexOf(req.body.socketId);
+    senderName = "Spectator " + spectatorIndex + 1;
+  } else {
+    senderName = sender.name;
+  }
+  const message: Message = { sender: senderName, content: req.body.content };
+  console.log(`New message by ${senderName}: ${req.body.content}`);
+  socketManager.emitToRoom("newMessage", room, message);
   res.send({});
 });
 
