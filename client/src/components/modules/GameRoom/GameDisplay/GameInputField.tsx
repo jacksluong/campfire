@@ -86,7 +86,7 @@ class GameInputField extends Component<Props, State> {
     if (this.state.endGameRequester.length > 0) {
       placeholder = enabled ?
         "" :
-        `${this.state.endGameRequester} requested to end the story here. If you agree, type "y" and press enter.`; // TODO: update handleSubmit with this
+        `${this.state.endGameRequester} requested to end the story here. If you agree, type "y" and press enter.`;
       enabled = !enabled && !this.state.voted; // person's turn cannot respond to prompt, everyone else can
     } else {
       placeholder = enabled ? "Craft your sentence here" : "It's someone else's turn right now!";

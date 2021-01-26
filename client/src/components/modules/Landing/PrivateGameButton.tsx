@@ -23,7 +23,7 @@ class PrivateGameButton extends Component<Props, State> {
 
   firstClick = (): void => {
     const createButton = document.getElementById("createButton");
-    createButton.innerHTML = "Create Game";
+    createButton.innerHTML = "CREATE GAME";
     createButton.onclick = this.props.createPrivateGame;
 
     this.setState({clicked: true});
@@ -61,7 +61,7 @@ class PrivateGameButton extends Component<Props, State> {
     return (
       <div className="PrivateGameButton container">
         <button id="createButton" onClick={this.firstClick} className="gameButton">
-          Private Game
+          PRIVATE GAME
         </button>
         {secondButton}
       </div>

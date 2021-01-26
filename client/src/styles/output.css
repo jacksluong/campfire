@@ -1,3 +1,147 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+}
+
+.NavBar.container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 80px;
+  padding: 15px 30px;
+  box-sizing: border-box;
+  background-color: transparent;
+  justify-content: space-between;
+}
+.NavBar .link {
+  font-size: 20pt;
+  display: block;
+  color: #969696;
+  text-decoration: none;
+  font-size: gray;
+  cursor: pointer;
+}
+.NavBar .link:hover {
+  color: #d9d9d9;
+}
+.NavBar .ProfileButton > #toggler {
+  width: 40px;
+  height: 40px;
+  padding: 20px;
+  border-radius: 50%;
+  background-image: url("../assets/blankpfp.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+}
+.NavBar .ProfileButton .dropdown {
+  display: none;
+  position: absolute;
+  width: 100px;
+  margin-left: -60px;
+  z-index: 3;
+}
+.NavBar .ProfileButton .dropdown .item {
+  display: block;
+  position: relative;
+  padding: 6px 16px;
+  margin: 4px 0px;
+  color: white;
+  opacity: 0;
+  background-color: #803770;
+  border-radius: 28px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  text-align: center;
+  font-size: 16pt;
+  transition: 0.2s;
+}
+.NavBar .ProfileButton .dropdown .item:hover {
+  background-color: #696969;
+}
+.NavBar .ProfileButton .dropdown.show {
+  display: block;
+}
+.NavBar .ProfileButton .dropdown.show > * {
+  animation: fadeIn 0.5s ease forwards;
+}
+.NavBar .ProfileButton .dropdown.show > *#secondDropdownItem {
+  animation-delay: 0.2s;
+}
+
+.HelpButton.container {
+  display: inline-block;
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  width: 60px;
+  height: 60px;
+}
+.HelpButton.container.position2 {
+  bottom: 80px;
+}
+.HelpButton button {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #969696;
+  font-size: 20pt;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.HelpButton button:hover {
+  background-color: #d9d9d9;
+  transform: scale(1.1);
+}
+.HelpButton button:active {
+  color: white;
+}
+.HelpButton .tint {
+  display: none;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 75px 75px 120px;
+  background-color: rgba(20, 20, 20, 0.6);
+  z-index: 9999;
+}
+.HelpButton .tint.show {
+  display: block;
+  animation: fadeIn 0.5s ease forwards;
+}
+.HelpButton .instructions {
+  position: block;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 30px;
+  background-color: #969696;
+  overflow-y: scroll;
+}
+.HelpButton .closeText {
+  text-align: center;
+  line-height: 40px;
+  color: white;
+}
+
 .Main.container {
   height: 100%;
   text-align: center;
@@ -27,10 +171,8 @@
   letter-spacing: 10px;
 }
 .Main .subtitle {
-  opacity: 0;
   padding: 0px 100px;
-  margin: 10px auto 100px;
-  transition: 1.5s;
+  margin: 20px auto 100px;
   font-size: 15pt;
 }
 .Main .buttonsContainer {
@@ -38,9 +180,7 @@
   align-items: flex-start;
   width: 50%;
   margin: 0 auto;
-  opacity: 0;
   text-align: left;
-  transition: 1.5s;
   justify-content: space-between;
 }
 .Main .gameButton {
@@ -49,7 +189,7 @@
   margin-bottom: 10px;
   background-color: #969696;
   border-radius: 20px;
-  font-size: 15pt;
+  font-size: 14pt;
   transition: 0.25s;
   cursor: pointer;
 }
@@ -70,6 +210,7 @@
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
+
 /* .Help-container {
   display: flex;
   justify-content: flex-end;
@@ -84,12 +225,11 @@
   color: black;
 }
 .GameRoom .Sidebar.container {
-  display: flex;
-  flex-direction: column;
   flex-basis: 300px;
   flex-grow: 0;
   flex-shrink: 0;
-  width: 300px;
+  display: flex;
+  flex-direction: column;
   background-color: #994287;
   padding: 5px 10px 10px 10px;
 }
@@ -120,7 +260,7 @@
   padding: 2px 8px;
 }
 .GameRoom .Sidebar .PlayerDisplay .PlayerRow .name {
-  width: 70%;
+  flex-basis: 70%;
   flex-grow: 0;
   flex-shrink: 0;
   color: #d9d9d9;
@@ -144,7 +284,6 @@
   flex-grow: 1;
   align-items: center;
   height: 300px;
-  /* not sure why I need this but without some small value, chat does not recognize overflow */
   margin-top: 5px;
 }
 .GameRoom .Sidebar .Chat .messagesContainer {
@@ -182,6 +321,7 @@
   flex-grow: 1;
   flex-direction: column;
   align-items: center;
+  min-width: 600px;
   background-color: #062F4F;
 }
 .GameRoom .GameDisplay > * {
@@ -226,7 +366,6 @@
   padding: 0px;
   margin: 0px;
   width: 100%;
-  background-color: blue;
 }
 .GameRoom .GameDisplay .GameInputField.primary {
   flex-basis: 40px;
@@ -240,6 +379,7 @@
 .GameRoom .GameDisplay .GameInputField.ready {
   position: relative;
   padding: 0px;
+  font-size: 13pt;
   background-color: #00fa50;
   color: #474747;
   cursor: pointer;
@@ -574,77 +714,20 @@
     transform: rotate(45deg) translate(20px, 20px);
   }
 }
-.NavBar.container {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 80px;
-  padding: 15px 30px;
-  box-sizing: border-box;
-  background-color: transparent;
-  justify-content: space-between;
-}
-.NavBar .link {
-  font-size: 20pt;
-  display: block;
-  color: #969696;
-  text-decoration: none;
-  font-size: gray;
-  cursor: pointer;
-}
-.NavBar .ProfileButton > #toggler {
-  width: 40px;
-  height: 40px;
-  padding: 20px;
-  border-radius: 50%;
-  background-image: url("../assets/blankpfp.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  border: none;
-  cursor: pointer;
-}
-.NavBar .ProfileButton .dropdown {
-  display: none;
-  position: absolute;
-  width: 100px;
-  margin-left: -60px;
-  z-index: 3;
-}
-.NavBar .ProfileButton .dropdown .item {
-  display: block;
-  position: relative;
-  padding: 6px 16px;
-  margin: 4px 0px;
-  color: white;
-  opacity: 0;
-  background-color: #803770;
-  border-radius: 28px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
-  text-align: center;
-  font-size: 16pt;
-  transition: 0.2s;
-}
-.NavBar .ProfileButton .dropdown .item:hover {
-  background-color: #696969;
-}
-.NavBar .ProfileButton .dropdown.show {
-  display: block;
-}
-.NavBar .ProfileButton .dropdown.show > * {
-  animation: fadeIn 0.5s ease forwards;
-}
-.NavBar .ProfileButton .dropdown.show > *#secondDropdownItem {
-  animation-delay: 0.2s;
-}
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+/*
+"I will search all of your repos for the word dangerous" ~Noah Raby (staff)
+"Or UNSAFE" ~Shannen Wu (staff)
+4:40 PM ET, January 13, 2021
+
+dangerous
+UNSAFE
+dangerous
+UNSAFE
+dangerous
+UNSAFE
+dangerous
+UNSAFE
+
+*/
 
 /*# sourceMappingURL=output.css.map */

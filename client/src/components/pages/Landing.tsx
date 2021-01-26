@@ -1,6 +1,6 @@
 import { navigate, RouteComponentProps } from "@reach/router";
 import React, { Component } from "react";
-
+import HelpButton from "../modules/HelpButton";
 import Main from "../modules/Landing/Main";
 import NavBar from "../modules/NavBar";
 
@@ -36,6 +36,7 @@ class Landing extends Component<Props & RouteComponentProps, {}> {
           leftButtonPath="/gallery"
         />
         <Main userId={this.props.userId} />
+        <HelpButton gameId={""} />
       </div>
     );
   }

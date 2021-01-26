@@ -91,6 +91,7 @@ class GameRoom extends Component<Props, State> {
   }
 
   componentWillUnmount() {
+    this.resetTimeout(true);
     post("/api/leaveGame", { socketId: socket.id });
   }
 
@@ -106,9 +107,10 @@ class GameRoom extends Component<Props, State> {
     });
   };
 
-  resetTimeout = (): void => {
+  resetTimeout = (forceStop: boolean = false): void => {
     if (this.state.timeout) clearTimeout(this.state.timeout);
     if (
+      !forceStop &&
       !this.state.isPrivate &&
       this.state.currentTurn === -1 &&
       !this.state.readyPlayers.includes(
