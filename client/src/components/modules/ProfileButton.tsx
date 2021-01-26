@@ -15,7 +15,13 @@ interface State {
 class ProfileButton extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { show: false }
+    this.state = { show: false };
+  }
+
+  componentDidUpdate() {
+    if (this.props.pfp) {
+      document.getElementById("toggler").style.backgroundImage = `url(${this.props.pfp})`;
+    }
   }
 
   componentDidMount() {
@@ -25,8 +31,8 @@ class ProfileButton extends Component<Props, State> {
   }
 
   toggleDropdown = (): void => {
-    this.setState(prevState => ({
-      show: !prevState.show
+    this.setState((prevState) => ({
+      show: !prevState.show,
     }));
     document.getElementById("dropdown").classList.toggle("show");
   };
@@ -36,7 +42,7 @@ class ProfileButton extends Component<Props, State> {
       this.setState({ show: false });
       document.getElementById("dropdown").classList.toggle("show");
     }
-  }
+  };
 
   handleProfile = (): void => {
     navigate(`/profile/${this.props.userId}`);
