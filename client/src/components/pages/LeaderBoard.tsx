@@ -14,10 +14,11 @@ class LeaderBoard extends Component<Props, {}> {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {}
   render() {
     return (
-      <div className="Leaderboard">
-        <div className="Leaderboard title"> Leaderboard</div>
+      <div className="LeaderBoard">
+        <div className="title"> Leaderboard</div>
         <LeaderBoardComponent />
       </div>
     );

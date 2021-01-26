@@ -828,6 +828,21 @@ body {
     transform: rotate(45deg) translate(20px, 20px);
   }
 }
+.LeaderBoard .title {
+  border-style: solid;
+  width: 100vw;
+  text-align: center;
+  font-size: 104px;
+  padding: 0 auto;
+}
+.LeaderBoard .Component {
+  font-size: 16px;
+  width: 90%;
+  max-height: 80%;
+  border-style: dotted;
+  margin: auto;
+}
+
 /*
 "I will search all of your repos for the word dangerous" ~Noah Raby (staff)
 "Or UNSAFE" ~Shannen Wu (staff)
