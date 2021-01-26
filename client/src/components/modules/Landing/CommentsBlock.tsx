@@ -39,6 +39,7 @@ class CommentsBlock extends Component<Props, State> {
         userId: this.props.userId,
         content: this.state.value,
       };
+      console.log(this.props.userId);
       post("/api/newComment", body).then((response) => {
         //response is a new comment with name, senderId, content
         // console.log(response);

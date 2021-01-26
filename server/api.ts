@@ -8,6 +8,7 @@ import Player from "../shared/Player";
 import Message from "../shared/Message";
 import User from "../shared/User";
 import logic, { GameState } from "./logic";
+import { RESERVED_EVENTS } from "socket.io/dist/socket";
 
 const router = express.Router();
 
@@ -20,6 +21,16 @@ router.get("/whoami", (req, res) => {
   }
   res.send(req.user);
 });
+
+// router.get("/whoisthis", (req, res) => {
+//   UserInferface.findById(req.query.userId).then((findUser: User | undefined) => {
+//     if (findUser) {
+//       res.send(findUser);
+//     } else {
+//       res.send({});
+//     }
+//   });
+// });
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
   if (req.user) {
@@ -71,6 +82,7 @@ router.get("/userInfo", (req, res) => {
       wordsTyped: user.wordsTyped,
       storiesWorkedOn: user.storiesWorkedOn,
       wordFrequencies: user.wordFrequencies,
+      pfp: user.pfp,
     };
     console.log(userInfo);
     res.send(userInfo);
@@ -108,24 +120,26 @@ router.post("/likeStory", (req, res) => {
   //2. update
 });
 router.post("/newComment", (req, res) => {
-  const storyId = req.body.storyId;
-  const userId = req.body.userId;
-  const content = req.body.content;
-  UserInferface.findById(userId).then((user: User) => {
-    let name = user.name;
-    StoryModel.findById(storyId).then((story: Story) => {
-      let storyComments = [...story.comments];
-      let newComment = {
-        name: name,
-        senderId: userId,
-        content: content,
-      };
-      storyComments.push(newComment);
-      story.comments = storyComments;
-      res.send(newComment);
-      story.save();
+  const userId: string | undefined = req.user!._id;
+  if (userId) {
+    const storyId = req.body.storyId;
+    const content = req.body.content;
+    UserInferface.findById(userId).then((user: User) => {
+      let name = user.name;
+      StoryModel.findById(storyId).then((story: Story) => {
+        let storyComments = [...story.comments];
+        let newComment = {
+          name: name,
+          senderId: userId,
+          content: content,
+        };
+        storyComments.push(newComment);
+        story.comments = storyComments;
+        res.send(newComment);
+        story.save();
+      });
     });
-  });
+  }
   // res.send({ name: name });
 });
 
@@ -149,7 +163,7 @@ router.post("/inputSubmit", (req, res) => {
     content: req.body.content + " ",
     nextPlayer: req.body.nextPlayer,
     gameId: req.body.gameId,
-    socketId: req.body.socketId
+    socketId: req.body.socketId,
   };
   let newGameState = logic.addToStory(req.body.gameId, newInput.content, newInput.nextPlayer);
   newGameState = logic.addToPlayer(req.body.gameId, req.body.socketId, newInput.content);

@@ -7,7 +7,8 @@ import NavBar from "../modules/NavBar";
 import User from "../../../../shared/User";
 interface State {
   name: string;
-  pfp: string;
+  viewingPfp: string;
+  loggedInPfp: string;
   wordsTyped: number;
   storiesWorkedOn: string[];
   wordFrequencies: { word: string; frequency: number }[];
@@ -24,7 +25,8 @@ class Profile extends Component<Props, State> {
     super(props);
     this.state = {
       name: "",
-      pfp: "",
+      viewingPfp: "",
+      loggedInPfp: "",
       wordsTyped: 0,
       storiesWorkedOn: [],
       wordFrequencies: [],
@@ -37,9 +39,7 @@ class Profile extends Component<Props, State> {
     get("/api/whoami").then((user: User) => {
       if (user._id) {
         // They are registered in the database and currently logged in.
-        this.setState({ pfp: user.pfp });
-        console.log("In Profile.tsx cdm");
-        console.log(this.state.pfp);
+        this.setState({ loggedInPfp: user.pfp });
       }
     });
     get("/api/userInfo", { userId: this.props.userId }).then((user) => {
@@ -52,6 +52,7 @@ class Profile extends Component<Props, State> {
         wordsTyped: user.wordsTyped,
         storiesWorkedOn: user.storiesWorkedOn,
         wordFrequencies: words,
+        viewingPfp: user.pfp,
       });
       console.log(`In Profile.tsx" ${user.storiesWorkedOn as string[]}`);
       console.log(user.storiesWorkedOn);
@@ -62,7 +63,7 @@ class Profile extends Component<Props, State> {
     return (
       <div>
         <NavBar
-          pfp={this.state.pfp}
+          pfp={this.state.loggedInPfp}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}
@@ -70,7 +71,7 @@ class Profile extends Component<Props, State> {
           leftButtonPath="/"
         />
         <div className="Profile container">
-          <ProfileSection name={this.state.name} pfp={this.state.pfp} />
+          <ProfileSection name={this.state.name} pfp={this.state.viewingPfp} />
           <StatisticsSection
             userId={this.props.userId}
             wordsTyped={this.state.wordsTyped}
