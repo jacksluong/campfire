@@ -5,7 +5,6 @@ import SingleStoryCard from "../Landing/SingleStoryCard";
 
 interface Props {
   userId: string;
-  storiesWorkedOn: string[];
 }
 interface State {
   storyList: Story[];
@@ -17,28 +16,19 @@ class ProfileGallery extends Component<Props, State> {
       storyList: [],
     };
   }
-  updated: boolean;
   componentDidMount() {
-    this.updated = false;
-    console.log("In Component Did Mount of Profile Gallery");
-  }
-
-  componentDidUpdate() {
-    if (!this.updated) {
-      console.log("in component did update of profile gallery");
-      this.updated = true;
+    console.log("requesting userinfo");
+    get("/api/userInfo", { userId: this.props.userId }).then((user) => {
       get("/api/profileStories", {
-        storiesWorkedOn: this.props.storiesWorkedOn,
+        storiesWorkedOn: user.storiesWorkedOn,
       }).then((stories) => {
         this.setState({ storyList: stories.reverse() });
         console.log(`Stories Received: ${stories}`);
       });
-    }
+    });
   }
 
   render() {
-    console.log("in render of profilegallery");
-    console.log(this.props.storiesWorkedOn);
     let storyListSorted = this.state.storyList.slice();
     storyListSorted.sort((a, b) => (a.usersThatLiked.length < b.usersThatLiked.length ? 1 : -1));
 

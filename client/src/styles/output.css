@@ -437,6 +437,108 @@ body {
   background-color: lightgray;
 }
 
+.Profile.container {
+  text-align: center;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100vh;
+  background: #803770;
+  padding-top: 30px;
+  color: white;
+  background-image: radial-gradient(circle 983px at 13.6% 54.5%, rgba(247, 110, 110, 0.5) 0%, #f68f58 90%);
+}
+.Profile .ProfileSection.container {
+  margin: 20px;
+  background-color: #803770;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 80%;
+  width: 30%;
+  border-radius: 20px;
+}
+.Profile .ProfileSection .ProfilePicture.container {
+  margin: 20% auto auto auto;
+  width: 70%;
+}
+.Profile .ProfileSection .ProfilePicture.avatar {
+  background-image: url("../../src/assets/blankpfp.png");
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  padding-top: 100%;
+  /* make it a circle */
+  border-radius: 50%;
+  /* Centering on image`s center*/
+  background-position-y: center;
+  background-position-x: center;
+  background-repeat: no-repeat;
+  /* it makes the clue thing, takes smaller dimension to fill div */
+  background-size: cover;
+  /* it is optional, for making this div centered in parent*/
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.Profile .ProfileSection .AboutMe.container {
+  font-weight: bold;
+  font-size: 20px;
+  padding: 16px;
+  font-family: monospace;
+  overflow: hidden;
+  /* Ensures the content is not revealed until the animation */
+  /* The typwriter cursor */
+  white-space: nowrap;
+  /* Keeps the content on a single line */
+  margin: 0 auto;
+  /* Gives that scrolling effect as the typing happens */
+  letter-spacing: 0.15em;
+  /* Adjust as needed */
+  overflow: auto;
+}
+.Profile .ProfileSection .AboutMeDescription.container {
+  display: inline;
+  text-decoration: underline;
+}
+.Profile .StatisticsSection.container {
+  background-color: #032540;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 80%;
+  border: solid;
+  border-radius: 20px;
+  overflow-y: scroll;
+}
+.Profile .StatisticsSection .BasicStats.container {
+  font-size: 20px;
+}
+.Profile .StatisticsSection .Keyword.container {
+  padding-left: 20px;
+  margin-top: 50px;
+  font-size: 20px;
+  display: flex;
+}
+.Profile .StatisticsSection .Keyword .KeywordText {
+  flex-grow: 1;
+  text-align: center;
+  margin: 20px;
+  border-radius: 15px;
+  padding: 20px;
+  flex-direction: row;
+  border: solid;
+  justify-content: center;
+}
+.Profile .StatisticsSection .Stories.container {
+  border-radius: 20px;
+  padding: 30px;
+  margin: 25px;
+}
+
 .GalleryTitle-container {
   line-height: 90vh;
   text-align: center;
@@ -700,6 +802,7 @@ body {
 .boxArrow:hover > span {
   border-bottom: 7px solid black;
   border-right: 7px solid black;
+  cursor: pointer;
 }
 
 .boxArrow span:nth-child(2) {

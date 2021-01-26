@@ -36,11 +36,8 @@ class Profile extends Component<Props, State> {
     get("/api/userInfo", { userId: this.props.userId }).then((user) => {
       let words =
         user.wordFrequencies.length <= this.PROFILE_WORDS
-          ? user.wordFrequencies.sort((word) => word.frequency).reverse()
-          : user.wordFrequencies
-              .sort((word) => word.frequency)
-              .reverse()
-              .slice(0, 5);
+          ? user.wordFrequencies.sort((word) => word.frequency)
+          : user.wordFrequencies.sort((word) => word.frequency).slice(0, 5);
       this.setState({
         name: user.name,
         wordsTyped: user.wordsTyped,
@@ -65,7 +62,7 @@ class Profile extends Component<Props, State> {
           leftButtonText="home"
           leftButtonPath="/"
         />
-        <div className="Profile-container">
+        <div className="Profile container">
           <ProfileSection name={this.state.name} />
           <StatisticsSection
             userId={this.props.userId}
