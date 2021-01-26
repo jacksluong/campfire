@@ -2,12 +2,12 @@ import { navigate, RouteComponentProps } from "@reach/router";
 import React, { Component } from "react";
 import Navigation from "../modules/End/Navigation";
 import Passage from "../modules/End/Passage";
-import "../modules/End/End.scss";
+
 import BottomPanel from "../modules/End/BottomPanel";
 import { get, post } from "../../../src/utilities";
 
 interface Props extends RouteComponentProps {
-  gameId?: string
+  gameId?: string;
 }
 interface State {
   name: string;
@@ -31,18 +31,18 @@ class End extends Component<Props, State> {
     };
   }
   componentDidMount() {
-    get("/api/requestGameState", { gameId: this.props.gameId }).then(gameState => {
+    get("/api/requestGameState", { gameId: this.props.gameId }).then((gameState) => {
       if (!gameState.players) {
         console.log(`gameId ${this.props.gameId} doesn't exist`);
         navigate("/");
       } else {
-        let guests = gameState.players.find(player => player.userId == "guest") ? "guests" : ""
+        let guests = gameState.players.find((player) => player.userId == "guest") ? "guests" : "";
         this.setState({
           name: `TITLE`,
           contributors: gameState.players
-          .filter((player) => player.userId != "guest")
-          .map((player) => player.name)
-          .concat(guests),
+            .filter((player) => player.userId != "guest")
+            .map((player) => player.name)
+            .concat(guests),
           content: gameState.currentStory,
           usersThatLiked: ["USERS THAT LIKE", "TTT", "JJJ", "BBB"],
           keywords: ["KEYWORDS", "I", "LIKE", "CHEESE"],
@@ -55,9 +55,7 @@ class End extends Component<Props, State> {
       <div className="End-container">
         <Navigation />
         <Passage content={this.state.content} contributors={this.state.contributors} />
-        <BottomPanel
-          gameId={this.props.gameId}
-        />
+        <BottomPanel gameId={this.props.gameId} />
       </div>
     );
   }

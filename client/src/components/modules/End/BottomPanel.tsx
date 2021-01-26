@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { socket } from "../../../client-socket";
 import { post } from "../../../utilities";
-import "./BottomPanel.scss";
 
 interface Props {
   gameId: string;
@@ -30,7 +29,9 @@ class BottomPanel extends Component<Props, State> {
   render() {
     return (
       <div className="BottomPanel-container">
-        {this.state.published ? "" : 
+        {this.state.published ? (
+          ""
+        ) : (
           <button
             className="BottomPannel-button"
             type="submit"
@@ -39,7 +40,7 @@ class BottomPanel extends Component<Props, State> {
           >
             Publish
           </button>
-        }
+        )}
       </div>
     );
   }

@@ -3,7 +3,6 @@ import { RouteComponentProps, Link, navigate } from "@reach/router";
 import Player from "../../../../../shared/Player";
 import { get } from "../../../utilities";
 import { socket } from "../../../client-socket";
-import "./Navigation.scss";
 
 type Props = {};
 
@@ -17,11 +16,11 @@ class Navigation extends Component<Props & RouteComponentProps, State> {
   }
 
   handlePlayAgain = (): void => {
-    get("/api/matchmaking").then(response => {
+    get("/api/matchmaking").then((response) => {
       console.log("play again! matched me to", response.gameId);
       navigate(`/gameroom/${response.gameId}`);
     });
-  }
+  };
 
   render() {
     return (
@@ -29,7 +28,9 @@ class Navigation extends Component<Props & RouteComponentProps, State> {
         <Link to="/" className="Navigation-link">
           Home
         </Link>
-        <span onClick={this.handlePlayAgain} className="Navigation-link">Play Again</span>
+        <span onClick={this.handlePlayAgain} className="Navigation-link">
+          Play Again
+        </span>
       </div>
     );
   }

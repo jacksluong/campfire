@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./Profile.css";
 
 interface Props {
   word: string;
@@ -9,7 +8,7 @@ class Keyword extends Component<Props, {}> {
     super(props);
   }
   render() {
-    return <div className="Keyword">{this.props.word}</div>;
+    return <div className="KeywordText">{this.props.word}</div>;
   }
 }
 

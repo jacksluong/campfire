@@ -4,6 +4,7 @@ import ProfileSection from "../modules/Profile/ProfileSection";
 import { RouteComponentProps } from "@reach/router";
 import { get, post } from "../../../src/utilities";
 import NavBar from "../modules/Landing/NavBar";
+
 interface State {
   name: string;
   wordsTyped: number;
@@ -63,7 +64,7 @@ class Profile extends Component<Props, State> {
           leftButtonText="home"
           leftButtonPath="/"
         />
-        <div className="Profile-container">
+        <div className="Profile container">
           <ProfileSection name={this.state.name} />
           <StatisticsSection
             userId={this.props.userId}

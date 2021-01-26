@@ -1,0 +1,174 @@
+@use "utilities" as u;
+
+.Profile {
+  &.container {
+    text-align: center;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100vh;
+    background: u.$darkposy;
+    padding-top: 30px;
+    color: white;
+    background-image: radial-gradient(
+      circle 983px at 13.6% 54.5%,
+      rgba(247, 110, 110, 0.5) 0%,
+      rgba(246, 143, 88, 1) 90%
+    );
+  }
+
+  .ProfileSection {
+    &.container {
+      margin: 20px;
+      background-color: u.$darkposy;
+      flex-grow: 0;
+      flex-shrink: 0;
+      // border: solid;
+      height: 80%;
+      width: 30%;
+      border-radius: 20px;
+    }
+
+    .ProfilePicture {
+      &.container {
+        // border: solid;
+        margin: 20% auto auto auto;
+        width: 70%;
+      }
+
+      &.avatar {
+        background-image: url("../../src/assets/blankpfp.png");
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        padding-top: 100%;
+
+        /* make it a circle */
+        border-radius: 50%;
+
+        /* Centering on image`s center*/
+        background-position-y: center;
+        background-position-x: center;
+        background-repeat: no-repeat;
+
+        /* it makes the clue thing, takes smaller dimension to fill div */
+        background-size: cover;
+
+        /* it is optional, for making this div centered in parent*/
+        margin: 0 auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
+
+    .AboutMe {
+      &.container {
+        font-weight: bold;
+        font-size: 20px;
+        padding: 16px;
+        font-family: monospace;
+        overflow: hidden; /* Ensures the content is not revealed until the animation */
+        /* The typwriter cursor */
+        white-space: nowrap; /* Keeps the content on a single line */
+        margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+        letter-spacing: 0.15em; /* Adjust as needed */
+        overflow: auto;
+      }
+    }
+    .AboutMeDescription {
+      &.container {
+        display: inline;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .StatisticsSection {
+    &.container {
+      background-color: u.$darkink;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      height: 80%;
+      border: solid;
+      border-radius: 20px;
+      overflow-y: scroll;
+    }
+    .BasicStats {
+      &.container {
+        // border: solid;
+        font-size: 20px;
+      }
+    }
+    .Keyword {
+      &.container {
+        padding-left: 20px;
+        margin-top: 50px;
+        font-size: 20px;
+        display: flex;
+        // border: solid;
+      }
+      .KeywordText {
+        flex-grow: 1;
+        text-align: center;
+        margin: 20px;
+        border-radius: 15px;
+        padding: 20px;
+        flex-direction: row;
+        border: solid;
+        justify-content: center;
+      }
+    }
+
+    .Stories {
+      &.container {
+        // border: solid;
+        border-radius: 20px;
+        padding: 30px;
+        margin: 25px;
+        // background-color: white;
+      }
+    }
+    // .ProfileArrow {
+    //   &.container {
+    //     padding: 30px;
+    //     border: solid;
+    //     align-items: center;
+    //     margin: auto;
+    //   }
+    //   span {
+    //     display: block;
+    //     width: 20px;
+    //     height: 20px;
+    //     border-bottom: 3px solid #fff;
+    //     border-right: 3px solid #fff;
+    //     transform: rotate(45deg);
+    //     animation: animate 2s infinite linear;
+    //   }
+    //   &:hover span {
+    //     border-bottom: 7px solid white;
+    //     border-right: 7px solid white;
+    //   }
+    //   span:nth-child(3) {
+    //     animation-delay: -0.4s;
+    //   }
+    //   @keyframes animate {
+    //     0% {
+    //       opacity: 0;
+    //       transform: rotate(45deg) translate(-20px, -20px);
+    //     }
+    //     50% {
+    //       opacity: 1;
+    //     }
+    //     100% {
+    //       opacity: 0;
+    //       transform: rotate(45deg) translate(20px, 20px);
+    //     }
+    //   }
+    // }
+  }
+}
