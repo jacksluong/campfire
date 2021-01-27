@@ -90,12 +90,13 @@ class GameRoom extends Component<Props, State> {
       let highestHealth = 0;
       let myIndex = -1;
       for (let i = 0; i < gameState.players.length; i++) {
-        if (gameState.players[i].socketId === socket.id) {
+        let player = gameState.players[i];
+        if (player.socketId === socket.id) {
           myIndex = i;
           continue;
-        } else if (gameState.players[i].health > highestHealth) {
+        } else if (!player.disconnected && player.health > highestHealth) {
           highestHealthIndex = i;
-          highestHealth = gameState.players[i].health;
+          highestHealth = player.health;
         }
       }
       if (highestHealthIndex === -1) highestHealthIndex = myIndex;

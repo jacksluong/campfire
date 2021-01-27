@@ -40,13 +40,23 @@ body {
 .NavBar .ProfileButton > #toggler {
   width: 40px;
   height: 40px;
-  padding: 20px;
+  margin-right: 10px;
   border-radius: 50%;
   background-image: url("../assets/blankpfp.png");
   background-size: cover;
   background-repeat: no-repeat;
   border: none;
   cursor: pointer;
+}
+.NavBar .ProfileButton #profileButtonArrow {
+  position: relative;
+  top: 17px;
+  left: 45px;
+  width: 0px;
+  height: 0px;
+  border-top: 6px solid white;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
 }
 .NavBar .ProfileButton .dropdown {
   display: none;
@@ -279,11 +289,15 @@ body {
 .GameRoom .Sidebar .PlayerDisplay .PlayerRow .health {
   flex-grow: 1;
   height: 12px;
+  opacity: 0;
   padding: 0px 5px;
   font-size: 8pt;
   line-height: 16pt;
   border-radius: 10px;
   background: linear-gradient(to right, lightgreen);
+}
+.GameRoom .Sidebar .PlayerDisplay .PlayerRow .health.show {
+  opacity: 1;
 }
 .GameRoom .Sidebar .Chat.container {
   display: flex;
@@ -387,6 +401,15 @@ body {
   height: 120px;
   min-width: 95px;
   border-radius: 5px;
+}
+.GameRoom .GameDisplay .Gathering .GatheringPlayer.taggable {
+  cursor: pointer;
+}
+.GameRoom .GameDisplay .Gathering .GatheringPlayer.taggable:hover {
+  background-color: #032540;
+}
+.GameRoom .GameDisplay .Gathering .GatheringPlayer.taggable.tagged {
+  background-color: #803770;
 }
 .GameRoom .GameDisplay .Gathering .GatheringPlayer #gpIndicator {
   position: absolute;

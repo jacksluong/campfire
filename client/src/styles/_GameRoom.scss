@@ -69,11 +69,16 @@
           flex-grow: 1;
           height: 12px;
 
+          opacity: 0;
           padding: 0px 5px;
           font-size: 8pt;
           line-height: 16pt;
           border-radius: 10px;
           background: linear-gradient(to right, lightgreen);
+
+          &.show {
+            opacity: 1;
+          }
         }
       }
     }
@@ -204,6 +209,18 @@
           min-width: 95px;
 
           border-radius: 5px;
+        }
+
+        &.taggable {
+          cursor: pointer;
+
+          &:hover {
+            background-color: u.$darkink;
+          }
+
+          &.tagged {
+            background-color: u.$darkposy;
+          }
         }
 
         #gpIndicator {

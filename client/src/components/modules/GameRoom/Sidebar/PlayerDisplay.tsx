@@ -41,6 +41,7 @@ class PlayerDisplay extends Component<Props, State> {
             name={player.name} 
             health={player.health} 
             maxHealth={170 - 10 * this.props.players.length}
+            ready={this.props.readyPlayers.includes(i)}
             disconnected={player.disconnected ?? false} 
             isTyping={this.props.currentTurn === i}
             key={i} />

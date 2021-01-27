@@ -64,14 +64,25 @@ body {
     & > #toggler {
       width: 40px;
       height: 40px;
-      padding: 20px;
+      margin-right: 10px;
+      
       border-radius: 50%;
-
       background-image: url("../assets/blankpfp.png");
       background-size: cover;
       background-repeat: no-repeat;
       border: none;
       cursor: pointer;
+    }
+
+    #profileButtonArrow {
+      position: relative;
+      top: 17px;
+      left: 45px;
+      width: 0px;
+      height: 0px;
+      border-top: 6px solid white;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
     }
 
     & .dropdown {
@@ -111,7 +122,7 @@ body {
           &#secondDropdownItem {
             animation-delay: 0.2s;
           }
-          
+
           &#thirdDropdownItem {
             animation-delay: 0.4s;
           }

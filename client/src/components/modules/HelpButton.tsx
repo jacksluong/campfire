@@ -12,8 +12,7 @@ class HelpButton extends Component<Props, State> {
   }
 
   handleSpace = (event: KeyboardEvent) => {
-    console.log(event);
-    if (event.key == ' ') {
+    if (event.key === 'e') {
       this.toggleShow();
       window.removeEventListener('keypress', this.handleSpace);
     }
@@ -25,6 +24,7 @@ class HelpButton extends Component<Props, State> {
   }
 
   toggleShow = () => {
+    console.log("show toggled");
     document.getElementById("instructions").classList. toggle("show");
     
   }
@@ -46,7 +46,7 @@ class HelpButton extends Component<Props, State> {
             <h2>Inviting Others</h2>
             <p>The game code for this room is <strong><em>{this.props.gameId}</em></strong> — they can enter this room by entering the code in the landing page.</p>
             <h2>Instructions</h2>
-            <p>When it's your turn (you have the potato), type into the input field on the bottom and press enter to submit your contribution <em>(max 100 characters)</em> for your turn. You can <strong>tag</strong> the person you want to continue the story after you by clicking on their character near the campfire!</p>
+            <p>When it's your turn (you have the potato), type into the input field on the bottom and press enter to submit your contribution <em>(max 100 characters)</em> for your turn. You can <strong>tag</strong> the person you want to continue the story after you by clicking on their character near the campfire! (Do this before you press enter.)</p>
             <h2>Start/End</h2>
             <p>The game starts when everyone in the room is ready (minimum 3 for public games, 2 for private games). The game ends when everyone runs out of health or on agreement (you can request to end the story on your turn by typing "<strong>end</strong>" into the input).</p>
             <h2>Health</h2>
@@ -59,7 +59,7 @@ class HelpButton extends Component<Props, State> {
       <button onClick={this.handleButtonClick}>?</button>
       <div className="tint" id="instructions">
         {instructions}
-        <div className="closeText">(Press space to close.)</div>
+        <div className="closeText">(Press e to close.)</div>
       </div>
     </div>;
   }

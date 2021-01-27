@@ -54,7 +54,7 @@ class ProfileButton extends Component<Props, State> {
     }
     return (
       <div className="ProfileButton" onMouseLeave={this.handleMouseLeave}>
-        <button onClick={this.toggleDropdown} id="toggler"></button>
+        <div onClick={this.toggleDropdown} id="toggler"><div id="profileButtonArrow"></div></div>
         <div id="dropdown" className="dropdown">
           <div className="item" id="firstDropdownItem" onClick={this.handleProfile}>
             profile

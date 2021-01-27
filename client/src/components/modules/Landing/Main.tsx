@@ -46,7 +46,7 @@ class Main extends Component<Props, State> {
         <div className="backgroundImg"></div>
         <div className="backgroundColor"></div>
         <div className="title">{this.state.typeAnimation}</div>
-        <h3 className="subtitle" id="landingSubtitle">find your inner creative spark in this collaborative storytelling game.</h3>
+        <h3 className="subtitle" id="landingSubtitle">find your inner creative spark in this collaborative storytelling game</h3>
         <div className="buttonsContainer" id="landingButtons">
           <button
             type="submit"

@@ -5,6 +5,7 @@ interface Props {
   name: string;
   health: number;
   maxHealth: number;
+  ready: boolean;
   isTyping: boolean;
   disconnected: boolean;
 }
@@ -31,7 +32,10 @@ class PlayerDisplay extends Component<Props, {}> {
         <div className="name">
           {this.props.name}
         </div>
-        <div className="health" id={"sidebarHealthBar" + this.props.index}></div>
+        <div 
+          className={"health" + (this.props.ready ? " show" : "")} 
+          id={"sidebarHealthBar" + this.props.index}>
+        </div>
       </div>
     );
   }

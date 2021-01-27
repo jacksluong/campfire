@@ -318,13 +318,16 @@ router.post("/votePublish", (req, res) => {
   const newGameState = logic.processPublishVote(req.body.gameId, req.body.socketId);
   let newStory: Story;
   if (newGameState.isPublished) {
-    const guests = newGameState.players.find((player) => player.userId == "guest") ? "guests" : "";
+    let contributorNames = newGameState.players
+    .filter((player) => player.userId != "guest")
+    .map((player) => player.name);
+    if (newGameState.players.find((player) => player.userId == "guest")) contributorNames.push("guests");
     let newStory = new StoryModel({
       name: req.body.title,
       contributorNames: newGameState.players
         .filter((player) => player.userId != "guest")
         .map((player) => player.name)
-        .concat(guests),
+        .concat(contributorNames),
       contributorIds: newGameState.players
         .filter((player) => player.userId != "guest")
         .map((player) => player.userId),
