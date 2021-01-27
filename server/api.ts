@@ -348,10 +348,7 @@ router.post("/votePublish", (req, res) => {
       contributorNames.push("guests");
     let newStory = new StoryModel({
       name: req.body.title,
-      contributorNames: newGameState.players
-        .filter((player) => player.userId != "guest")
-        .map((player) => player.name)
-        .concat(contributorNames),
+      contributorNames: contributorNames,
       contributorIds: newGameState.players
         .filter((player) => player.userId != "guest")
         .map((player) => player.userId),
@@ -359,6 +356,7 @@ router.post("/votePublish", (req, res) => {
       usersThatLiked: [],
       keywords: req.body.keywords,
     });
+    console.log(newGameState.players);
     StoryModel.find({ content: newGameState.currentStory }).then((stories: Story[]) => {
       if (stories.length < 1) {
         newStory.save().then((story) => {
