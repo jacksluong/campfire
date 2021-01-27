@@ -717,8 +717,15 @@ body {
   width: fill;
   flex-grow: 100;
   display: relative;
+  overflow-y: scroll;
+  max-height: 200px;
+  overflow-y: scroll;
   /* border-style: solid; */
   /* padding: auto; */
+}
+.comments-container .CommentName {
+  font-weight: bold;
+  font-size: 17px;
 }
 
 .CommentButton-container {

@@ -120,8 +120,15 @@
   width: fill;
   flex-grow: 100;
   display: relative;
+  overflow-y: scroll;
+  max-height: 200px;
+  overflow-y: scroll;
   /* border-style: solid; */
   /* padding: auto; */
+  .CommentName {
+    font-weight: bold;
+    font-size: 17px;
+  }
 }
 .CommentButton-container {
   font-size: 16px;
