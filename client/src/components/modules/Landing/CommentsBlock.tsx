@@ -52,6 +52,7 @@ class CommentsBlock extends Component<Props, State> {
         this.setState({ newComments: newComments });
         // console.log(this.state.newComments);
         this.props.incrementTemporaryExtraCommentLength();
+        this.setState({ value: "" });
       });
     } else {
       alert("Log in/dont leave comments blank");
@@ -64,7 +65,7 @@ class CommentsBlock extends Component<Props, State> {
     let commentsElement = null;
     let totalComments = [...this.props.comments].concat([...this.state.newComments]);
     commentsElement = totalComments.map((comment) => (
-      <div>
+      <div className="CommentContainer">
         <span
           onClick={() => this.handleProfileNavigate(comment.senderId)}
           className="CommentPic"
@@ -74,7 +75,7 @@ class CommentsBlock extends Component<Props, State> {
         <span onClick={() => this.handleProfileNavigate(comment.senderId)} className="CommentName">
           {comment.name}
         </span>
-        | {comment.content}
+        {comment.content}
       </div>
     ));
 

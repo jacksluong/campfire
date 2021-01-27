@@ -779,6 +779,7 @@ body {
   font-weight: bold;
   font-size: 17px;
   cursor: pointer;
+  margin-right: 8px;
 }
 
 .CommentButton-container {
@@ -808,16 +809,18 @@ body {
 }
 
 .CommentPic {
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   border-radius: 50%;
   margin-right: 5px;
+  margin-bottom: 5px;
   background-position: center;
   background-repeat: none;
   background-size: cover;
   display: inline-block;
   vertical-align: center;
   cursor: pointer;
+  vertical-align: middle;
 }
 
 /*Animations*/
