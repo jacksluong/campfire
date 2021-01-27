@@ -46,7 +46,11 @@ class ProfileGallery extends Component<Props, State> {
         />
       ));
 
-    return <>{storyListElement === null ? <p>loading</p> : storyListElement}</>;
+    return (
+      <div className="ProfileStories-Container">
+        {storyListElement === null ? <p>loading</p> : storyListElement}
+      </div>
+    );
   }
 }
 export default ProfileGallery;
