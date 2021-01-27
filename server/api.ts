@@ -342,9 +342,10 @@ router.post("/votePublish", (req, res) => {
   const newGameState = logic.processPublishVote(req.body.gameId, req.body.socketId);
   if (newGameState.isPublished) {
     let contributorNames = newGameState.players
-    .filter((player) => player.userId != "guest")
-    .map((player) => player.name);
-    if (newGameState.players.find((player) => player.userId == "guest")) contributorNames.push("guests");
+      .filter((player) => player.userId != "guest")
+      .map((player) => player.name);
+    if (newGameState.players.find((player) => player.userId == "guest"))
+      contributorNames.push("guests");
     let newStory = new StoryModel({
       name: req.body.title,
       contributorNames: newGameState.players
@@ -358,17 +359,22 @@ router.post("/votePublish", (req, res) => {
       usersThatLiked: [],
       keywords: req.body.keywords,
     });
-    newStory.save().then((story) => {
-      socketManager.emitToRoom("storyPublished", newGameState, 123);
-      newGameState.players.forEach((player: Player) => {
-        if (player.userId !== "guest") {
-          UserInferface.findById(player.userId).then((user: User) => {
-            user.storiesWorkedOn.push(story._id);
-            user.save();
+    StoryModel.find({ content: newGameState.currentStory }).then((stories: Story[]) => {
+      if (stories.length < 1) {
+        newStory.save().then((story) => {
+          socketManager.emitToRoom("storyPublished", newGameState, 123);
+          newGameState.players.forEach((player: Player) => {
+            if (player.userId !== "guest") {
+              UserInferface.findById(player.userId).then((user: User) => {
+                user.storiesWorkedOn.push(story._id);
+                user.save();
+              });
+            }
           });
-        }
-      });
+        });
+      }
     });
+
     res.send({});
   }
   // console.log(gameState.publishVotes);
