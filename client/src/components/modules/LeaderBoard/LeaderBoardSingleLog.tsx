@@ -11,9 +11,9 @@ class LeaderboardSingleLog extends Component<Props, {}> {
   render() {
     return (
       <tr className="EntryRow borderbottom">
-        <td> {`name: ${this.props.name} `}</td>
-        <td>{`words typed: ${this.props.wordsTyped} `}</td>
-        <td>{`stories published ${this.props.storiesPublished} `}</td>
+        <td> {` ${this.props.name} `}</td>
+        <td>{`words:  ${this.props.wordsTyped} `}</td>
+        <td>{`stories: ${this.props.storiesPublished} `}</td>
       </tr>
     );
   }

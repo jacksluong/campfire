@@ -13,7 +13,7 @@ class LeaderBoardComponent extends Component<{}, State> {
     super(props);
     this.state = {
       leaderBoardEntries: [],
-      sortBy: "storiesPublished",
+      sortBy: "wordsTyped",
     };
   }
   handleLeaderBoardUpdate = () => {
@@ -41,7 +41,13 @@ class LeaderBoardComponent extends Component<{}, State> {
   componentDidMount() {
     this.handleLeaderBoardUpdate();
   }
+  handleChange = (string: string) => {
+    this.setState({ sortBy: string }, this.handleLeaderBoardUpdate);
+  };
+
   render() {
+    // let selected = this.state.sortBy;
+
     return (
       <div className="Leaderboard Component">
         {/* <div className="sortOptions"> </div> */}
@@ -49,9 +55,32 @@ class LeaderBoardComponent extends Component<{}, State> {
         <table>
           <thead>
             <tr className="borderbottom">
-              <th>Name</th>
-              <th>Words Typed</th>
-              <th className="lastColumn">Stories Published</th>
+              <th
+                className={"" + (this.state.sortBy === "name" ? " active" : "")}
+                onClick={() => {
+                  this.handleChange("name");
+                }}
+              >
+                Name
+              </th>
+              <th
+                className={"" + (this.state.sortBy === "wordsTyped" ? " active" : "")}
+                onClick={() => {
+                  this.handleChange("wordsTyped");
+                }}
+              >
+                Words Typed
+              </th>
+              <th
+                className={
+                  "lastColumn" + (this.state.sortBy === "storiesPublished" ? " active" : "")
+                }
+                onClick={() => {
+                  this.handleChange("storiesPublished");
+                }}
+              >
+                Stories Published
+              </th>
             </tr>
           </thead>
           <tbody>{this.state.leaderBoardEntries}</tbody>

@@ -876,19 +876,30 @@ body {
     transform: rotate(45deg) translate(20px, 20px);
   }
 }
+.LeaderBoard {
+  height: 100vh;
+  background: #eecda3;
+  background: linear-gradient(360deg, #eecda3 0%, #e08aaf 100%);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 .LeaderBoard .title {
-  border-style: solid;
+  color: white;
   width: 100vw;
   text-align: center;
-  font-size: 104px;
+  font-size: 88px;
   padding: 0 auto;
 }
 .LeaderBoard .Component {
   font-size: 16px;
   width: 90%;
   max-height: 80%;
-  border-style: dotted;
+  border-style: solid;
+  border-radius: 1.5%;
+  border-width: 1px;
   margin: auto;
+}
+.LeaderBoard table {
+  background: #ffe5db;
 }
 .LeaderBoard table .EntryRow {
   font-size: 16px;
@@ -905,6 +916,9 @@ body {
 }
 .LeaderBoard table tr.borderbottom td {
   border-bottom: 1px solid black;
+}
+.LeaderBoard .active {
+  background: #ff8787;
 }
 
 /*

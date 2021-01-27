@@ -98,6 +98,16 @@ router.get("/leaderBoardInfo", (req, res) => {
         UserArrayCopy.sort((a, b) => b.wordsTyped - a.wordsTyped);
       } else if (req.query.sortBy === "storiesPublished") {
         UserArrayCopy.sort((a, b) => b.storiesWorkedOn.length - a.storiesWorkedOn.length);
+      } else if (req.query.sortBy === "name") {
+        UserArrayCopy.sort((a, b) => {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
       }
     })
     .then(() => res.send(UserArrayCopy));
@@ -160,7 +170,7 @@ router.post("/newComment", (req, res) => {
 
 router.post("/join", (req, res) => {
   UserInferface.findById(req.user?._id).then((user: User) => {
-    console.log("socketId is", req.body.socketId)
+    console.log("socketId is", req.body.socketId);
     let socket = socketManager.getSocketFromSocketID(req.body.socketId)!;
     const gameState = logic.addPlayer(req.body.gameId, user, req.body.socketId);
     console.log("logic is");
@@ -169,7 +179,7 @@ router.post("/join", (req, res) => {
     else socketManager.emitToRoom("playersUpdate", gameState);
   });
   res.send({});
-})
+});
 
 router.post("/leaveGame", (req, res) => {
   // When a player disconnects without closing the tab (i.e. socket remains connected)
