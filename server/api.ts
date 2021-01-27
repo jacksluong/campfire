@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
 import UserInferface from "./models/User";
@@ -87,7 +87,12 @@ router.get("/userInfo", (req, res) => {
   });
 });
 /**LeaderBoard */
-router.get("leaderBoardInfo", (req, res) => {});
+router.get("leaderBoardInfo", (req, res) => {
+  res.send({ word: "yowhatsup" });
+  // UserInferface.find({ wordsTyped: { $gt: 0 } }).then((User: User[]) => {
+  //   res.send(User);
+  // });
+});
 /** Gallery */
 
 router.get("/stories", (req, res) => {

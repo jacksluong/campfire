@@ -16,7 +16,9 @@ class LeaderBoardComponent extends Component<{}, State> {
 
   componentDidMount() {
     //todo: get request, replace dummy
-    get("/api/leaderBoardInfo").then((response) => {});
+    get("/api/leaderBoardInfo").then((response) => {
+      console.log(response);
+    });
     const dummy = [
       { name: "BBB", wordsTyped: 500, storiesPublished: 50 },
       { name: "BBB", wordsTyped: 500, storiesPublished: 50 },
