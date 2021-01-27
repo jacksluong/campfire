@@ -82,6 +82,9 @@ body {
 .NavBar .ProfileButton .dropdown.show > *#secondDropdownItem {
   animation-delay: 0.2s;
 }
+.NavBar .ProfileButton .dropdown.show > *#thirdDropdownItem {
+  animation-delay: 0.4s;
+}
 
 .HelpButton.container {
   display: inline-block;
@@ -145,7 +148,7 @@ body {
 .Main.container {
   height: 100%;
   text-align: center;
-  color: #E4A292;
+  color: #e4a292;
 }
 .Main .backgroundImg {
   width: 100%;
@@ -326,7 +329,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-width: 600px;
-  background-color: #062F4F;
+  background-color: #062f4f;
 }
 .GameRoom .GameDisplay > * {
   padding: 15px;
@@ -420,7 +423,7 @@ body {
 .GameRoom .GameDisplay .Gathering .GatheringPlayer .gpName {
   padding: 0px 4px;
   font-size: 10pt;
-  color: #E4A292;
+  color: #e4a292;
 }
 .GameRoom .GameDisplay .Gathering #potato {
   display: none;
