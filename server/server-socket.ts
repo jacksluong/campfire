@@ -47,11 +47,23 @@ export const init = (server: http.Server): void => {
 };
 
 const emitToRoom = (message: string, room: GameState, content: any = undefined): void => {
+  let allContent = {
+    players: room.players,
+    spectators: room.spectators,
+    currentStory: room.currentStory,
+    currentTurn: room.currentTurn,
+    readyVotes: room.readyVotes,
+    endVotes: room.endVotes,
+    publishVotes: room.publishVotes,
+    isPublished: room.isPublished,
+    isPrivate: room.isPrivate,
+    gameOver: room.gameOver
+  }
   if (room) {
     for (let player of room.players)
-      getSocketFromSocketID(player.socketId)?.emit(message, content ?? room);
+      getSocketFromSocketID(player.socketId)?.emit(message, content ?? allContent);
     for (let spectator of room.spectators)
-      getSocketFromSocketID(spectator)?.emit(message, content ?? room);
+      getSocketFromSocketID(spectator)?.emit(message, content ?? allContent);
   }
 };
 

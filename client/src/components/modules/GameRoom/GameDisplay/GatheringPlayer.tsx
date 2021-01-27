@@ -25,6 +25,7 @@ class GatheringPlayer extends Component<Props, {}> {
   }
 
   componentDidUpdate() {
+    console.log("player index", this.props.index, "updated and health is", this.props.player.health);
     this.setPosition();
     this.updateVisual();
   }
@@ -35,7 +36,7 @@ class GatheringPlayer extends Component<Props, {}> {
       x: gatheringPlayer.parentElement.clientWidth / 2 - gatheringPlayer.clientWidth / 2,
       y: gatheringPlayer.parentElement.clientHeight / 2 - gatheringPlayer.clientHeight / 2
     }
-    let radius = 150; // TODO: don't hardcode this number
+    let radius = (Math.max(370, window.innerHeight - 280) - 120) / 2; // TODO: don't hardcode this number
     let position = {
       fromLeft: center.x + Math.sin(2 * Math.PI * this.props.index / this.props.totalNumber) * radius,
       fromTop: center.y - Math.cos(2 * Math.PI * this.props.index / this.props.totalNumber) * radius
@@ -65,7 +66,7 @@ class GatheringPlayer extends Component<Props, {}> {
     gatheringPlayer.style.backgroundColor = this.props.tagged ? "#032540" : "transparent";
     // health
     document.getElementById("gpHealth" + index).style.background = this.props.player.health === 0 ? "darkgray" :
-    `linear-gradient(to right, lightgreen, lightgreen ${this.props.player.health}%, red ${this.props.player.health}%)`;
+    `linear-gradient(to right, lightgreen, lightgreen ${this.props.player.health / (170 - this.props.totalNumber * 10) * 100}%, red ${this.props.player.health / (170 - this.props.totalNumber * 10) * 100}%)`;
   }
 
   handleClick = () => {
