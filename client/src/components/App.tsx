@@ -22,7 +22,7 @@ class App extends Component<{}, State> {
     super(props);
     this.state = {
       userId: undefined,
-      userPfp: undefined,
+      userPfp: undefined
     };
   }
 
@@ -68,7 +68,10 @@ class App extends Component<{}, State> {
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
         />
-        <GameRoom path="/gameroom/:gameId" userId={this.state.userId} />
+        <GameRoom 
+          path="/gameroom/:gameId" 
+          userId={this.state.userId} 
+        />
         <Gallery
           path="/gallery"
           userId={this.state.userId}

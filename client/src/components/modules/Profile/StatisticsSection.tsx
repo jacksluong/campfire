@@ -34,7 +34,7 @@ class StatisticsSection extends Component<Props, {}> {
         <div className="Keyword container">
           <h1>Keywords:</h1>
           {this.props.wordFrequencies.length !== 0 ? (
-            this.props.wordFrequencies.map((pair) => <Keyword word={pair.word} />)
+            this.props.wordFrequencies.map((pair, i) => <Keyword word={pair.word} key={i} />)
           ) : (
             <h1 style={{ marginLeft: "20px" }}>No keywords at the moment.</h1>
           )}

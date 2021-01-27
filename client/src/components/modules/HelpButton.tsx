@@ -11,8 +11,22 @@ class HelpButton extends Component<Props, State> {
     super(props);
   }
 
+  handleSpace = (event: KeyboardEvent) => {
+    console.log(event);
+    if (event.key == ' ') {
+      this.toggleShow();
+      window.removeEventListener('keypress', this.handleSpace);
+    }
+  }
+
+  handleButtonClick = () => {
+    this.toggleShow();
+    window.addEventListener('keypress', this.handleSpace);
+  }
+
   toggleShow = () => {
-    document.getElementById("instructions").classList.toggle("show");
+    document.getElementById("instructions").classList. toggle("show");
+    
   }
 
   render() {
@@ -30,7 +44,7 @@ class HelpButton extends Component<Props, State> {
             <p>When a game is finished, all players can choose to vote whether or not the story is published publicly. Hit the <strong>Explore</strong> button to check out stories other people have made!</p>
           </>) : (<>
             <h2>Inviting Others</h2>
-            <p>The game code for this room is <strong><em>{this.props.gameId}</em></strong>. You can also invite others by sending them the current URL.</p>
+            <p>The game code for this room is <strong><em>{this.props.gameId}</em></strong> — they can enter this room by entering the code in the landing page.</p>
             <h2>Instructions</h2>
             <p>When it's your turn, type into the input field on the bottom and press enter to submit your contribution <em>(max 100 characters)</em> for your turn. You can <strong>tag</strong> the next person to go by clicking on their character in the visual!</p>
             <h2>Start/End</h2>
@@ -42,10 +56,10 @@ class HelpButton extends Component<Props, State> {
       </div>
     );
     return <div className={"HelpButton container" + (this.props.gameId.length > 0 ? " position2" : "")}>
-      <button onClick={this.toggleShow}>?</button>
-      <div className="tint" id="instructions" onClick={this.toggleShow}>
+      <button onClick={this.handleButtonClick}>?</button>
+      <div className="tint" id="instructions">
         {instructions}
-        <div className="closeText">(Click anywhere to close.)</div>
+        <div className="closeText">(Press space to close.)</div>
       </div>
     </div>;
   }

@@ -10,8 +10,6 @@ class ProfileSection extends Component<Props, {}> {
   }
 
   componentDidUpdate() {
-    console.log("in profile section");
-    console.log(this.props.pfp);
     document.getElementById("avatar").style.backgroundImage = `url(${this.props.pfp})`;
   }
 

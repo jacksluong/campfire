@@ -55,11 +55,8 @@ class GameDisplay extends Component<Props, State> {
       keywords: this.props.keywords,
     }).then((response) => {
       // console.log(response.votecount);
-      this.setState((prevState) => ({
-        numPublishVotes: response.votecount,
-      }));
+      this.setState({ numPublishVotes: response.votecount });
     });
-    // navigate(`/gallery`);
   };
 
   handlePlayAgain = (): void => {
@@ -76,6 +73,7 @@ class GameDisplay extends Component<Props, State> {
       this.setState({ numPublishVotes: numPublishVotes });
     });
   }
+  
   render() {
     let input: any = "";
     if (
