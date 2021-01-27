@@ -193,7 +193,8 @@ const addToPlayer = (gameId: string, socketId: string, text: string): GameState 
   //input processing
   text = text.toLowerCase();
   let words = text.split(" ");
-  words = words.slice(0, words.length - 1);
+  words = words.slice(0, words.length - 1).filter((word) => word.length >= 2);
+  console.log("in addToPlayer in logic");
   console.log(words);
 
   //add each word into wordFrequencies
@@ -298,18 +299,21 @@ const startCondition = (gameState: GameState): boolean => {
 const findNextAvailablePlayer = (gameState: GameState): number | undefined => {
   let currentTurn = gameState.currentTurn;
   let iterations = 0;
-  while (gameState.players[currentTurn].health === 0 || gameState.players[currentTurn].disconnected) {
+  while (
+    gameState.players[currentTurn].health === 0 ||
+    gameState.players[currentTurn].disconnected
+  ) {
     currentTurn = (currentTurn + 1) % gameState.players.length;
     iterations++;
     if (iterations === gameState.players.length) return undefined;
   }
   console.log("next available player is", currentTurn);
   return currentTurn;
-}
+};
 
 const resetHealth = (gameState: GameState) => {
-  gameState.players.forEach(player => player.health = (170 - 10 * gameState.players.length));
-}
+  gameState.players.forEach((player) => (player.health = 170 - 10 * gameState.players.length));
+};
 
 const decreaseHealth = (gameState: GameState): NodeJS.Timeout | undefined => {
   let currentPlayer = gameState.players[gameState.currentTurn];
@@ -332,7 +336,7 @@ const decreaseHealth = (gameState: GameState): NodeJS.Timeout | undefined => {
     currentPlayer.health -= 1;
     gameState.healthTimer = decreaseHealth(gameState);
   }, 1000);
-}
+};
 
 const dispose = (room: GameState): void => {
   // room garbage collector
