@@ -12,10 +12,16 @@ interface Props {
   currentTurn: number;
 }
 
-class GatheringPlayer extends Component<Props, {}> {
+interface State {
+  taggable: boolean;
+}
+
+class GatheringPlayer extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      taggable: false
+    };
   }
 
   componentDidMount() {
@@ -48,7 +54,7 @@ class GatheringPlayer extends Component<Props, {}> {
     if (this.props.currentTurn === this.props.index) {
       // current turn, so move the potato
       let potato = document.getElementById("potato");
-      potato.style.marginLeft = position.fromLeft + 50 + "px";
+      potato.style.marginLeft = position.fromLeft + 65 + "px";
       potato.style.marginTop = position.fromTop + 40 + "px";
       potato.style.transition = "1s";
     }
@@ -60,17 +66,33 @@ class GatheringPlayer extends Component<Props, {}> {
 
     if (this.props.player.pfp) document.getElementById("gpGraphic" + index).style.backgroundImage = `url(${this.props.player.pfp})`;
 
-    // my turn but isn't me
-    gatheringPlayer.style.cursor = (this.props.cursorPointer && this.props.currentTurn !== this.props.index) ? "pointer" : "default";
+    // who is taggable
+    let taggable = this.props.cursorPointer && 
+    this.props.currentTurn !== this.props.index && 
+    this.props.player.health > 0 &&
+    !this.props.player.disconnected;
+    if (taggable && !gatheringPlayer.classList.contains("taggable")) {
+      gatheringPlayer.classList.toggle("taggable");
+    } else if (!taggable && gatheringPlayer.classList.contains("taggable")) {
+      gatheringPlayer.classList.toggle("taggable");
+    }
     // tagged player
-    gatheringPlayer.style.backgroundColor = this.props.tagged ? "#032540" : "transparent";
+    if (this.props.tagged && !gatheringPlayer.classList.contains("tagged")) {
+      gatheringPlayer.classList.toggle("tagged");
+    } else if (!this.props.tagged && gatheringPlayer.classList.contains("tagged")) {
+      gatheringPlayer.classList.toggle("tagged");
+    }
     // health
     document.getElementById("gpHealth" + index).style.background = this.props.player.health === 0 ? "darkgray" :
     `linear-gradient(to right, lightgreen, lightgreen ${this.props.player.health / (170 - this.props.totalNumber * 10) * 100}%, red ${this.props.player.health / (170 - this.props.totalNumber * 10) * 100}%)`;
   }
 
   handleClick = () => {
-    this.props.handleClick(this.props.index);
+    let taggable = this.props.cursorPointer && 
+    this.props.currentTurn !== this.props.index && 
+    this.props.player.health > 0 &&
+    !this.props.player.disconnected;
+    if (taggable) this.props.handleClick(this.props.index);
   }
 
   render() {

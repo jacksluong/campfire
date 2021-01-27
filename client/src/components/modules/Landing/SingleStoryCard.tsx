@@ -103,7 +103,10 @@ class SingleStoryCard extends Component<Props, State> {
           {contributorsElement}
         </div>
         <div className="SingleStoryCard-Content">{this.props.content}</div>
-        <div className="SingleStoryCard-Keywords">{keywordsElement}</div>
+        <div className="SingleStoryCard-Keywords">
+          <span className="u-bold">{"Keywords: "}</span>
+          {keywordsElement}
+        </div>
         <StoryInteractionBar
           numLikes={this.state.likes}
           userId={this.props.userId}
