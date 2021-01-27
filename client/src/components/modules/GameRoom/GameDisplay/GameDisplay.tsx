@@ -31,12 +31,13 @@ interface Props {
 interface State {
   published: boolean;
   numPublishVotes: number;
+  disabledPublish: boolean;
 }
 
 class GameDisplay extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { published: false, numPublishVotes: 0 };
+    this.state = { published: false, numPublishVotes: 0, disabledPublish: false };
   }
   handleHome = () => {
     navigate(`/`);
@@ -47,6 +48,9 @@ class GameDisplay extends Component<Props, State> {
   };
 
   handlePublish = () => {
+    this.setState({
+      disabledPublish: true,
+    });
     console.log("gameId", this.props.gameId);
     post("/api/votePublish", {
       gameId: this.props.gameId,
@@ -73,7 +77,7 @@ class GameDisplay extends Component<Props, State> {
       this.setState({ numPublishVotes: numPublishVotes });
     });
   }
-  
+
   render() {
     let input: any = "";
     if (
@@ -124,7 +128,9 @@ class GameDisplay extends Component<Props, State> {
         )}
         {this.props.ended ? (
           <span>
-            <button onClick={this.handlePublish}>{voteTrackerAndPublishedButton}</button>
+            <button onClick={this.handlePublish} disabled={this.state.disabledPublish}>
+              {voteTrackerAndPublishedButton}
+            </button>
             <button onClick={this.handleHome}>Home</button>
             <button onClick={this.handlePlayAgain}>Again</button>
             <button onClick={this.handleGallery}>Gallery</button>

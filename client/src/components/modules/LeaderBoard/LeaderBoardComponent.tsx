@@ -25,6 +25,8 @@ class LeaderBoardComponent extends Component<{}, State> {
           return (
             <LeaderboardSingleLog
               name={entry.name}
+              userId={entry._id}
+              pfp={entry.pfp}
               wordsTyped={entry.wordsTyped}
               storiesPublished={entry.storiesWorkedOn.length}
             />

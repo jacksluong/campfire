@@ -4,6 +4,12 @@
   background: linear-gradient(360deg, rgba(238, 205, 163, 1) 0%, #e08aaf 100%);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+  .LeaderBoardName {
+    font-weight: bold;
+    font-size: 17px;
+    cursor: pointer;
+    margin-right: 8px;
+  }
   .title {
     // border-style: solid;
     margin-top: 2%;
