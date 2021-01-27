@@ -22,7 +22,6 @@ class ProfileGallery extends Component<Props, State> {
         storiesWorkedOn: user.storiesWorkedOn,
       }).then((stories) => {
         this.setState({ storyList: stories.reverse() });
-        console.log(`Stories Received: ${stories}`);
       });
     });
   }
@@ -31,19 +30,21 @@ class ProfileGallery extends Component<Props, State> {
     let storyListSorted = this.state.storyList.slice();
     storyListSorted.sort((a, b) => (a.usersThatLiked.length < b.usersThatLiked.length ? 1 : -1));
 
-    let storyListElement = storyListSorted.map((story, i) => (
-      <SingleStoryCard
-        name={story.name}
-        contributors={story.contributorNames}
-        content={story.content}
-        usersThatLiked={story.usersThatLiked}
-        keywords={story.keywords}
-        userId={this.props.userId}
-        storyId={story._id}
-        key={i}
-        comments={story.comments}
-      />
-    ));
+    let storyListElement = storyListSorted
+      .reverse()
+      .map((story, i) => (
+        <SingleStoryCard
+          name={story.name}
+          contributors={story.contributorNames}
+          content={story.content}
+          usersThatLiked={story.usersThatLiked}
+          keywords={story.keywords}
+          userId={this.props.userId}
+          storyId={story._id}
+          key={i}
+          comments={story.comments}
+        />
+      ));
 
     return <>{storyListElement === null ? <p>loading</p> : storyListElement}</>;
   }

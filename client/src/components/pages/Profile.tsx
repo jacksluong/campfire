@@ -11,6 +11,7 @@ interface State {
   viewingPfp: string;
   wordsTyped: number;
   storiesWorkedOn: string[];
+  bio: string;
   wordFrequencies: { word: string; frequency: number }[];
 }
 
@@ -29,6 +30,7 @@ class Profile extends Component<Props, State> {
       wordsTyped: 0,
       storiesWorkedOn: [],
       wordFrequencies: [],
+      bio: "",
     };
   }
 
@@ -37,7 +39,6 @@ class Profile extends Component<Props, State> {
   componentDidMount() {
     get("/api/userInfo", { userId: this.props.userId }).then((user) => {
       user.wordFrequencies.sort((word1, word2) => word2.frequency - word1.frequency);
-      console.log(user.wordFrequencies);
       const wordLength = user.wordFrequencies.length;
       if (wordLength >= this.PROFILE_WORDS) {
         user.wordFrequencies = user.wordFrequencies.slice(0, 5);
@@ -48,8 +49,8 @@ class Profile extends Component<Props, State> {
         storiesWorkedOn: user.storiesWorkedOn,
         wordFrequencies: user.wordFrequencies,
         viewingPfp: user.pfp,
+        bio: user.bio,
       });
-      console.log();
     });
   }
 
@@ -64,7 +65,12 @@ class Profile extends Component<Props, State> {
           leftButtonPath="/"
         />
         <div className="Profile container">
-          <ProfileSection name={this.state.name} pfp={this.state.viewingPfp} />
+          <ProfileSection
+            name={this.state.name}
+            pfp={this.state.viewingPfp}
+            userId={this.props.userId}
+            bio={this.state.bio}
+          />
           <StatisticsSection
             userId={this.props.userId}
             wordsTyped={this.state.wordsTyped}

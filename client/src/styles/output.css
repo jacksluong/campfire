@@ -561,8 +561,33 @@ body {
   overflow: auto;
 }
 .Profile .ProfileSection .AboutMeDescription.container {
-  display: inline;
-  text-decoration: underline;
+  display: block;
+  position: relative;
+  top: 10%;
+  font-size: 32px;
+  font-weight: bold;
+  padding: 10px;
+}
+.Profile .ProfileSection .AboutMeDescription .BioInputField {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 80%;
+  padding: 20px;
+  margin: auto;
+  box-sizing: border-box;
+}
+.Profile .ProfileSection .AboutMeDescription .BioButton {
+  display: block;
+  width: 200px;
+  padding: 20px;
+  margin: auto;
+  background-color: #e4a292;
+  border-radius: 20px;
+  font-size: 14pt;
+  transition: 0.25s;
+  cursor: pointer;
+  margin-top: 20px;
 }
 .Profile .StatisticsSection.container {
   background-color: #032540;

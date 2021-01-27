@@ -13,6 +13,7 @@ const UserSchema = new Schema({
   storiesWorkedOn: [String], // story IDs
   storiesLiked: [String], // story IDs
   wordFrequencies: [FrequentWord],
+  bio: String,
 });
 
 export interface User extends Document {
@@ -24,6 +25,7 @@ export interface User extends Document {
   storiesWorkedOn: string[];
   storiesLiked: string[];
   wordFrequencies: { word: string; frequency: number }[]; // functions like a dictionary
+  bio: string;
 }
 
 const UserModel = model<User>("User", UserSchema);

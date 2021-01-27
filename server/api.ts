@@ -9,6 +9,7 @@ import Message from "../shared/Message";
 import User from "../shared/User";
 import logic, { GameState } from "./logic";
 import dotenv from "dotenv";
+import { RESERVED_EVENTS } from "socket.io/dist/socket";
 dotenv.config({});
 
 const router = express.Router();
@@ -52,18 +53,13 @@ router.get("/createPrivate", (req, res) => {
 router.get("/profileStories", (req, res) => {
   const stories: string[] = (req.query.storiesWorkedOn as string).split(",");
   let promises: any[] = [];
-  console.log("in profile stories");
-  console.log(`in get call: ${req.query.storiesWorkedOn}`);
-  console.log(stories);
   stories.forEach((storyId) => {
-    console.log(storyId);
     promises.push(StoryModel.findById(storyId));
   });
   // console.log("End of API get call");
   // console.log(storiesToReturn);
   Promise.all(promises)
     .then((allStories: Story[]) => {
-      console.log(allStories);
       res.send(allStories);
     })
     .catch((err) => console.log(err));
@@ -73,15 +69,14 @@ router.get("/profileStories", (req, res) => {
 router.get("/userInfo", (req, res) => {
   console.log(`Requesting ID: ${req.query.userId}`);
   UserInferface.findById(req.query.userId).then((user: User) => {
-    console.log(`User Found in Database: ${user}`);
     const userInfo = {
       name: user.name,
       wordsTyped: user.wordsTyped,
       storiesWorkedOn: user.storiesWorkedOn,
       wordFrequencies: user.wordFrequencies,
       pfp: user.pfp,
+      bio: user.bio,
     };
-    console.log(userInfo);
     res.send(userInfo);
   });
 });
@@ -93,7 +88,6 @@ router.get("/leaderBoardInfo", (req, res) => {
     .then((User: User[]) => {
       UserArrayCopy = User.slice();
       // UserArrayCopy.sort((a, b) => b.wordsTyped - a.wordsTyped);
-
       if (req.query.sortBy === "wordsTyped") {
         UserArrayCopy.sort((a, b) => b.wordsTyped - a.wordsTyped);
       } else if (req.query.sortBy === "storiesPublished") {
@@ -111,6 +105,31 @@ router.get("/leaderBoardInfo", (req, res) => {
       }
     })
     .then(() => res.send(UserArrayCopy));
+});
+
+router.post("/updateBio", (req, res) => {
+  UserInferface.findById(req.user!._id).then((user: User) => {
+    user.bio = req.body.bio;
+    user.save();
+  });
+  res.send({});
+});
+
+router.get("/verifyAccess", (req, res) => {
+  if (req.user) {
+    console.log("in api verifyAccess");
+    console.log(req.user._id);
+    console.log(req.query.userId);
+    if (req.user._id == req.query.userId) {
+      UserInferface.findById(req.query.userId).then((user: User) => {
+        res.send({ verify: true, bio: user.bio });
+      });
+    } else {
+      res.send({ verify: false });
+    }
+  } else {
+    res.send({ verify: false });
+  }
 });
 /** Gallery */
 
@@ -297,7 +316,7 @@ export const gameOver = (gameState: GameState) => {
       keywords: keywords,
     });
   });
-}
+};
 
 router.post("/voteEndGame", (req, res) => {
   const newGameState = logic.processEndgameVote(
