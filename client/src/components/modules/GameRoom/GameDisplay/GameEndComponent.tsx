@@ -29,8 +29,11 @@ class GameEndComponent extends Component<Props, State> {
         <div className="Contributors">By {playersElement}</div>
 
         <div className="Story Content">{this.props.currentStory}</div>
-
-        <div className="keywords">Keywords: {this.props.keywords}</div>
+        <br></br>
+        <div className="keywords">
+          <span className="u-bold">Keywords:</span>
+          {this.props.keywords}
+        </div>
       </div>
     );
   }
