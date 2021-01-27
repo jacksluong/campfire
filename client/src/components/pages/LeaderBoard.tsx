@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { RouteComponentProps } from "@reach/router";
 import Leaderboard from "../modules/LeaderBoard/LeaderBoardComponent";
 import LeaderBoardComponent from "../modules/LeaderBoard/LeaderBoardComponent";
-
+import NavBar from "../modules/NavBar";
 interface Props extends RouteComponentProps {
   userId: string;
   pfp: string;
@@ -17,10 +17,20 @@ class LeaderBoard extends Component<Props, {}> {
   componentDidMount() {}
   render() {
     return (
-      <div className="LeaderBoard">
-        <div className="title"> Leaderboard</div>
-        <LeaderBoardComponent />
-      </div>
+      <>
+        <NavBar
+          handleLogin={this.props.handleLogin}
+          handleLogout={this.props.handleLogout}
+          userId={this.props.userId}
+          leftButtonText="home"
+          leftButtonPath="/"
+        />
+        <div className="LeaderBoard">
+          <br></br>
+          <div className="title"> Leaderboard</div>
+          <LeaderBoardComponent />
+        </div>
+      </>
     );
   }
 }
