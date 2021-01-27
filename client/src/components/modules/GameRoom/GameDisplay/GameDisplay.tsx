@@ -59,7 +59,9 @@ class GameDisplay extends Component<Props, State> {
       keywords: this.props.keywords,
     }).then((response) => {
       // console.log(response.votecount);
-      this.setState({ numPublishVotes: response.votecount });
+      if (response.votes) {
+        this.setState({ numPublishVotes: response.votecount });
+      }
     });
   };
 
@@ -74,7 +76,9 @@ class GameDisplay extends Component<Props, State> {
     socket.on("storyPublished", () => this.setState({ published: true }));
     socket.on("updatePublishVotes", (numPublishVotes) => {
       // console.log(numPublishVotes);
-      this.setState({ numPublishVotes: numPublishVotes });
+      if (numPublishVotes) {
+        this.setState({ numPublishVotes: numPublishVotes });
+      }
     });
   }
 
