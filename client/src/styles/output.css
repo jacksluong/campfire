@@ -699,6 +699,10 @@ body {
   /* display: inline; */
   /* display: table; */
 }
+.SingleStoryCard-container .u-bold {
+  font-weight: bold;
+  font-size: 17px;
+}
 
 .SingleStoryCard-StoryTitle {
   font-weight: bold;

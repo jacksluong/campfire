@@ -31,7 +31,7 @@ class GameEndComponent extends Component<Props, State> {
         <div className="Story Content">{this.props.currentStory}</div>
         <br></br>
         <div className="keywords">
-          <span className="u-bold">Keywords:</span>
+          <span className="u-bold">{`Keywords: `}</span>
           {this.props.keywords}
         </div>
       </div>
