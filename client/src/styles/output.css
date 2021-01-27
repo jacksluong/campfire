@@ -581,8 +581,33 @@ body {
   overflow: auto;
 }
 .Profile .ProfileSection .AboutMeDescription.container {
-  display: inline;
-  text-decoration: underline;
+  display: block;
+  position: relative;
+  top: 10%;
+  font-size: 32px;
+  font-weight: bold;
+  padding: 10px;
+}
+.Profile .ProfileSection .AboutMeDescription .BioInputField {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 80%;
+  padding: 20px;
+  margin: auto;
+  box-sizing: border-box;
+}
+.Profile .ProfileSection .AboutMeDescription .BioButton {
+  display: block;
+  width: 200px;
+  padding: 20px;
+  margin: auto;
+  background-color: #e4a292;
+  border-radius: 20px;
+  font-size: 14pt;
+  transition: 0.25s;
+  cursor: pointer;
+  margin-top: 20px;
 }
 .Profile .StatisticsSection.container {
   background-color: #032540;
@@ -644,7 +669,7 @@ body {
   display: flex;
   flex-flow: column wrap;
   /* align-content: space-around; */
-  height: 12000px;
+  height: 20000px;
   /* text-align: center; */
   /* display: flex; */
   /* flex-direction: row; */
@@ -694,6 +719,10 @@ body {
   /* display: inline; */
   /* display: table; */
 }
+.SingleStoryCard-container .u-bold {
+  font-weight: bold;
+  font-size: 17px;
+}
 
 .SingleStoryCard-StoryTitle {
   font-weight: bold;
@@ -740,8 +769,15 @@ body {
   width: fill;
   flex-grow: 100;
   display: relative;
+  overflow-y: scroll;
+  max-height: 200px;
+  overflow-y: scroll;
   /* border-style: solid; */
   /* padding: auto; */
+}
+.comments-container .CommentName {
+  font-weight: bold;
+  font-size: 17px;
 }
 
 .CommentButton-container {

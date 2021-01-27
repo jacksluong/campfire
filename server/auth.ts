@@ -20,13 +20,13 @@ const getOrCreateUser = (user: TokenPayload) => {
     (existingUser: UserInterface | null | undefined) => {
       if (existingUser !== null && existingUser !== undefined) {
         existingUser.pfp = user.picture!;
-        existingUser.save()
+        existingUser.save();
         return existingUser;
       }
       const newUser = new User({
         name: user.name,
         googleid: user.sub,
-        pfp: user.picture
+        pfp: user.picture,
       });
       return newUser.save();
     }
@@ -44,6 +44,8 @@ const login = (req: Request, res: Response) => {
         throw new Error("Unable to retrieve user.");
       }
       req.session.user = user;
+      console.log("logged in");
+      console.log(user);
       res.send(user);
     })
     .catch((err) => {

@@ -41,11 +41,14 @@ class StoryInteractionBar extends Component<Props, State> {
   };
 
   render() {
+    let LikeButton = (
+      <button type="submit" className={`LikeButton-container`} onClick={this.handleClick}>
+        {`${this.props.hasLiked ? "Unlike" : "Like"} | ${this.props.numLikes}`}
+      </button>
+    );
     return (
       <div className="StoryInteractionBar-container">
-        <button type="submit" className={`LikeButton-container`} onClick={this.handleClick}>
-          {`${this.props.hasLiked ? "Unlike" : "Like"} | ${this.props.numLikes}`}
-        </button>
+        {this.props.userId ? LikeButton : null}
         {this.props.showComments ? (
           <>
             <button className="CommentButton-container" onClick={this.handleShowButtonsClick}>

@@ -61,34 +61,31 @@ class CommentsBlock extends Component<Props, State> {
     // console.log(totalComments);
     commentsElement = totalComments.map((comment) => (
       <div>
-        {comment.name} | {comment.content}
+        <span className="CommentName">{comment.name}</span>| {comment.content}
       </div>
     ));
 
     return (
       <div className="CommentsBlock-container">
-        <div className="comments-container">
-          {/* <br></br> */}
-          {this.props.showComments ? commentsElement : null}
-          {this.props.userId ? (
-            <span>
-              <input
-                className="NewComment-container"
-                type="text"
-                placeholder="Write a comment"
-                onChange={this.onChange}
-              ></input>
-              <button
-                className="NewCommentButton-container"
-                type="submit"
-                value=""
-                onClick={this.handleNewCommentSubmit}
-              >
-                Submit
-              </button>
-            </span>
-          ) : null}
-        </div>
+        <div className="comments-container">{this.props.showComments ? commentsElement : null}</div>
+        {this.props.userId ? (
+          <span>
+            <input
+              className="NewComment-container"
+              type="text"
+              placeholder="Write a comment"
+              onChange={this.onChange}
+            ></input>
+            <button
+              className="NewCommentButton-container"
+              type="submit"
+              value=""
+              onClick={this.handleNewCommentSubmit}
+            >
+              Submit
+            </button>
+          </span>
+        ) : null}
       </div>
     );
   }

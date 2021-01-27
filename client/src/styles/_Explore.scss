@@ -29,7 +29,7 @@
   display: flex;
   flex-flow: column wrap;
   /* align-content: space-around; */
-  height: 12000px;
+  height: 20000px;
   /* text-align: center; */
   /* display: flex; */
   /* flex-direction: row; */
@@ -77,6 +77,10 @@
 
   /* display: inline; */
   /* display: table; */
+  .u-bold {
+    font-weight: bold;
+    font-size: 17px;
+  }
 }
 
 .SingleStoryCard-StoryTitle {
@@ -120,8 +124,15 @@
   width: fill;
   flex-grow: 100;
   display: relative;
+  overflow-y: scroll;
+  max-height: 200px;
+  overflow-y: scroll;
   /* border-style: solid; */
   /* padding: auto; */
+  .CommentName {
+    font-weight: bold;
+    font-size: 17px;
+  }
 }
 .CommentButton-container {
   font-size: 16px;
