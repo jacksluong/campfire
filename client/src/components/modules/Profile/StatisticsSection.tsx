@@ -14,8 +14,17 @@ class StatisticsSection extends Component<Props, {}> {
   }
 
   render() {
-    console.log("in render of stats");
-    console.log(this.props.storiesWorkedOn);
+    let words =
+      this.props.wordFrequencies.length !== 0 ? (
+        <div>
+          <h1>Keywords:</h1>
+          {this.props.wordFrequencies.map((pair) => (
+            <Keyword word={pair.word} />
+          ))}
+        </div>
+      ) : (
+        <h1>Keywords: No keywords at the moment.</h1>
+      );
     return (
       <div className="StatisticsSection container">
         <div className="BasicStats container">
@@ -24,9 +33,11 @@ class StatisticsSection extends Component<Props, {}> {
         </div>
         <div className="Keyword container">
           <h1>Keywords:</h1>
-          {this.props.wordFrequencies.map((pair) => (
-            <Keyword word={pair.word} />
-          ))}
+          {this.props.wordFrequencies.length !== 0 ? (
+            this.props.wordFrequencies.map((pair, i) => <Keyword word={pair.word} key={i} />)
+          ) : (
+            <h1 style={{ marginLeft: "20px" }}>No keywords at the moment.</h1>
+          )}
         </div>
 
         <div className="Stories container" id="profilegallery">

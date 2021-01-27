@@ -29,7 +29,6 @@ class Landing extends Component<Props & RouteComponentProps, {}> {
       <div style={{ minWidth: "1000px" }}>
         <NavBar
           userId={this.props.userId}
-          pfp={this.props.pfp}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           leftButtonText="explore"

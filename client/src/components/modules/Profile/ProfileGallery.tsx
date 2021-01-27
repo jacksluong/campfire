@@ -17,7 +17,6 @@ class ProfileGallery extends Component<Props, State> {
     };
   }
   componentDidMount() {
-    console.log("requesting userinfo");
     get("/api/userInfo", { userId: this.props.userId }).then((user) => {
       get("/api/profileStories", {
         storiesWorkedOn: user.storiesWorkedOn,

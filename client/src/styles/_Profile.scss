@@ -35,12 +35,13 @@
       &.container {
         // border: solid;
         margin: 20% auto auto auto;
-        width: 70%;
+        width: 30%;
       }
 
       &.avatar {
         background-image: url("../../src/assets/blankpfp.png");
-        max-width: 100%;
+        // max-width: 100%; NOTE
+        // max-height: 100%;
         width: 100%;
         height: auto;
         padding-top: 100%;
@@ -110,6 +111,7 @@
         margin-top: 50px;
         font-size: 20px;
         display: flex;
+        flex-direction: row;
         // border: solid;
       }
       .KeywordText {
@@ -118,7 +120,6 @@
         margin: 20px;
         border-radius: 15px;
         padding: 20px;
-        flex-direction: row;
         border: solid;
         justify-content: center;
       }

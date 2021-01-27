@@ -515,11 +515,10 @@ body {
 }
 .Profile .ProfileSection .ProfilePicture.container {
   margin: 20% auto auto auto;
-  width: 70%;
+  width: 30%;
 }
 .Profile .ProfileSection .ProfilePicture.avatar {
   background-image: url("../../src/assets/blankpfp.png");
-  max-width: 100%;
   width: 100%;
   height: auto;
   padding-top: 100%;
@@ -576,6 +575,7 @@ body {
   margin-top: 50px;
   font-size: 20px;
   display: flex;
+  flex-direction: row;
 }
 .Profile .StatisticsSection .Keyword .KeywordText {
   flex-grow: 1;
@@ -583,7 +583,6 @@ body {
   margin: 20px;
   border-radius: 15px;
   padding: 20px;
-  flex-direction: row;
   border: solid;
   justify-content: center;
 }
@@ -659,6 +658,7 @@ body {
   min-width: 20%;
   max-width: 25%;
   text-align: left;
+  border-radius: 3%;
   /* height: fit-content; */
   /* block-size: fit-content; */
   /* max-height: 20%; */

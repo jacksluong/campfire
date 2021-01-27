@@ -15,9 +15,13 @@ interface Props {
   currentTurn: number;
   currentInput: string;
   taggedPlayer: number;
-  
+
   gameId: string;
   userId: string;
+
+  //story info
+  title: string;
+  keywords: string[];
 
   ended: boolean;
   handlePlayerClick: (number) => void;
@@ -44,15 +48,15 @@ class GameDisplay extends Component<Props, State> {
 
   handlePublish = () => {
     console.log("gameId", this.props.gameId);
-    post("/api/votePublish", { gameId: this.props.gameId, socketId: socket.id }).then(
-      (response) => {
-        // console.log(response.votecount);
-        this.setState((prevState) => ({
-          numPublishVotes: response.votecount,
-        }));
-      }
-    );
-    // navigate(`/gallery`);
+    post("/api/votePublish", {
+      gameId: this.props.gameId,
+      socketId: socket.id,
+      title: this.props.title,
+      keywords: this.props.keywords,
+    }).then((response) => {
+      // console.log(response.votecount);
+      this.setState({ numPublishVotes: response.votecount });
+    });
   };
 
   handlePlayAgain = (): void => {
@@ -102,18 +106,22 @@ class GameDisplay extends Component<Props, State> {
         {this.props.ended ? (
           <GameEndComponent
             gameId={this.props.gameId}
+            title={this.props.title}
+            keywords={this.props.keywords}
             players={this.props.players}
             currentStory={this.props.currentStory}
           />
-        ) : (<>
-          <Gathering 
-            gameId={this.props.gameId}
-            players={this.props.players} 
-            currentTurn={this.props.currentTurn} 
-            taggedPlayer={this.props.taggedPlayer}
-            handlePlayerClick={this.props.handlePlayerClick}
-          />
-        </>)}
+        ) : (
+          <>
+            <Gathering
+              gameId={this.props.gameId}
+              players={this.props.players}
+              currentTurn={this.props.currentTurn}
+              taggedPlayer={this.props.taggedPlayer}
+              handlePlayerClick={this.props.handlePlayerClick}
+            />
+          </>
+        )}
         {this.props.ended ? (
           <span>
             <button onClick={this.handlePublish}>{voteTrackerAndPublishedButton}</button>
@@ -121,7 +129,9 @@ class GameDisplay extends Component<Props, State> {
             <button onClick={this.handlePlayAgain}>Again</button>
             <button onClick={this.handleGallery}>Gallery</button>
           </span>
-        ) : (input)}
+        ) : (
+          input
+        )}
       </div>
     );
   }

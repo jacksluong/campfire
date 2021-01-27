@@ -71,16 +71,15 @@ class App extends Component<{}, State> {
           path="/gameroom/:gameId" 
           userId={this.state.userId} 
         />
-        <Gallery 
-          path="/gallery" 
-          userId={this.state.userId} 
+        <Gallery
+          path="/gallery"
+          userId={this.state.userId}
           pfp={this.state.userPfp}
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
         />
         <Profile
           path="/profile/:userId"
-          pfp={this.state.userPfp}
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
         />
