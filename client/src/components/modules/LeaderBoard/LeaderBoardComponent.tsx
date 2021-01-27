@@ -47,7 +47,7 @@ class LeaderBoardComponent extends Component<{}, State> {
     // let selected = this.state.sortBy;
 
     return (
-      <div className="Leaderboard Component">
+      <div className="Leaderboard Component fade-in">
         {/* <div className="sortOptions"> </div> */}
 
         <table>

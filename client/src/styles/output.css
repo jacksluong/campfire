@@ -735,6 +735,7 @@ body {
   /* flex-grow: 1; */
   /* display: inline; */
   /* display: table; */
+  overflow-x: hidden;
 }
 .SingleStoryCard-container .u-bold {
   font-weight: bold;
@@ -978,6 +979,7 @@ body {
   background: #eecda3;
   background: linear-gradient(360deg, #eecda3 0%, #e08aaf 100%);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /* The style below is just for the appearance of the example div */
 }
 .LeaderBoard .title {
   margin-top: 2%;
@@ -1019,6 +1021,60 @@ body {
 }
 .LeaderBoard .active {
   background: #ff8787;
+}
+.LeaderBoard .fade-in2 {
+  animation: fadeIn ease 5s;
+  -webkit-animation: fadeIn ease 5s;
+  -moz-animation: fadeIn ease 5s;
+  -o-animation: fadeIn ease 5s;
+  -ms-animation: fadeIn ease 5s;
+}
+.LeaderBoard .fade-in {
+  animation: fadeIn ease 3s;
+  -webkit-animation: fadeIn ease 3s;
+  -moz-animation: fadeIn ease 3s;
+  -o-animation: fadeIn ease 3s;
+  -ms-animation: fadeIn ease 3s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /*

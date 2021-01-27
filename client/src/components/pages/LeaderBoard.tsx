@@ -27,7 +27,7 @@ class LeaderBoard extends Component<Props, {}> {
         />
         <div className="LeaderBoard">
           <br></br>
-          <div className="title"> Leaderboard</div>
+          <div className="title fade-in"> Leaderboard</div>
           <LeaderBoardComponent />
         </div>
       </>
