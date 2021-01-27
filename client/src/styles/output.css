@@ -901,6 +901,8 @@ body {
 }
 .LeaderBoard table {
   background: #ffe5db;
+  max-height: 80%;
+  overflow: scroll;
 }
 .LeaderBoard table .EntryRow {
   font-size: 16px;
