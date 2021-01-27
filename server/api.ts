@@ -87,11 +87,21 @@ router.get("/userInfo", (req, res) => {
   });
 });
 /**LeaderBoard */
-router.get("leaderBoardInfo", (req, res) => {
-  res.send({ word: "yowhatsup" });
-  // UserInferface.find({ wordsTyped: { $gt: 0 } }).then((User: User[]) => {
-  //   res.send(User);
-  // });
+router.get("/leaderBoardInfo", (req, res) => {
+  // res.send({ word: "yowhatsup" });
+  let UserArrayCopy: User[] = [];
+  UserInferface.find({ wordsTyped: { $gt: 0 } })
+    .then((User: User[]) => {
+      UserArrayCopy = User.slice();
+      // UserArrayCopy.sort((a, b) => b.wordsTyped - a.wordsTyped);
+
+      if (req.query.sortBy === "wordsTyped") {
+        UserArrayCopy.sort((a, b) => b.wordsTyped - a.wordsTyped);
+      } else if (req.query.sortBy === "storiesPublished") {
+        UserArrayCopy.sort((a, b) => b.storiesWorkedOn.length - a.storiesWorkedOn.length);
+      }
+    })
+    .then(() => res.send(UserArrayCopy));
 });
 /** Gallery */
 
