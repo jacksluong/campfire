@@ -2,6 +2,7 @@ import { response } from "express";
 import React, { Component } from "react";
 import Comment from "../../../../../shared/Comment";
 import { post } from "../../../utilities";
+import { navigate } from "@reach/router";
 
 interface Props {
   comments: Comment[];
@@ -31,6 +32,10 @@ class CommentsBlock extends Component<Props, State> {
       value: event.target.value,
     });
   };
+
+  handleProfileNavigate = (senderId: string) => {
+    navigate(`/profile/${senderId}`);
+  };
   handleNewCommentSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     // console.log(this.state.value);
     if (this.props.userId && this.state.value.length > 0) {
@@ -58,10 +63,14 @@ class CommentsBlock extends Component<Props, State> {
     //get comments
     let commentsElement = null;
     let totalComments = [...this.props.comments].concat([...this.state.newComments]);
-    // console.log(totalComments);
     commentsElement = totalComments.map((comment) => (
       <div>
-        <span className="CommentName">{comment.name}</span>| {comment.content}
+        <span className="CommentPic" style={{ backgroundImage: `url(${comment.pfp})` }}></span>
+        {console.log(`Comment pfp url: ${comment.pfp}`)}
+        <span onClick={() => this.handleProfileNavigate(comment.senderId)} className="CommentName">
+          {comment.name}
+        </span>
+        | {comment.content}
       </div>
     ));
 

@@ -174,6 +174,7 @@ router.post("/newComment", (req, res) => {
           name: name,
           senderId: userId,
           content: content,
+          pfp: user.pfp,
         };
         storyComments.push(newComment);
         story.comments = storyComments;
@@ -283,10 +284,13 @@ export const gameOver = (gameState: GameState) => {
   gameState.players.forEach((player: Player) => {
     if (player.userId !== "guest") {
       UserInferface.findById(player.userId).then((user: User) => {
-        let topWords = player.wordFrequencies.sort((word) => word.frequency);
-        topWords = topWords.length >= 3 ? topWords.slice(0, 3) : topWords;
-        topWords.reverse();
         let numWords = 0;
+        for (let word of player.wordFrequencies) {
+          numWords += word.frequency;
+        }
+        let topWords = player.wordFrequencies.slice();
+        topWords.sort((word1, word2) => word2.frequency - word1.frequency);
+        topWords = topWords.length >= 3 ? topWords.slice(0, 3) : topWords;
         for (let frequentWord of topWords) {
           let pair = user.wordFrequencies.find((wordFreq) => wordFreq.word === frequentWord.word);
           if (pair) {
@@ -295,8 +299,9 @@ export const gameOver = (gameState: GameState) => {
             let newPair = { word: frequentWord.word, frequency: 1 };
             user.wordFrequencies.push(newPair);
           }
-          numWords += frequentWord.frequency;
         }
+        console.log(`Words Typed: ${numWords}`);
+        console.log(`Word Frequencies: ${user.wordFrequencies}`);
         user.wordsTyped ? (user.wordsTyped += numWords) : (user.wordsTyped = numWords);
         user.save();
       });

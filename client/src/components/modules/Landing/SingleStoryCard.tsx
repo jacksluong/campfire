@@ -15,7 +15,7 @@ interface Props {
   storyId: string;
   userId: string;
 
-  comments: Comment[];
+  comments: any[];
 }
 interface State {
   likes: number;

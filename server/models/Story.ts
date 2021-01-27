@@ -4,6 +4,7 @@ const Comment = new Schema({
   name: String,
   senderId: String,
   content: String,
+  pfp: String,
 });
 
 const StorySchema = new Schema({
@@ -31,6 +32,7 @@ export interface Comment {
   name: string;
   senderId: string;
   content: string;
+  pfp: string;
 }
 
 const StoryModel = model<Story>("Story", StorySchema);
