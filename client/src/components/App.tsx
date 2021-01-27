@@ -10,6 +10,7 @@ import GameRoom from "./pages/GameRoom";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import Gallery from "./pages/Gallery";
+import LeaderBoard from "./pages/LeaderBoard";
 
 type State = {
   userId: string;
@@ -80,6 +81,13 @@ class App extends Component<{}, State> {
         />
         <Profile
           path="/profile/:userId"
+          handleLogin={this.handleLogin}
+          handleLogout={this.handleLogout}
+        />
+        <LeaderBoard
+          path="/leaderboard"
+          userId={this.state.userId}
+          pfp={this.state.userPfp}
           handleLogin={this.handleLogin}
           handleLogout={this.handleLogout}
         />
