@@ -86,7 +86,8 @@ router.get("/userInfo", (req, res) => {
     res.send(userInfo);
   });
 });
-
+/**LeaderBoard */
+router.get("leaderBoardInfo", (req, res) => {});
 /** Gallery */
 
 router.get("/stories", (req, res) => {

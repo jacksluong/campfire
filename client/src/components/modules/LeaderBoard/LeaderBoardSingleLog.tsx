@@ -12,9 +12,9 @@ class LeaderboardSingleLog extends Component<Props, {}> {
     return (
       <div className="Log">
         <span>
-          {this.props.name}
-          {this.props.wordsTyped}
-          {this.props.storiesPublished}
+          {`name: ${this.props.name} `}
+          {`words typed: ${this.props.wordsTyped} `}
+          {`stories published ${this.props.storiesPublished} `}
         </span>
       </div>
     );

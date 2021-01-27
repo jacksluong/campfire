@@ -1,5 +1,8 @@
 import React, { Component, useReducer, useRef } from "react";
 import LeaderboardSingleLog from "./LeaderBoardSingleLog";
+import { get, post } from "../../../utilities";
+import { response } from "express";
+
 interface State {
   dummyElement: any[];
 }
@@ -13,6 +16,7 @@ class LeaderBoardComponent extends Component<{}, State> {
 
   componentDidMount() {
     //todo: get request, replace dummy
+    get("/api/leaderBoardInfo").then((response) => {});
     const dummy = [
       { name: "BBB", wordsTyped: 500, storiesPublished: 50 },
       { name: "BBB", wordsTyped: 500, storiesPublished: 50 },
