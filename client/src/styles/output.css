@@ -368,6 +368,9 @@ body {
 .GameRoom .GameDisplay .EndGameComponent.container .Contributors {
   font-style: italic;
 }
+.GameRoom .GameDisplay .EndGameComponent.container .u-bold {
+  font-weight: bold;
+}
 .GameRoom .GameDisplay .Gathering.container {
   flex-grow: 1;
   padding: 0px;
