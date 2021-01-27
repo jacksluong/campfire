@@ -348,9 +348,7 @@ router.post("/votePublish", (req, res) => {
       contributorNames.push("guests");
     let newStory = new StoryModel({
       name: req.body.title,
-      contributorNames: newGameState.players
-        .filter((player) => player.userId != "guest")
-        .map((player) => player.name),
+      contributorNames: contributorNames,
       contributorIds: newGameState.players
         .filter((player) => player.userId != "guest")
         .map((player) => player.userId),
