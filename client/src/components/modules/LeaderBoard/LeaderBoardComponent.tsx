@@ -20,9 +20,7 @@ class LeaderBoardComponent extends Component<{}, State> {
     let usersElement = null;
     get("/api/leaderBoardInfo", { sortBy: this.state.sortBy })
       .then((response) => {
-        console.log(response);
         let UsersArray = response.slice();
-        // console.log(UsersArray);
         usersElement = UsersArray.map((entry) => {
           return (
             <LeaderboardSingleLog
