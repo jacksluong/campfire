@@ -25,6 +25,7 @@ class GatheringPlayer extends Component<Props, {}> {
   }
 
   componentDidUpdate() {
+    console.log("player index", this.props.index, "updated and health is", this.props.player.health);
     this.setPosition();
     this.updateVisual();
   }
@@ -65,7 +66,7 @@ class GatheringPlayer extends Component<Props, {}> {
     gatheringPlayer.style.backgroundColor = this.props.tagged ? "#032540" : "transparent";
     // health
     document.getElementById("gpHealth" + index).style.background = this.props.player.health === 0 ? "darkgray" :
-    `linear-gradient(to right, lightgreen, lightgreen ${this.props.player.health}%, red ${this.props.player.health}%)`;
+    `linear-gradient(to right, lightgreen, lightgreen ${this.props.player.health / (170 - this.props.totalNumber * 10) * 100}%, red ${this.props.player.health / (170 - this.props.totalNumber * 10) * 100}%)`;
   }
 
   handleClick = () => {

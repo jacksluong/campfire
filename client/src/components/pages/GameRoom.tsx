@@ -28,6 +28,7 @@ interface State {
   keywords: string[];
 
   ended: boolean;
+  healthTimer: NodeJS.Timeout;
 }
 
 const TIMEOUT_SECONDS = 60;
@@ -52,6 +53,7 @@ class GameRoom extends Component<Props, State> {
 
       //control game display
       ended: false,
+      healthTimer: undefined
     };
   }
   
@@ -63,10 +65,13 @@ class GameRoom extends Component<Props, State> {
         currentTurn: gameState.currentTurn,
         taggedPlayer: gameState.currentTurn === -1 ? -1 : (gameState.currentTurn + 1) % gameState.players.length
       });
-      if (gameState.currentTurn !== -1) clearTimeout(this.state.timeout);
+      if (gameState.currentTurn !== -1) {
+        clearTimeout(this.state.timeout);
+        this.decreaseHealth(gameState.currentTurn);
+      }
     });
     socket.on("playersUpdate", (gameState) => {
-      console.log("received players update");
+      console.log("received players update and private game?", gameState.isPrivate);
       // on player join or leave
       this.setState({
         isPrivate: gameState.isPrivate,
@@ -79,25 +84,27 @@ class GameRoom extends Component<Props, State> {
     });
     socket.on("storyUpdate", (gameState) => {
       // on input submit
+      clearTimeout(this.state.healthTimer);
       let highestHealthIndex = -1;
-      let highestHealth = -1;
+      let highestHealth = 0;
+      let myIndex = -1;
       for (let i = 0; i < gameState.players.length; i++) {
-        if (gameState.players[i].socketId === socket.id) continue;
-        else if (highestHealth === -1) {
-          highestHealthIndex = i;
-          highestHealth = gameState.players[i].health;
+        if (gameState.players[i].socketId === socket.id) {
+          myIndex = i;
+          continue;
         } else if (gameState.players[i].health > highestHealth) {
           highestHealthIndex = i;
           highestHealth = gameState.players[i].health;
         }
       }
+      if (highestHealthIndex === -1) highestHealthIndex = myIndex;
       this.setState({
         currentStory: gameState.currentStory,
         players: gameState.players,
         currentTurn: gameState.currentTurn,
         currentInput: "",
         taggedPlayer: highestHealthIndex,
-      });
+      }, () => this.decreaseHealth(gameState.currentTurn));
     });
     socket.on("inputUpdate", (content: string) => {
       // on type
@@ -108,6 +115,7 @@ class GameRoom extends Component<Props, State> {
 
     //Game over here
     socket.on("gameOver", (data) => {
+      clearTimeout(this.state.healthTimer);
       this.setState({
         ended: true,
         title: data.title,
@@ -158,6 +166,13 @@ class GameRoom extends Component<Props, State> {
     )
       this.startTimeout();
   };
+
+  decreaseHealth = (index: number) => {
+    this.setState({ healthTimer: setTimeout(() => {
+      this.state.players[index].health -= 1;
+      this.decreaseHealth(index);
+    }, 1000)});
+  }
 
   handlePlayerClick = (index: number) => {
     if (this.state.currentTurn !== -1) this.setState({ taggedPlayer: index });

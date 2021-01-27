@@ -144,13 +144,10 @@ router.post("/newComment", (req, res) => {
 
 router.post("/join", (req, res) => {
   UserInferface.findById(req.user?._id).then((user: User) => {
-    console.log("socketId is", req.body.socketId)
     let socket = socketManager.getSocketFromSocketID(req.body.socketId)!;
-    const gameState = logic.addPlayer(req.body.gameId, user, req.body.socketId);
-    console.log("logic is");
-    console.log(gameState);
-    if (!gameState) socket.emit("redirectHome");
-    else socketManager.emitToRoom("playersUpdate", gameState);
+    const newGameState = logic.addPlayer(req.body.gameId, user, req.body.socketId);
+    if (!newGameState) socket.emit("redirectHome");
+    else socketManager.emitToRoom("playersUpdate", newGameState);
   });
   res.send({});
 })
@@ -191,7 +188,7 @@ router.post("/endGameRequest", (req, res) => {
       setTimeout(() => {
         if (newGameState.endVotes.filter((vote) => vote !== undefined).length > 0) {
           // if end game request not already canceled by votes for no
-          socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
+          socketManager.emitToRoom("endGameRequestCancel", newGameState, 123);
           newGameState.endVotes = newGameState.endVotes.map(() => undefined);
         }
       }, 15000);
@@ -228,6 +225,53 @@ router.post("/voteReady", (req, res) => {
   res.send({});
 });
 
+export const gameOver = (gameState: GameState) => {
+  if (gameState.currentStory.length === 0) {
+    socketManager.emitToRoom("gameOver", gameState, {
+      title: [],
+      keywords: [],
+    });
+  }
+
+  // for each player logged in, update their word map in database
+  gameState.players.forEach((player: Player) => {
+    if (player.userId !== "guest") {
+      UserInferface.findById(player.userId).then((user: User) => {
+        let topWords = player.wordFrequencies.sort((word) => word.frequency);
+        topWords = topWords.length >= 3 ? topWords.slice(0, 3) : topWords;
+        topWords.reverse();
+        let numWords = 0;
+        for (let frequentWord of topWords) {
+          let pair = user.wordFrequencies.find((wordFreq) => wordFreq.word === frequentWord.word);
+          if (pair) {
+            pair.frequency += 1;
+          } else {
+            let newPair = { word: frequentWord.word, frequency: 1 };
+            user.wordFrequencies.push(newPair);
+          }
+          numWords += frequentWord.frequency;
+        }
+        user.wordsTyped ? (user.wordsTyped += numWords) : (user.wordsTyped = numWords);
+        user.save();
+      });
+    }
+  });
+  // parse story data
+  let keywords: string[] = [];
+  ml.extractors.extract(model_id, [gameState.currentStory]).then((res: any) => {
+    console.log("in api");
+    console.log(JSON.stringify(res.body[0].extractions));
+    console.log(JSON.parse(JSON.stringify(res.body[0].extractions)));
+    let extractions = res.body[0].extractions.slice(0, 3);
+    extractions.forEach((data: any) => keywords.push(data.parsed_value));
+    console.log(keywords);
+    socketManager.emitToRoom("gameOver", gameState, {
+      title: keywords[0],
+      keywords: keywords,
+    });
+  });
+}
+
 router.post("/voteEndGame", (req, res) => {
   const newGameState = logic.processEndgameVote(
     req.body.gameId,
@@ -235,72 +279,35 @@ router.post("/voteEndGame", (req, res) => {
     req.body.response === "y"
   );
   if (newGameState.gameOver) {
-    console.log(`Made it to gameOver emit`);
-    const room: GameState = logic.getRoomById(req.body.gameId)!;
-    //for each player in the room who is not a guest, add info into word map in database
-    room.players.forEach((player: Player) => {
-      if (player.userId !== "guest") {
-        UserInferface.findById(player.userId).then((user: User) => {
-          let topWords = player.wordFrequencies.sort((word) => word.frequency);
-          topWords = topWords.length >= 3 ? topWords.slice(0, 3) : topWords;
-          topWords.reverse();
-          let numWords = 0;
-          for (let frequentWord of topWords) {
-            let pair = user.wordFrequencies.find((wordFreq) => wordFreq.word === frequentWord.word);
-            if (pair) {
-              pair.frequency += 1;
-            } else {
-              let newPair = { word: frequentWord.word, frequency: 1 };
-              user.wordFrequencies.push(newPair);
-            }
-            numWords += frequentWord.frequency;
-          }
-          user.wordsTyped ? (user.wordsTyped += numWords) : (user.wordsTyped = numWords);
-          user.save();
-        });
-      }
-    });
-    let keywords: string[] = [];
-    ml.extractors.extract(model_id, [newGameState.currentStory]).then((res: any) => {
-      console.log("in api");
-      console.log(JSON.stringify(res.body[0].extractions));
-      console.log(JSON.parse(JSON.stringify(res.body[0].extractions)));
-      let extractions = res.body[0].extractions.slice(0, 3);
-      extractions.forEach((data: any) => keywords.push(data.parsed_value));
-      console.log(keywords);
-      socketManager.emitToRoom("gameOver", newGameState, {
-        title: keywords[0],
-        keywords: keywords,
-      });
-    });
+    gameOver(newGameState);
   } else if (newGameState.gameOver === false) {
-    socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
+    socketManager.emitToRoom("endGameRequestCancel", newGameState, 123);
     newGameState.gameOver = undefined;
   }
   res.send({});
 });
 
 router.post("/votePublish", (req, res) => {
-  const gameState = logic.processPublishVote(req.body.gameId, req.body.socketId);
+  const newGameState = logic.processPublishVote(req.body.gameId, req.body.socketId);
   let newStory: Story;
-  if (gameState.isPublished) {
-    const guests = gameState.players.find((player) => player.userId == "guest") ? "guests" : "";
+  if (newGameState.isPublished) {
+    const guests = newGameState.players.find((player) => player.userId == "guest") ? "guests" : "";
     let newStory = new StoryModel({
       name: req.body.title,
-      contributorNames: gameState.players
+      contributorNames: newGameState.players
         .filter((player) => player.userId != "guest")
         .map((player) => player.name)
         .concat(guests),
-      contributorIds: gameState.players
+      contributorIds: newGameState.players
         .filter((player) => player.userId != "guest")
         .map((player) => player.userId),
-      content: gameState.currentStory,
+      content: newGameState.currentStory,
       usersThatLiked: [],
       keywords: req.body.keywords,
     });
     newStory.save().then((story) => {
-      socketManager.emitToRoom("storyPublished", gameState, undefined);
-      gameState.players.forEach((player: Player) => {
+      socketManager.emitToRoom("storyPublished", newGameState, 123);
+      newGameState.players.forEach((player: Player) => {
         if (player.userId !== "guest") {
           UserInferface.findById(player.userId).then((user: User) => {
             user.storiesWorkedOn.push(story._id);
@@ -313,7 +320,7 @@ router.post("/votePublish", (req, res) => {
   }
   // console.log(gameState.publishVotes);
   // res.send({ votecount: gameState.publishVotes.length });
-  socketManager.emitToRoom("updatePublishVotes", gameState, gameState.publishVotes.length);
+  socketManager.emitToRoom("updatePublishVotes", newGameState, newGameState.publishVotes.length);
 });
 
 /** End */

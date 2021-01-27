@@ -15,17 +15,11 @@ class PlayerDisplay extends Component<Props, {}> {
   }
 
   componentDidMount() {
-    if (this.props.isTyping) this.animateDecreaseHealth(this.props.health);
-    else {
-      document.getElementById("sidebarHealthBar" + this.props.index).style.background = `linear-gradient(to right, lightgreen, lightgreen ${this.props.health}%, red ${this.props.health}%)`;
-    }
+    document.getElementById("sidebarHealthBar" + this.props.index).style.background = `linear-gradient(to right, lightgreen, lightgreen ${this.props.health / this.props.maxHealth * 100}%, red ${this.props.health / this.props.maxHealth * 100}%)`;
   }
 
-  animateDecreaseHealth = (health: number): void => {
-    document.getElementById("sidebarHealthBar" + this.props.index).style.background = `linear-gradient(to right, lightgreen, lightgreen ${health}%, red ${health}%)`;
-    setTimeout(() => {
-      this.animateDecreaseHealth(health - 1);
-    }, 1000 * (100 / this.props.maxHealth));
+  componentDidUpdate() {
+    document.getElementById("sidebarHealthBar" + this.props.index).style.background = `linear-gradient(to right, lightgreen, lightgreen ${this.props.health / this.props.maxHealth * 100}%, red ${this.props.health / this.props.maxHealth * 100}%)`;
   }
 
   render() {

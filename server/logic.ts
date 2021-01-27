@@ -1,5 +1,7 @@
 import User from "../shared/User";
 import Player from "../shared/Player";
+import socketManager from "./server-socket";
+import { gameOver } from "./api";
 
 /** Consts */
 
@@ -16,6 +18,7 @@ export interface GameState {
   // Story
   currentStory: string;
   currentTurn: number;
+  healthTimer: NodeJS.Timeout | undefined;
 
   // Voting
   readyVotes: number[]; // indices of players
@@ -42,6 +45,7 @@ const createRoom = (isPrivate: boolean): GameState => {
 
     currentStory: "",
     currentTurn: -1,
+    healthTimer: undefined,
 
     readyVotes: [],
     endVotes: [],
@@ -107,15 +111,15 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
     // create player
     let userId = !user ? "guest" : user._id + "";
     let name = !user ? `guest${Math.ceil(Math.random() * 99999) + 1}` : user.name;
-    let health = 100;
     gameState.players.push({
       userId: userId,
       socketId: socketId,
       pfp: user?.pfp,
       name: name,
-      health: health,
+      health: 100,
       wordFrequencies: [],
     });
+    gameState.players.forEach(player => player.health = (170 - 10 * gameState.players.length));
     gameState.endVotes.push(undefined);
   }
 
@@ -165,6 +169,8 @@ const addToStory = (gameId: string, text: string, nextPlayer: number): GameState
 
   gameState.currentStory += text;
   gameState.currentTurn = nextPlayer;
+  if (gameState.healthTimer) clearTimeout(gameState.healthTimer);
+  gameState.healthTimer = decreaseHealth(gameState);
 
   return gameState;
 };
@@ -192,7 +198,7 @@ const addToPlayer = (gameId: string, socketId: string, text: string): GameState 
     } else {
       let newPair = { word: word, frequency: 1 };
       updatePlayer.wordFrequencies.push(newPair);
-      console.log(`In addToPlayer (logic), Word Frequencies update: ${word}: ${1}`);
+      console.log(`In addToPlayer (logic), Word Frequencies update: ${word}: 1`);
     }
   });
   console.log(updatePlayer.wordFrequencies);
@@ -215,6 +221,7 @@ const processReadyVote = (gameId: string, socketId: string): GameState => {
   // check start condition
   if (gameState.currentTurn === -1 && startCondition(gameState)) {
     gameState.currentTurn = Math.floor(Math.random() * gameState.players.length);
+    gameState.healthTimer = decreaseHealth(gameState);
   }
   return gameState;
 };
@@ -275,6 +282,37 @@ const startCondition = (gameState: GameState): boolean => {
     gameState.players.length >= minimum && gameState.readyVotes.length === gameState.players.length
   );
 };
+
+const decreaseHealth = (gameState: GameState): NodeJS.Timeout | undefined => {
+  let currentPlayer = gameState.players[gameState.currentTurn];
+  if (currentPlayer.health === 0) {
+    // find next player with health and update everyone in the room
+    let currentTurn = gameState.currentTurn;
+    let iterations = 0;
+    console.log("gameState is");
+    console.log(gameState);
+    while (gameState.players[currentTurn].health === 0 || gameState.players[currentTurn].disconnected) {
+      currentTurn = (currentTurn + 1) % gameState.players.length;
+      iterations++;
+      if (iterations === gameState.players.length) {
+        // game ended by health
+        console.log("game ended by health");
+        gameState.gameOver = true;
+        gameOver(gameState);
+        return undefined;
+      }
+    }
+    console.log("player lost all their health, but game did not end");
+    gameState.currentTurn = currentTurn;
+    socketManager.emitToRoom("storyUpdate", gameState);
+    return decreaseHealth(gameState);
+  }
+  // or continue the timer
+  return setTimeout(() => {
+    currentPlayer.health -= 1;
+    gameState.healthTimer = decreaseHealth(gameState);
+  }, 1000);
+}
 
 const dispose = (room: GameState): void => {
   // room garbage collector
