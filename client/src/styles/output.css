@@ -529,11 +529,11 @@ body {
   background: #803770;
   padding-top: 30px;
   color: white;
-  background-image: radial-gradient(circle 983px at 13.6% 54.5%, rgba(247, 110, 110, 0.5) 0%, #f68f58 90%);
+  background-image: radial-gradient(circle 983px at 13.6% 54.5%, rgba(247, 110, 110, 0.5) 90%, #f68f58 0%);
 }
 .Profile .ProfileSection.container {
   margin: 20px;
-  background-color: #803770;
+  background-color: #032540;
   flex-grow: 0;
   flex-shrink: 0;
   height: 80%;
@@ -551,6 +551,7 @@ body {
   padding-top: 100%;
   /* make it a circle */
   border-radius: 50%;
+  border: solid;
   /* Centering on image`s center*/
   background-position-y: center;
   background-position-x: center;
@@ -598,16 +599,18 @@ body {
   box-sizing: border-box;
 }
 .Profile .ProfileSection .AboutMeDescription .BioButton {
+  color: white;
   display: block;
   width: 200px;
   padding: 20px;
   margin: auto;
-  background-color: #e4a292;
+  background-color: #032540;
   border-radius: 20px;
   font-size: 14pt;
   transition: 0.25s;
   cursor: pointer;
   margin-top: 20px;
+  border: solid;
 }
 .Profile .StatisticsSection.container {
   background-color: #032540;
@@ -615,7 +618,6 @@ body {
   flex-direction: column;
   flex-grow: 1;
   height: 80%;
-  border: solid;
   border-radius: 20px;
   overflow-y: scroll;
 }

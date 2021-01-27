@@ -14,15 +14,15 @@
     color: white;
     background-image: radial-gradient(
       circle 983px at 13.6% 54.5%,
-      rgba(247, 110, 110, 0.5) 0%,
-      rgba(246, 143, 88, 1) 90%
+      rgba(247, 110, 110, 0.5) 90%,
+      rgba(246, 143, 88, 1) 0%
     );
   }
 
   .ProfileSection {
     &.container {
       margin: 20px;
-      background-color: u.$darkposy;
+      background-color: u.$darkink;
       flex-grow: 0;
       flex-shrink: 0;
       // border: solid;
@@ -48,6 +48,7 @@
 
         /* make it a circle */
         border-radius: 50%;
+        border: solid;
 
         /* Centering on image`s center*/
         background-position-y: center;
@@ -101,16 +102,18 @@
       }
 
       .BioButton {
+        color: white;
         display: block;
         width: 200px;
         padding: 20px;
         margin: auto;
-        background-color: u.$peach;
+        background-color: u.$darkink;
         border-radius: 20px;
         font-size: 14pt;
         transition: 0.25s;
         cursor: pointer;
         margin-top: 20px;
+        border: solid;
       }
     }
   }
@@ -122,7 +125,7 @@
       flex-direction: column;
       flex-grow: 1;
       height: 80%;
-      border: solid;
+      // border: solid;
       border-radius: 20px;
       overflow-y: scroll;
     }
