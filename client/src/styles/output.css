@@ -148,7 +148,7 @@ body {
 .Main.container {
   height: 100%;
   text-align: center;
-  color: #E4A292;
+  color: #e4a292;
 }
 .Main .backgroundImg {
   width: 100%;
@@ -329,7 +329,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-width: 600px;
-  background-color: #062F4F;
+  background-color: #062f4f;
 }
 .GameRoom .GameDisplay > * {
   padding: 15px;
@@ -424,7 +424,7 @@ body {
 .GameRoom .GameDisplay .Gathering .GatheringPlayer .gpName {
   padding: 0px 4px;
   font-size: 10pt;
-  color: #E4A292;
+  color: #e4a292;
 }
 .GameRoom .GameDisplay .Gathering #potato {
   display: none;
@@ -880,6 +880,54 @@ body {
     transform: rotate(45deg) translate(20px, 20px);
   }
 }
+.LeaderBoard {
+  height: 100vh;
+  background: #eecda3;
+  background: linear-gradient(360deg, #eecda3 0%, #e08aaf 100%);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.LeaderBoard .title {
+  margin-top: 2%;
+  color: white;
+  width: 100vw;
+  text-align: center;
+  font-size: 88px;
+  padding: 0 auto;
+}
+.LeaderBoard .Component {
+  font-size: 16px;
+  width: 90%;
+  max-height: 80%;
+  border-style: solid;
+  border-radius: 1.5%;
+  border-width: 1px;
+  margin: auto;
+}
+.LeaderBoard table {
+  background: #ffe5db;
+  max-height: 80%;
+  overflow: scroll;
+}
+.LeaderBoard table .EntryRow {
+  font-size: 16px;
+}
+.LeaderBoard table td,
+.LeaderBoard table th {
+  text-align: left;
+  padding: 0 100px 0 0;
+  white-space: nowrap;
+}
+.LeaderBoard table .lastColumn {
+  width: fill;
+  width: 99%;
+}
+.LeaderBoard table tr.borderbottom td {
+  border-bottom: 1px solid black;
+}
+.LeaderBoard .active {
+  background: #ff8787;
+}
+
 /*
 "I will search all of your repos for the word dangerous" ~Noah Raby (staff)
 "Or UNSAFE" ~Shannen Wu (staff)

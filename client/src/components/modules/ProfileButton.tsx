@@ -44,6 +44,10 @@ class ProfileButton extends Component<Props, State> {
     navigate(`/profile/${this.props.userId}`);
   };
 
+  handleLeaderBoard = (): void => {
+    navigate(`/leaderboard`);
+  };
+
   render() {
     if (this.state.pfp) {
       document.getElementById("toggler").style.backgroundImage = `url(${this.state.pfp})`;
@@ -55,7 +59,10 @@ class ProfileButton extends Component<Props, State> {
           <div className="item" id="firstDropdownItem" onClick={this.handleProfile}>
             profile
           </div>
-          <div className="item" id="secondDropdownItem" onClick={this.props.handleLogout}>
+          <div className="item" id="secondDropdownItem" onClick={this.handleLeaderBoard}>
+            ranks
+          </div>
+          <div className="item" id="thirdDropdownItem" onClick={this.props.handleLogout}>
             logout
           </div>
         </div>

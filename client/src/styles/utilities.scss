@@ -1,15 +1,15 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
 
-$ink: #062F4F;
+$ink: #062f4f;
 $darkink: #032540;
 $posy: #994287;
 $darkposy: #803770;
-$embers: #B82601;
+$embers: #b82601;
 $offwhite: #d9d9d9;
 $gray: #969696;
 $darkgray: #696969;
-$peach: #E4A292;
+$peach: #e4a292;
 
 @keyframes fadeIn {
   0% {
@@ -40,7 +40,7 @@ body {
     align-items: center;
     width: 100vw;
     height: 80px;
-    
+
     padding: 15px 30px;
     box-sizing: border-box;
     background-color: transparent;
@@ -111,14 +111,13 @@ body {
           &#secondDropdownItem {
             animation-delay: 0.2s;
           }
-
+          
           &#thirdDropdownItem {
             animation-delay: 0.4s;
           }
         }
       }
     }
-    
   }
 }
 
@@ -165,7 +164,7 @@ body {
     top: 0px;
     width: 100vw;
     height: 100vh;
-    
+
     box-sizing: border-box;
     padding: 75px 75px 120px;
     background-color: rgba(20, 20, 20, 0.6);

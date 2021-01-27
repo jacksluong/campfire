@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
 import UserInferface from "./models/User";
@@ -85,7 +85,33 @@ router.get("/userInfo", (req, res) => {
     res.send(userInfo);
   });
 });
+/**LeaderBoard */
+router.get("/leaderBoardInfo", (req, res) => {
+  // res.send({ word: "yowhatsup" });
+  let UserArrayCopy: User[] = [];
+  UserInferface.find({ wordsTyped: { $gt: 0 } })
+    .then((User: User[]) => {
+      UserArrayCopy = User.slice();
+      // UserArrayCopy.sort((a, b) => b.wordsTyped - a.wordsTyped);
 
+      if (req.query.sortBy === "wordsTyped") {
+        UserArrayCopy.sort((a, b) => b.wordsTyped - a.wordsTyped);
+      } else if (req.query.sortBy === "storiesPublished") {
+        UserArrayCopy.sort((a, b) => b.storiesWorkedOn.length - a.storiesWorkedOn.length);
+      } else if (req.query.sortBy === "name") {
+        UserArrayCopy.sort((a, b) => {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+    })
+    .then(() => res.send(UserArrayCopy));
+});
 /** Gallery */
 
 router.get("/stories", (req, res) => {
@@ -150,7 +176,7 @@ router.post("/join", (req, res) => {
     else socketManager.emitToRoom("playersUpdate", newGameState);
   });
   res.send({});
-})
+});
 
 router.post("/leaveGame", (req, res) => {
   // When a player disconnects without closing the tab (i.e. socket remains connected)
