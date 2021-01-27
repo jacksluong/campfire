@@ -8,6 +8,7 @@ const FrequentWord = new Schema({
 const UserSchema = new Schema({
   name: String,
   googleid: String,
+  pfp: String,
   wordsTyped: Number,
   storiesWorkedOn: [String], // story IDs
   storiesLiked: [String], // story IDs
@@ -17,6 +18,7 @@ const UserSchema = new Schema({
 export interface User extends Document {
   name: string;
   googleid: string;
+  pfp: string;
   _id: string;
   wordsTyped: number;
   storiesWorkedOn: string[];

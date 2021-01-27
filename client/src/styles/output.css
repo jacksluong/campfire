@@ -145,7 +145,7 @@ body {
 .Main.container {
   height: 100%;
   text-align: center;
-  color: white;
+  color: #E4A292;
 }
 .Main .backgroundImg {
   width: 100%;
@@ -198,6 +198,7 @@ body {
 }
 .Main .gameButton.input {
   width: 177px;
+  height: 38px;
   padding: 0px 10px;
   margin-top: 10px;
   font-size: 12pt;
@@ -258,13 +259,16 @@ body {
   align-items: center;
   margin: 2px 0px;
   padding: 2px 8px;
+  color: #d9d9d9;
 }
 .GameRoom .Sidebar .PlayerDisplay .PlayerRow .name {
   flex-basis: 70%;
   flex-grow: 0;
   flex-shrink: 0;
-  color: #d9d9d9;
   font-size: 11pt;
+}
+.GameRoom .Sidebar .PlayerDisplay .PlayerRow.me {
+  color: #032540;
 }
 .GameRoom .Sidebar .PlayerDisplay .PlayerRow.disconnected {
   color: #969696;
@@ -366,6 +370,70 @@ body {
   padding: 0px;
   margin: 0px;
   width: 100%;
+  background-image: url("../assets/campfire2.gif");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100px;
+}
+.GameRoom .GameDisplay .Gathering .GatheringPlayer.container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 120px;
+  border-radius: 5px;
+}
+.GameRoom .GameDisplay .Gathering .GatheringPlayer #gpIndicator {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 10px solid white;
+  animation: bobbing 1s infinite;
+}
+@keyframes bobbing {
+  0% {
+    top: -10px;
+  }
+  50% {
+    top: -15px;
+  }
+  100% {
+    top: -10px;
+  }
+}
+.GameRoom .GameDisplay .Gathering .GatheringPlayer .gpHealth {
+  padding: 5px 30px;
+  background-color: gray;
+  border-radius: 5px;
+}
+.GameRoom .GameDisplay .Gathering .GatheringPlayer .gpGraphic {
+  padding: 30px;
+  background-color: #696969;
+  background-image: url("../assets/blankpfp.png");
+  border-radius: 50%;
+  background-size: contain;
+  z-index: 10;
+}
+.GameRoom .GameDisplay .Gathering .GatheringPlayer .gpName {
+  padding: 0px 4px;
+  font-size: 10pt;
+  color: #E4A292;
+}
+.GameRoom .GameDisplay .Gathering #potato {
+  display: none;
+  padding: 25px;
+  background-image: url("../assets/potato.png");
+  background-size: contain;
+  left: 50%;
+  top: 50%;
+  transition: 0s;
+}
+.GameRoom .GameDisplay .Gathering #potato.show {
+  display: inline-block;
+  z-index: 999;
 }
 .GameRoom .GameDisplay .GameInputField.primary {
   flex-basis: 40px;
@@ -399,11 +467,6 @@ body {
     top: 0px;
     box-shadow: 0px 5px 3px #1c1c1c;
   }
-}
-.GameRoom .GameDisplay .GameInputField.ready:hover {
-  box-shadow: 0 4px 2px #1c1c1c;
-  animation: none;
-  transition: 0.1s;
 }
 .GameRoom .GameDisplay .GameInputField.ready:active {
   box-shadow: 0 2px 2px #1c1c1c;
@@ -452,11 +515,10 @@ body {
 }
 .Profile .ProfileSection .ProfilePicture.container {
   margin: 20% auto auto auto;
-  width: 70%;
+  width: 30%;
 }
 .Profile .ProfileSection .ProfilePicture.avatar {
   background-image: url("../../src/assets/blankpfp.png");
-  max-width: 100%;
   width: 100%;
   height: auto;
   padding-top: 100%;
@@ -513,6 +575,7 @@ body {
   margin-top: 50px;
   font-size: 20px;
   display: flex;
+  flex-direction: row;
 }
 .Profile .StatisticsSection .Keyword .KeywordText {
   flex-grow: 1;
@@ -520,7 +583,6 @@ body {
   margin: 20px;
   border-radius: 15px;
   padding: 20px;
-  flex-direction: row;
   border: solid;
   justify-content: center;
 }
@@ -596,6 +658,7 @@ body {
   min-width: 20%;
   max-width: 25%;
   text-align: left;
+  border-radius: 3%;
   /* height: fit-content; */
   /* block-size: fit-content; */
   /* max-height: 20%; */
@@ -644,10 +707,6 @@ body {
   border-left-style: hidden;
   border-bottom-style: groove;
   /* border-style: solid; */
-}
-
-.u-blue {
-  background-color: #29ccc7;
 }
 
 .comments-container {
@@ -793,6 +852,7 @@ body {
 .boxArrow:hover > span {
   border-bottom: 7px solid black;
   border-right: 7px solid black;
+  cursor: pointer;
 }
 
 .boxArrow span:nth-child(2) {

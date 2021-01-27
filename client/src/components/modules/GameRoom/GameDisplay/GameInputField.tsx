@@ -8,6 +8,7 @@ interface Props {
   userId: string;
   started: boolean;
   enabled: boolean;
+  handleInputSubmit: (text: string) => Promise<any>;
 }
 interface State {
   ready: boolean;
@@ -70,11 +71,7 @@ class GameInputField extends Component<Props, State> {
             this.setState({ value: "" })
           );
         } else {
-          post("/api/inputSubmit", {
-            content: this.state.value,
-            gameId: this.props.gameId,
-            socketId: socket.id,
-          }).then(() => this.setState({ value: "" }));
+          this.props.handleInputSubmit(this.state.value).then(() => this.setState({ value: "" }));
         }
       }
     }

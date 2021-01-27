@@ -5,7 +5,7 @@
     height: 100%;
 
     text-align: center;
-    color: white;
+    color: u.$peach;
   }
 
   & .backgroundImg {
@@ -65,6 +65,7 @@
 
     &.input {
       width: 177px;
+      height: 38px;
       padding: 0px 10px;
       margin-top: 10px;
       font-size: 12pt;

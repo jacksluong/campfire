@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import Keyword from "./Keyword";
-import { Link, animateScroll as scroll } from "react-scroll";
 import ProfileGallery from "./ProfileGallery";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 interface Props {
   userId: string;
@@ -16,32 +13,31 @@ class StatisticsSection extends Component<Props, {}> {
     super(props);
   }
 
-  componentDidMount() {
-    console.log("in statss");
-    console.log(this.props.storiesWorkedOn);
-    const script = document.createElement("script");
-    script.src = "https://unpkg.com/aos@next/dist/aos.css";
-    script.innerHTML = AOS.init({
-      offset: 200,
-      duration: 500,
-    });
-    script.async = true;
-    document.body.appendChild(script);
-  }
   render() {
-    console.log("in render of stats");
-    console.log(this.props.storiesWorkedOn);
+    let words =
+      this.props.wordFrequencies.length !== 0 ? (
+        <div>
+          <h1>Keywords:</h1>
+          {this.props.wordFrequencies.map((pair) => (
+            <Keyword word={pair.word} />
+          ))}
+        </div>
+      ) : (
+        <h1>Keywords: No keywords at the moment.</h1>
+      );
     return (
-      <div className="StatisticsSection container" data-aos="fade-left">
+      <div className="StatisticsSection container">
         <div className="BasicStats container">
           <h2>Stories Published: {this.props.storiesWorkedOn.length}</h2>
           <h2>Words Typed: {this.props.wordsTyped}</h2>
         </div>
         <div className="Keyword container">
           <h1>Keywords:</h1>
-          {this.props.wordFrequencies.map((pair) => (
-            <Keyword word={pair.word} />
-          ))}
+          {this.props.wordFrequencies.length !== 0 ? (
+            this.props.wordFrequencies.map((pair, i) => <Keyword word={pair.word} key={i} />)
+          ) : (
+            <h1 style={{ marginLeft: "20px" }}>No keywords at the moment.</h1>
+          )}
         </div>
 
         <div className="Stories container" id="profilegallery">

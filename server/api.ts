@@ -1,15 +1,22 @@
 import express from "express";
 import auth from "./auth";
 import StoryModel from "./models/Story";
-import UserModel from "./models/User";
+import UserInferface from "./models/User";
 import socketManager from "./server-socket";
 import Story from "../shared/Story";
 import Player from "../shared/Player";
 import Message from "../shared/Message";
 import User from "../shared/User";
 import logic, { GameState } from "./logic";
+import dotenv from "dotenv";
+dotenv.config({});
 
 const router = express.Router();
+
+//using Natural Language Processing API
+const MonkeyLearn = require("monkeylearn");
+const ml = new MonkeyLearn(process.env.MONKEYLEARN_APIKEY);
+let model_id = process.env.MONKEYLEARN_MODELID;
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -20,6 +27,7 @@ router.get("/whoami", (req, res) => {
   }
   res.send(req.user);
 });
+
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
   if (req.user) {
@@ -64,13 +72,14 @@ router.get("/profileStories", (req, res) => {
 // get UserInfo for Profile page
 router.get("/userInfo", (req, res) => {
   console.log(`Requesting ID: ${req.query.userId}`);
-  UserModel.findById(req.query.userId).then((user: User) => {
+  UserInferface.findById(req.query.userId).then((user: User) => {
     console.log(`User Found in Database: ${user}`);
     const userInfo = {
       name: user.name,
       wordsTyped: user.wordsTyped,
       storiesWorkedOn: user.storiesWorkedOn,
       wordFrequencies: user.wordFrequencies,
+      pfp: user.pfp,
     };
     console.log(userInfo);
     res.send(userInfo);
@@ -108,28 +117,43 @@ router.post("/likeStory", (req, res) => {
   //2. update
 });
 router.post("/newComment", (req, res) => {
-  const storyId = req.body.storyId;
-  const userId = req.body.userId;
-  const content = req.body.content;
-  UserModel.findById(userId).then((user: User) => {
-    let name = user.name;
-    StoryModel.findById(storyId).then((story: Story) => {
-      let storyComments = [...story.comments];
-      let newComment = {
-        name: name,
-        senderId: userId,
-        content: content,
-      };
-      storyComments.push(newComment);
-      story.comments = storyComments;
-      res.send(newComment);
-      story.save();
+  const userId: string | undefined = req.user!._id;
+  if (userId) {
+    const storyId = req.body.storyId;
+    const content = req.body.content;
+    UserInferface.findById(userId).then((user: User) => {
+      let name = user.name;
+      StoryModel.findById(storyId).then((story: Story) => {
+        let storyComments = [...story.comments];
+        let newComment = {
+          name: name,
+          senderId: userId,
+          content: content,
+        };
+        storyComments.push(newComment);
+        story.comments = storyComments;
+        res.send(newComment);
+        story.save();
+      });
     });
-  });
+  }
   // res.send({ name: name });
 });
 
 /** Gameplay */
+
+router.post("/join", (req, res) => {
+  UserInferface.findById(req.user?._id).then((user: User) => {
+    console.log("socketId is", req.body.socketId)
+    let socket = socketManager.getSocketFromSocketID(req.body.socketId)!;
+    const gameState = logic.addPlayer(req.body.gameId, user, req.body.socketId);
+    console.log("logic is");
+    console.log(gameState);
+    if (!gameState) socket.emit("redirectHome");
+    else socketManager.emitToRoom("playersUpdate", gameState);
+  });
+  res.send({});
+})
 
 router.post("/leaveGame", (req, res) => {
   // When a player disconnects without closing the tab (i.e. socket remains connected)
@@ -147,10 +171,11 @@ router.post("/inputChange", (req, res) => {
 router.post("/inputSubmit", (req, res) => {
   let newInput = {
     content: req.body.content + " ",
+    nextPlayer: req.body.nextPlayer,
     gameId: req.body.gameId,
     socketId: req.body.socketId,
   };
-  let newGameState = logic.addToStory(req.body.gameId, newInput.content);
+  let newGameState = logic.addToStory(req.body.gameId, newInput.content, newInput.nextPlayer);
   newGameState = logic.addToPlayer(req.body.gameId, req.body.socketId, newInput.content);
   socketManager.emitToRoom("storyUpdate", newGameState);
   res.send({});
@@ -215,7 +240,7 @@ router.post("/voteEndGame", (req, res) => {
     //for each player in the room who is not a guest, add info into word map in database
     room.players.forEach((player: Player) => {
       if (player.userId !== "guest") {
-        UserModel.findById(player.userId).then((user: User) => {
+        UserInferface.findById(player.userId).then((user: User) => {
           let topWords = player.wordFrequencies.sort((word) => word.frequency);
           topWords = topWords.length >= 3 ? topWords.slice(0, 3) : topWords;
           topWords.reverse();
@@ -235,7 +260,19 @@ router.post("/voteEndGame", (req, res) => {
         });
       }
     });
-    socketManager.emitToRoom("gameOver", newGameState);
+    let keywords: string[] = [];
+    ml.extractors.extract(model_id, [newGameState.currentStory]).then((res: any) => {
+      console.log("in api");
+      console.log(JSON.stringify(res.body[0].extractions));
+      console.log(JSON.parse(JSON.stringify(res.body[0].extractions)));
+      let extractions = res.body[0].extractions.slice(0, 3);
+      extractions.forEach((data: any) => keywords.push(data.parsed_value));
+      console.log(keywords);
+      socketManager.emitToRoom("gameOver", newGameState, {
+        title: keywords[0],
+        keywords: keywords,
+      });
+    });
   } else if (newGameState.gameOver === false) {
     socketManager.emitToRoom("endGameRequestCancel", newGameState, undefined);
     newGameState.gameOver = undefined;
@@ -245,10 +282,11 @@ router.post("/voteEndGame", (req, res) => {
 
 router.post("/votePublish", (req, res) => {
   const gameState = logic.processPublishVote(req.body.gameId, req.body.socketId);
+  let newStory: Story;
   if (gameState.isPublished) {
     const guests = gameState.players.find((player) => player.userId == "guest") ? "guests" : "";
-    const newStory = new StoryModel({
-      name: "TITLE",
+    let newStory = new StoryModel({
+      name: req.body.title,
       contributorNames: gameState.players
         .filter((player) => player.userId != "guest")
         .map((player) => player.name)
@@ -257,21 +295,21 @@ router.post("/votePublish", (req, res) => {
         .filter((player) => player.userId != "guest")
         .map((player) => player.userId),
       content: gameState.currentStory,
-      usersThatLiked: ["bydefaultthereshouldbenouserslikedatpublish"],
-      keywords: ["keyword1", "keyword2", "keyword3"],
+      usersThatLiked: [],
+      keywords: req.body.keywords,
     });
     newStory.save().then((story) => {
       socketManager.emitToRoom("storyPublished", gameState, undefined);
       gameState.players.forEach((player: Player) => {
         if (player.userId !== "guest") {
-          UserModel.findById(player.userId).then((user: User) => {
+          UserInferface.findById(player.userId).then((user: User) => {
             user.storiesWorkedOn.push(story._id);
             user.save();
           });
         }
       });
-      console.log("story saved: ", story);
     });
+    res.send({});
   }
   // console.log(gameState.publishVotes);
   // res.send({ votecount: gameState.publishVotes.length });

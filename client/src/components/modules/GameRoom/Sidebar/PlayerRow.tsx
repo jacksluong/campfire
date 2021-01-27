@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 interface Props {
+  index: number;
+  isMe: boolean;
   name: string;
   health: number;
+  maxHealth: number;
   isTyping: boolean;
   disconnected: boolean;
 }
-
-const MAX_HEALTH = 150; // seconds
 
 class PlayerDisplay extends Component<Props, {}> {
   constructor(props) {
@@ -16,24 +17,27 @@ class PlayerDisplay extends Component<Props, {}> {
   componentDidMount() {
     if (this.props.isTyping) this.animateDecreaseHealth(this.props.health);
     else {
-      document.getElementById("sidebarHealthBar").style.background = `linear-gradient(to right, lightgreen, lightgreen ${this.props.health}%, red ${this.props.health}%)`;
+      document.getElementById("sidebarHealthBar" + this.props.index).style.background = `linear-gradient(to right, lightgreen, lightgreen ${this.props.health}%, red ${this.props.health}%)`;
     }
   }
 
   animateDecreaseHealth = (health: number): void => {
-    document.getElementById("sidebarHealthBar").style.background = `linear-gradient(to right, lightgreen, lightgreen ${health}%, red ${health}%)`;
+    document.getElementById("sidebarHealthBar" + this.props.index).style.background = `linear-gradient(to right, lightgreen, lightgreen ${health}%, red ${health}%)`;
     setTimeout(() => {
       this.animateDecreaseHealth(health - 1);
-    }, 1000 * (100 / MAX_HEALTH));
+    }, 1000 * (100 / this.props.maxHealth));
   }
 
   render() {
+    let classes = "PlayerRow";
+    if (this.props.disconnected) classes += " disconnected";
+    else if (this.props.isMe) classes += " me";
     return (
-      <div className={this.props.disconnected ? "PlayerRow disconnected" : "PlayerRow"}>
+      <div className={classes}>
         <div className="name">
           {this.props.name}
         </div>
-        <div className="health" id="sidebarHealthBar"></div>
+        <div className="health" id={"sidebarHealthBar" + this.props.index}></div>
       </div>
     );
   }

@@ -60,7 +60,6 @@ class Gallery extends Component<Props, State> {
     return (
       <>
         <NavBar
-          pfp={this.props.pfp}
           handleLogin={this.props.handleLogin}
           handleLogout={this.props.handleLogout}
           userId={this.props.userId}
