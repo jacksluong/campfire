@@ -132,7 +132,6 @@ class GameDisplay extends Component<Props, State> {
               {voteTrackerAndPublishedButton}
             </button>
             <button onClick={this.handleHome}>Home</button>
-            <button onClick={this.handlePlayAgain}>Again</button>
             <button onClick={this.handleGallery}>Gallery</button>
           </span>
         ) : (
