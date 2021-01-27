@@ -4,15 +4,16 @@ import { get, post } from "../../../utilities";
 import { response } from "express";
 
 interface State {
-  dummyElement: any[];
+  leaderBoardEntries: any[];
   sortBy: string;
 }
+
 class LeaderBoardComponent extends Component<{}, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dummyElement: [],
-      sortBy: "wordsTyped",
+      leaderBoardEntries: [],
+      sortBy: "storiesPublished",
     };
   }
   handleLeaderBoardUpdate = () => {
@@ -33,33 +34,36 @@ class LeaderBoardComponent extends Component<{}, State> {
         });
       })
       .then(() => {
-        this.setState({ dummyElement: usersElement });
+        this.setState({ leaderBoardEntries: usersElement });
       });
   };
 
   componentDidMount() {
     this.handleLeaderBoardUpdate();
-    //todo: get request, replace dummy
-
-    // const dummy = [
-    //   { name: "BBB", wordsTyped: 500, storiesPublished: 50 },
-    //   { name: "BBB", wordsTyped: 500, storiesPublished: 50 },
-    //   { name: "BBB", wordsTyped: 500, storiesPublished: 50 },
-    // ];
-
-    // let dummyElement = dummy.map((dummyUser) => (
-    //   <LeaderboardSingleLog
-    //     name={dummyUser.name}
-    //     wordsTyped={dummyUser.wordsTyped}
-    //     storiesPublished={dummyUser.storiesPublished}
-    //   />
-    // ));
-    // this.setState({
-    //   dummyElement: dummyElement,
-    // });
   }
   render() {
-    return <div className="Leaderboard Component">{this.state.dummyElement}</div>;
+    return (
+      <div className="Leaderboard Component">
+        {/* <div className="sortOptions"> </div> */}
+
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Words Typed</th>
+              <th>Stories Published</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.leaderBoardEntries}
+            {/* <tr>
+              <td>The table body</td>
+              <td>with two columns</td>
+            </tr> */}
+          </tbody>
+        </table>
+      </div>
+    );
   }
 }
 export default LeaderBoardComponent;

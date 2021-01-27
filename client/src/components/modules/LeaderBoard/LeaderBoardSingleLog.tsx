@@ -10,13 +10,16 @@ class LeaderboardSingleLog extends Component<Props, {}> {
   }
   render() {
     return (
-      <div className="Log">
-        <span>
+      <tr>
+        {/* <span>
           {`name: ${this.props.name} `}
           {`words typed: ${this.props.wordsTyped} `}
           {`stories published ${this.props.storiesPublished} `}
-        </span>
-      </div>
+        </span> */}
+        <td> {`name: ${this.props.name} `}</td>
+        <td>{`words typed: ${this.props.wordsTyped} `}</td>
+        <td>{`stories published ${this.props.storiesPublished} `}</td>
+      </tr>
     );
   }
 }
