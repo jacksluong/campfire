@@ -64,7 +64,7 @@ class ProfileSection extends Component<Props, State> {
               ) : (
                 <input
                   type="text"
-                  maxLength={100}
+                  maxLength={60}
                   placeholder="Edit Bio Here"
                   value={this.state.value}
                   onChange={this.handleChange}
