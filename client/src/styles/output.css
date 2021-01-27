@@ -778,6 +778,7 @@ body {
 .comments-container .CommentName {
   font-weight: bold;
   font-size: 17px;
+  cursor: pointer;
 }
 
 .CommentButton-container {
@@ -816,6 +817,7 @@ body {
   background-size: cover;
   display: inline-block;
   vertical-align: center;
+  cursor: pointer;
 }
 
 /*Animations*/

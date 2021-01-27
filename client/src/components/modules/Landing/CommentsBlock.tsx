@@ -65,7 +65,11 @@ class CommentsBlock extends Component<Props, State> {
     let totalComments = [...this.props.comments].concat([...this.state.newComments]);
     commentsElement = totalComments.map((comment) => (
       <div>
-        <span className="CommentPic" style={{ backgroundImage: `url(${comment.pfp})` }}></span>
+        <span
+          onClick={() => this.handleProfileNavigate(comment.senderId)}
+          className="CommentPic"
+          style={{ backgroundImage: `url(${comment.pfp})` }}
+        ></span>
         {console.log(`Comment pfp url: ${comment.pfp}`)}
         <span onClick={() => this.handleProfileNavigate(comment.senderId)} className="CommentName">
           {comment.name}
