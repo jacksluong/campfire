@@ -154,8 +154,8 @@ router.post("/join", (req, res) => {
 
 router.post("/leaveGame", (req, res) => {
   // When a player disconnects without closing the tab (i.e. socket remains connected)
-  const newGameState = logic.disconnectPlayer(req.body.socketId)!;
-  socketManager.emitToRoom("playersUpdate", newGameState);
+  const newGameState = logic.disconnectPlayer(req.body.socketId);
+  if (newGameState) socketManager.emitToRoom("playersUpdate", newGameState);
   res.send({});
 });
 
@@ -231,6 +231,7 @@ export const gameOver = (gameState: GameState) => {
       title: [],
       keywords: [],
     });
+    return;
   }
 
   // for each player logged in, update their word map in database

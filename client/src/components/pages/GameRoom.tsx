@@ -66,6 +66,7 @@ class GameRoom extends Component<Props, State> {
         taggedPlayer: gameState.currentTurn === -1 ? -1 : (gameState.currentTurn + 1) % gameState.players.length
       });
       if (gameState.currentTurn !== -1) {
+        console.log("started countdown");
         clearTimeout(this.state.timeout);
         this.decreaseHealth(gameState.currentTurn);
       }

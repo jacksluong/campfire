@@ -82,6 +82,9 @@ body {
 .NavBar .ProfileButton .dropdown.show > *#secondDropdownItem {
   animation-delay: 0.2s;
 }
+.NavBar .ProfileButton .dropdown.show > *#thirdDropdownItem {
+  animation-delay: 0.4s;
+}
 
 .HelpButton.container {
   display: inline-block;
@@ -382,6 +385,7 @@ body {
   align-items: center;
   justify-content: space-around;
   height: 120px;
+  min-width: 95px;
   border-radius: 5px;
 }
 .GameRoom .GameDisplay .Gathering .GatheringPlayer #gpIndicator {

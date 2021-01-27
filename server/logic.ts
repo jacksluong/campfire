@@ -119,7 +119,7 @@ const addPlayer = (gameId: string, user: User, socketId: string): GameState | un
       health: 100,
       wordFrequencies: [],
     });
-    gameState.players.forEach(player => player.health = (170 - 10 * gameState.players.length));
+    resetHealth(gameState);
     gameState.endVotes.push(undefined);
   }
 
@@ -139,6 +139,7 @@ const disconnectPlayer = (socketId: string): GameState | undefined => {
             playerIndex > i ? playerIndex - 1 : playerIndex
           );
           room.players.splice(i, 1);
+          resetHealth(room);
         } else {
           // take action if current turn or last active player was this person
           room.players[i].disconnected = true;
@@ -146,8 +147,17 @@ const disconnectPlayer = (socketId: string): GameState | undefined => {
             rooms.splice(index, 1);
             return room;
           } else if (room.currentTurn === i) {
-            while (room.players[room.currentTurn].disconnected)
-              room.currentTurn = (room.currentTurn + 1) % room.players.length;
+            if (room.healthTimer) clearTimeout(room.healthTimer);
+            let nextPlayer = findNextAvailablePlayer(room);
+            if (nextPlayer) {
+              room.currentTurn = nextPlayer;
+              room.healthTimer = decreaseHealth(room);
+            } else {
+              // all remaining players have no health
+              room.gameOver = true;
+              gameOver(room);
+              return;
+            }
           }
         }
         return room;
@@ -283,29 +293,39 @@ const startCondition = (gameState: GameState): boolean => {
   );
 };
 
+/** Utility */
+
+const findNextAvailablePlayer = (gameState: GameState): number | undefined => {
+  let currentTurn = gameState.currentTurn;
+  let iterations = 0;
+  while (gameState.players[currentTurn].health === 0 || gameState.players[currentTurn].disconnected) {
+    currentTurn = (currentTurn + 1) % gameState.players.length;
+    iterations++;
+    if (iterations === gameState.players.length) return undefined;
+  }
+  console.log("next available player is", currentTurn);
+  return currentTurn;
+}
+
+const resetHealth = (gameState: GameState) => {
+  gameState.players.forEach(player => player.health = (170 - 10 * gameState.players.length));
+}
+
 const decreaseHealth = (gameState: GameState): NodeJS.Timeout | undefined => {
   let currentPlayer = gameState.players[gameState.currentTurn];
   if (currentPlayer.health === 0) {
     // find next player with health and update everyone in the room
-    let currentTurn = gameState.currentTurn;
-    let iterations = 0;
-    console.log("gameState is");
-    console.log(gameState);
-    while (gameState.players[currentTurn].health === 0 || gameState.players[currentTurn].disconnected) {
-      currentTurn = (currentTurn + 1) % gameState.players.length;
-      iterations++;
-      if (iterations === gameState.players.length) {
-        // game ended by health
-        console.log("game ended by health");
-        gameState.gameOver = true;
-        gameOver(gameState);
-        return undefined;
-      }
+    let nextPlayer = findNextAvailablePlayer(gameState);
+    if (nextPlayer) {
+      gameState.currentTurn = nextPlayer;
+      socketManager.emitToRoom("storyUpdate", gameState);
+      return decreaseHealth(gameState);
+    } else {
+      console.log("game ended by health");
+      gameState.gameOver = true;
+      gameOver(gameState);
+      return undefined;
     }
-    console.log("player lost all their health, but game did not end");
-    gameState.currentTurn = currentTurn;
-    socketManager.emitToRoom("storyUpdate", gameState);
-    return decreaseHealth(gameState);
   }
   // or continue the timer
   return setTimeout(() => {

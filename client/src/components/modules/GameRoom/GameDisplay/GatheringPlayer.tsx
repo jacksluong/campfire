@@ -36,7 +36,7 @@ class GatheringPlayer extends Component<Props, {}> {
       x: gatheringPlayer.parentElement.clientWidth / 2 - gatheringPlayer.clientWidth / 2,
       y: gatheringPlayer.parentElement.clientHeight / 2 - gatheringPlayer.clientHeight / 2
     }
-    let radius = 150; // TODO: don't hardcode this number
+    let radius = (Math.max(370, window.innerHeight - 280) - 120) / 2; // TODO: don't hardcode this number
     let position = {
       fromLeft: center.x + Math.sin(2 * Math.PI * this.props.index / this.props.totalNumber) * radius,
       fromTop: center.y - Math.cos(2 * Math.PI * this.props.index / this.props.totalNumber) * radius
