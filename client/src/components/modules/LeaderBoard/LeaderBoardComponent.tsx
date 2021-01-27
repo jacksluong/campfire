@@ -48,19 +48,13 @@ class LeaderBoardComponent extends Component<{}, State> {
 
         <table>
           <thead>
-            <tr>
+            <tr className="borderbottom">
               <th>Name</th>
               <th>Words Typed</th>
-              <th>Stories Published</th>
+              <th className="lastColumn">Stories Published</th>
             </tr>
           </thead>
-          <tbody>
-            {this.state.leaderBoardEntries}
-            {/* <tr>
-              <td>The table body</td>
-              <td>with two columns</td>
-            </tr> */}
-          </tbody>
+          <tbody>{this.state.leaderBoardEntries}</tbody>
         </table>
       </div>
     );

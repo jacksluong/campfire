@@ -13,4 +13,28 @@
     border-style: dotted;
     margin: auto;
   }
+  table {
+    .EntryRow {
+      font-size: 16px;
+    }
+    td,
+    th {
+      text-align: left;
+      padding: 0 100px 0 0;
+      // margin: 0;
+      white-space: nowrap;
+    }
+    .lastColumn {
+      width: fill;
+      width: 99%;
+    }
+
+    tr.borderbottom td {
+      border-bottom: 1px solid black;
+    }
+  }
+
+  // table {
+  //   border-spacing: 50px 0;
+  // }
 }

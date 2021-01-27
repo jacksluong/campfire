@@ -890,6 +890,22 @@ body {
   border-style: dotted;
   margin: auto;
 }
+.LeaderBoard table .EntryRow {
+  font-size: 16px;
+}
+.LeaderBoard table td,
+.LeaderBoard table th {
+  text-align: left;
+  padding: 0 100px 0 0;
+  white-space: nowrap;
+}
+.LeaderBoard table .lastColumn {
+  width: fill;
+  width: 99%;
+}
+.LeaderBoard table tr.borderbottom td {
+  border-bottom: 1px solid black;
+}
 
 /*
 "I will search all of your repos for the word dangerous" ~Noah Raby (staff)
