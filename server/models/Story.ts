@@ -25,7 +25,12 @@ export interface Story extends Document {
   content: string;
   usersThatLiked: string[]; // story IDs
   keywords: string[];
-  comments: { name: string; senderId: string; content: string }[];
+  comments: { 
+    name: string; 
+    senderId: string; 
+    content: string;
+    pfp: string;
+  }[];
 }
 
 export interface Comment {

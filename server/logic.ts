@@ -31,7 +31,7 @@ export interface GameState {
   gameOver: boolean | undefined;
 }
 
-const rooms: GameState[] = [];
+export const rooms: GameState[] = [];
 
 /** Room Functions */
 
@@ -63,6 +63,8 @@ const matchmake = (userId: string | undefined = undefined): string => {
   // if a user was in a game that's still in progress, return them there
   if (userId) {
     let room = getRoomByPlayer(userId);
+    console.log(`matching ${userId} to room`);
+    console.log(room);
     if (room?.gameOver === false) return room.gameId;
   }
 
@@ -312,7 +314,7 @@ const findNextAvailablePlayer = (gameState: GameState): number | undefined => {
 };
 
 const resetHealth = (gameState: GameState) => {
-  gameState.players.forEach((player) => (player.health = 170 - 10 * gameState.players.length));
+  gameState.players.forEach((player) => (player.health = 150 - 14 * gameState.players.length));
 };
 
 const decreaseHealth = (gameState: GameState): NodeJS.Timeout | undefined => {

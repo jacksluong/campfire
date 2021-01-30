@@ -25,6 +25,9 @@ interface State {
 }
 
 class SingleStoryCard extends Component<Props, State> {
+
+  containerDiv: HTMLDivElement;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -42,6 +45,14 @@ class SingleStoryCard extends Component<Props, State> {
   componentDidMount() {
     if (this.props.userId && this.props.usersThatLiked.includes(this.props.userId)) {
       this.setState({ hasLiked: true });
+    }
+
+    window.addEventListener("scroll", this.animateFadeIn);
+  }
+  animateFadeIn = () => {
+    if (this.containerDiv.offsetTop - window.scrollY < window.innerHeight) {
+      this.containerDiv.classList.toggle("show");
+      window.removeEventListener("scroll", this.animateFadeIn);
     }
   }
   likeFunction = () => {
@@ -96,7 +107,7 @@ class SingleStoryCard extends Component<Props, State> {
     );
 
     return (
-      <div className="SingleStoryCard-container">
+      <div className="SingleStoryCard-container" ref={(containerDiv) => this.containerDiv = containerDiv}>
         <div className="SingleStoryCard-StoryTitle">{this.props.name}</div>
         <div className="SingleStoryCard-Contributors">
           By: {"  "}

@@ -20,18 +20,23 @@ class GatheringPlayer extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      taggable: false
+      taggable: false,
     };
   }
 
   componentDidMount() {
     this.setPosition();
     this.updateVisual();
-    window.addEventListener('resize', this.setPosition);
+    window.addEventListener("resize", this.setPosition);
   }
 
   componentDidUpdate() {
-    console.log("player index", this.props.index, "updated and health is", this.props.player.health);
+    console.log(
+      "player index",
+      this.props.index,
+      "updated and health is",
+      this.props.player.health
+    );
     this.setPosition();
     this.updateVisual();
   }
@@ -40,13 +45,15 @@ class GatheringPlayer extends Component<Props, State> {
     let gatheringPlayer = document.getElementById("player" + this.props.index);
     let center = {
       x: gatheringPlayer.parentElement.clientWidth / 2 - gatheringPlayer.clientWidth / 2,
-      y: gatheringPlayer.parentElement.clientHeight / 2 - gatheringPlayer.clientHeight / 2
-    }
-    let radius = (Math.max(370, window.innerHeight - 280) - 120) / 2; // TODO: don't hardcode this number
+      y: gatheringPlayer.parentElement.clientHeight / 2 - gatheringPlayer.clientHeight / 2,
+    };
+    let radius = (Math.max(370, window.innerHeight - 280) - 120) / 2;
     let position = {
-      fromLeft: center.x + Math.sin(2 * Math.PI * this.props.index / this.props.totalNumber) * radius,
-      fromTop: center.y - Math.cos(2 * Math.PI * this.props.index / this.props.totalNumber) * radius
-    }
+      fromLeft:
+        center.x + Math.sin((2 * Math.PI * this.props.index) / this.props.totalNumber) * radius,
+      fromTop:
+        center.y - Math.cos((2 * Math.PI * this.props.index) / this.props.totalNumber) * radius,
+    };
 
     gatheringPlayer.style.marginLeft = position.fromLeft + "px";
     gatheringPlayer.style.marginTop = position.fromTop + "px";
@@ -58,19 +65,23 @@ class GatheringPlayer extends Component<Props, State> {
       potato.style.marginTop = position.fromTop + 40 + "px";
       potato.style.transition = "1s";
     }
-  }
+  };
 
   updateVisual = () => {
     let index = this.props.index;
     let gatheringPlayer = document.getElementById("player" + index);
 
-    if (this.props.player.pfp) document.getElementById("gpGraphic" + index).style.backgroundImage = `url(${this.props.player.pfp})`;
+    if (this.props.player.pfp)
+      document.getElementById(
+        "gpGraphic" + index
+      ).style.backgroundImage = `url(${this.props.player.pfp})`;
 
     // who is taggable
-    let taggable = this.props.cursorPointer && 
-    this.props.currentTurn !== this.props.index && 
-    this.props.player.health > 0 &&
-    !this.props.player.disconnected;
+    let taggable =
+      this.props.cursorPointer &&
+      this.props.currentTurn !== this.props.index &&
+      this.props.player.health > 0 &&
+      !this.props.player.disconnected;
     if (taggable && !gatheringPlayer.classList.contains("taggable")) {
       gatheringPlayer.classList.toggle("taggable");
     } else if (!taggable && gatheringPlayer.classList.contains("taggable")) {
@@ -83,25 +94,31 @@ class GatheringPlayer extends Component<Props, State> {
       gatheringPlayer.classList.toggle("tagged");
     }
     // health
-    document.getElementById("gpHealth" + index).style.background = this.props.player.health === 0 ? "darkgray" :
-    `linear-gradient(to right, lightgreen, lightgreen ${this.props.player.health / (170 - this.props.totalNumber * 10) * 100}%, red ${this.props.player.health / (170 - this.props.totalNumber * 10) * 100}%)`;
-  }
+    document.getElementById("gpHealth" + index).style.background =
+      this.props.player.health === 0
+        ? "darkgray"
+        : `linear-gradient(to right, lightgreen, lightgreen ${
+            (this.props.player.health / (150 - 14 * this.props.totalNumber)) * 100
+          }%, red ${(this.props.player.health / (170 - this.props.totalNumber * 10)) * 100}%)`;
+  };
 
   handleClick = () => {
-    let taggable = this.props.cursorPointer && 
-    this.props.currentTurn !== this.props.index && 
-    this.props.player.health > 0 &&
-    !this.props.player.disconnected;
+    let taggable =
+      this.props.cursorPointer &&
+      this.props.currentTurn !== this.props.index &&
+      this.props.player.health > 0 &&
+      !this.props.player.disconnected;
     if (taggable) this.props.handleClick(this.props.index);
-  }
+  };
 
   render() {
     let index = this.props.index;
     return (
-      <div 
-        className="GatheringPlayer container" 
+      <div
+        className="GatheringPlayer container"
         id={"player" + this.props.index}
-        onClick={this.handleClick}>
+        onClick={this.handleClick}
+      >
         {this.props.player.socketId === socket.id ? <div id="gpIndicator"></div> : ""}
         <div id={"gpHealth" + index} className="gpHealth"></div>
         <div id={"gpGraphic" + index} className="gpGraphic"></div>

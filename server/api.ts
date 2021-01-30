@@ -245,14 +245,12 @@ router.post("/endGameRequest", (req, res) => {
 
 //post new messages
 router.post("/message", (req, res) => {
-  const room: GameState = logic.getRoomById(req.body.gameId)!;
-  let sender: Player | undefined = room.players.find((player) => {
-    return player.socketId == req.body.socketId;
-  });
+  const room = logic.getRoomById(req.body.gameId)!;
+  let sender = room.players.find((player) => player.socketId == req.body.socketId);
   let senderName: string;
   if (!sender) {
     //spectator is sending message
-    const spectatorIndex: number = room.spectators.indexOf(req.body.socketId);
+    const spectatorIndex = room.spectators.indexOf(req.body.socketId);
     senderName = "Spectator " + spectatorIndex + 1;
   } else {
     senderName = sender.name;

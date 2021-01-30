@@ -8,6 +8,7 @@ import path from "path"; // Allows us to retrieve file paths
 import auth from "./auth"; // weblab authentication helper
 import socketManager from "./server-socket"; // websockets
 import api from "./api";
+import { rooms } from "./logic";
 // Loads environmental variables
 dotenv.config({});
 
@@ -78,4 +79,12 @@ const server = http.createServer(app);
 socketManager.init(server);
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+});
+
+process.stdin.setEncoding('utf8');
+process.stdin.on('readable', () => {
+  let chunk;
+  while ((chunk = process.stdin.read()) !== null) {
+    if (chunk == "rooms\n") console.log(rooms);
+  }
 });

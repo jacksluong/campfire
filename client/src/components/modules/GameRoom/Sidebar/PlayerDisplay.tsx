@@ -20,31 +20,33 @@ class PlayerDisplay extends Component<Props, State> {
   }
 
   render() {
-    let header = this.props.spectators === 0 ? (
-      <div className="header">
-        <h2 className="heading">Players</h2>
-      </div>
-    ) : (
-      <div className="header">
-        <h2 className="heading">Players</h2>
-        <img src={SPECTATOR_IMAGE} height="25" />
-        <span>{this.props.spectators}</span>
-      </div>
-    )
+    let header =
+      this.props.spectators === 0 ? (
+        <div className="header">
+          <h2 className="heading">Players</h2>
+        </div>
+      ) : (
+        <div className="header">
+          <h2 className="heading">Players</h2>
+          <img src={SPECTATOR_IMAGE} height="25" />
+          <span>{this.props.spectators}</span>
+        </div>
+      );
     return (
       <div className="PlayerDisplay container">
         {header}
         {this.props.players.map((player, i) => (
-          <PlayerRow 
+          <PlayerRow
             index={i}
             isMe={player.socketId == socket.id}
-            name={player.name} 
-            health={player.health} 
-            maxHealth={170 - 10 * this.props.players.length}
+            name={player.name}
+            health={player.health}
+            maxHealth={150 - 14 * this.props.players.length}
             ready={this.props.readyPlayers.includes(i)}
-            disconnected={player.disconnected ?? false} 
+            disconnected={player.disconnected ?? false}
             isTyping={this.props.currentTurn === i}
-            key={i} />
+            key={i}
+          />
         ))}
       </div>
     );

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import Story from "../../../../shared/Story";
 import { get } from "../../utilities";
-import SingleStoryCard from "../../components/modules/../modules/Landing/SingleStoryCard";
+import SingleStoryCard from "../modules/Landing/SingleStoryCard";
 import { RouteComponentProps } from "@reach/router";
 import { Link, animateScroll as scroll } from "react-scroll";
-import Comment from "../../../../shared/Comment";
 import NavBar from "../modules/NavBar";
+import StoryGallery from "../modules/StoryGallery/StoryGallery";
 
 interface Props extends RouteComponentProps {
   userId: string;
@@ -26,31 +26,11 @@ class Gallery extends Component<Props, State> {
 
   componentDidMount() {
     get("/api/stories").then((stories) => {
-      this.setState({ storyList: stories });
-      console.log(stories.length);
+      this.setState({ storyList: stories.reverse() });
     });
   }
 
   render() {
-    let storyListSorted = this.state.storyList.slice();
-    // storyListSorted.sort((a, b) => (a.usersThatLiked.length < b.usersThatLiked.length ? 1 : -1));
-
-    let storyListElement = storyListSorted
-      .reverse()
-      .map((story, i) => (
-        <SingleStoryCard
-          name={story.name}
-          contributors={story.contributorNames}
-          content={story.content}
-          usersThatLiked={story.usersThatLiked}
-          keywords={story.keywords}
-          userId={this.props.userId}
-          storyId={story._id}
-          key={i}
-          comments={story.comments}
-        />
-      ));
-
     return (
       <>
         <NavBar
@@ -71,9 +51,13 @@ class Gallery extends Component<Props, State> {
           </div>
         </Link>
 
-        <div className="Gallery-container fade-in2" id="gallery">
+        {/* <div className="Gallery-container fade-in2" id="gallery">
           {storyListElement === null ? <p>loading</p> : storyListElement}
-        </div>
+        </div> */}
+        <StoryGallery 
+          userId={this.props.userId}
+          storyList={this.state.storyList}
+        />
       </>
     );
   }
