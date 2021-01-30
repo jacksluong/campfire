@@ -999,7 +999,7 @@ body {
   opacity: 0;
   padding: 1vw;
   margin: 4vw 2vw;
-  background-color: green;
+  background-color: #e4a292;
   border-radius: 10px;
   overflow-y: hidden;
   overflow-wrap: break-word;
@@ -1019,7 +1019,7 @@ body {
 }
 .StoryGallery .GalleryColumn .StoryCard .subtitle {
   margin-bottom: 8px;
-  color: darkgray;
+  color: #032540;
   font-size: 10pt;
 }
 .StoryGallery .GalleryColumn .StoryCard .body {
