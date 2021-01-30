@@ -172,31 +172,50 @@
 }
 
 .StoryGallery {
-  display: flex;
-  align-items: start;
+  &.container {
+    display: flex;
+    align-items: start;
 
-  padding: 0px 50px;
-  @media only screen and (max-device-width : 640px) {
-    padding: 0px;
+    padding: 0px 50px;
+    @media only screen and (max-device-width : 640px) {
+      padding: 0px;
+    }
   }
   
   .GalleryColumn {
     flex-basis: 0px;
     width: 0px;
     flex-grow: 1;
-    border-radius: 10px;
-    background-color: blue;
 
     .StoryCard {
       &.container {
         opacity: 0;
-        margin: 2vw;
+        padding: 1vw;
+        margin: 4vw 2vw;
         background-color: green;
+        border-radius: 10px;
+        overflow-y: hidden;
         overflow-wrap: break-word;
+        transition: 1s ease-out;
+
+        &.show {
+          animation: fadeIn 0.5s ease-in forwards;
+        }
       }
         
-      &.show {
-        animation: fadeIn 0.5s ease-in forwards;
+
+      .title {
+        font-size: 20pt;
+      }
+
+      .subtitle {
+        margin-bottom: 8px;
+        color: darkgray;
+        font-size: 10pt;
+      }
+
+      .body {
+        font-size: 11pt;
       }
     }
   }

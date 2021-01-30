@@ -5,7 +5,6 @@ import StoryCard from "./StoryCard";
 
 interface Props {
   userId: string;
-  storyList: Story[];
   getNextStory: () => Story | boolean;
 }
 
@@ -44,7 +43,7 @@ class GalleryColumn extends Component<Props, State> {
   }
 
   checkSpace = () => {
-    if (this.containerDiv.offsetTop + this.containerDiv.clientHeight - window.scrollY < window.innerHeight + 200) {
+    if (this.containerDiv.offsetTop + this.containerDiv.clientHeight - window.scrollY < window.innerHeight + 150) {
       let nextStory = this.props.getNextStory();
       if (nextStory === false) {
         // no more stories

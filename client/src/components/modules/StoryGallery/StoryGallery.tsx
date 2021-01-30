@@ -32,19 +32,6 @@ class StoryGallery extends Component<Props, State> {
   }
 
   getNextStory = (): Story | boolean => {
-    /* if (this.taken) return true;
-    this.taken = true;
-    let returnValue: any;
-    if (this.state.renderedStories < this.state.storyList.length) {
-      let nextStoryIndex = this.state.renderedStories;
-      this.setState({
-        renderedStories: nextStoryIndex + 1
-      });
-      returnValue = this.state.storyList[nextStoryIndex];
-    } else returnValue = false;
-    this.taken = false;
-    return returnValue; */
-
     if (this.taken) {
       return true;
     }
@@ -69,7 +56,6 @@ class StoryGallery extends Component<Props, State> {
       columns.push(
         <GalleryColumn
           userId={this.props.userId}
-          storyList={this.props.storyList.filter((_, index) => index % numColumns === i)}
           getNextStory={this.getNextStory}
           key={i}
         />
