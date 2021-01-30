@@ -21,6 +21,7 @@ interface State {
 class StoryCard extends Component<Props, State> {
 
   containerDiv: HTMLDivElement;
+  storyDiv: HTMLDivElement;
 
   constructor(props) {
     super(props);
@@ -38,13 +39,15 @@ class StoryCard extends Component<Props, State> {
 
   componentDidMount() {
     window.addEventListener("scroll", this.animateFadeIn);
-    let maxCollapsedHeight = Math.ceil(Math.random() * 200) + 300;
-    let maxExpandedHeight = this.containerDiv.clientHeight;
+    // 18 is line height set for .body
+    let maxCollapsedHeight = 18 * Math.ceil(Math.random() * 10) + 228;
+    let maxExpandedHeight = this.storyDiv.clientHeight;
     if (maxExpandedHeight < maxCollapsedHeight) maxCollapsedHeight = maxExpandedHeight;
     this.setState({
       maxCollapsedHeight: maxCollapsedHeight,
       maxExpandedHeight: maxExpandedHeight
-    }, () => this.containerDiv.style.maxHeight = this.state.maxCollapsedHeight + "px");
+    }, () => this.storyDiv.style.maxHeight = this.state.maxCollapsedHeight + "px");
+    this.animateFadeIn();
   }
 
   animateFadeIn = () => {
@@ -59,7 +62,7 @@ class StoryCard extends Component<Props, State> {
       maxCollapsedHeight: prevState.maxCollapsedHeight,
       expanded: !prevState.expanded,
       showComments: prevState.showComments
-    }), () => this.containerDiv.style.maxHeight = (this.state.expanded ? this.state.maxExpandedHeight : this.state.maxCollapsedHeight) + "px");
+    }), () => this.storyDiv.style.maxHeight = (this.state.expanded ? this.state.maxExpandedHeight : this.state.maxCollapsedHeight) + "px");
   }
 
   render() {
@@ -74,9 +77,17 @@ class StoryCard extends Component<Props, State> {
         ref={(containerDiv) => this.containerDiv = containerDiv}
       >
         <div className="title">{story.name}</div>
-        <div className="subtitle">{"by " + authors}</div>
-        <div className="body">{story.content}</div>
-        <div className="subtitle"><strong>{"Keywords:  " + story.keywords.join(", ")}</strong></div>
+        <div className="subtitle">by {authors}</div>
+        <div 
+          className="body"
+          ref={(storyDiv) => this.storyDiv = storyDiv}
+        >
+          {story.content}
+        </div>
+        {(this.state.maxExpandedHeight === this.state.maxCollapsedHeight || this.state.expanded) ? "" : (
+          <div className="blur"></div>
+        )}
+        <div className="subtitle keywords"><strong>keywords: {story.keywords.join(", ")}</strong></div>
         <button className="LikeButton">{`${story.usersThatLiked.includes(this.props.userId) ? "Unlike" : "Like"} | ${story.usersThatLiked.length}`}</button>
 
         <CommentsBlock

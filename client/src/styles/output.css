@@ -1001,10 +1001,9 @@ body {
   margin: 4vw 2vw;
   background-color: #e4a292;
   border-radius: 10px;
-  overflow-y: hidden;
   overflow-wrap: break-word;
   box-shadow: 0px 3px 6px darkslategray;
-  transition: 0.4s ease;
+  transition: 0.3s ease;
   cursor: pointer;
 }
 .StoryGallery .GalleryColumn .StoryCard.container.show {
@@ -1019,11 +1018,25 @@ body {
 }
 .StoryGallery .GalleryColumn .StoryCard .subtitle {
   margin-bottom: 8px;
+  line-height: 16px;
   color: #032540;
   font-size: 10pt;
 }
+.StoryGallery .GalleryColumn .StoryCard .subtitle.keywords {
+  margin-top: 8px;
+}
 .StoryGallery .GalleryColumn .StoryCard .body {
   font-size: 11pt;
+  line-height: 18px;
+  overflow-y: hidden;
+  transition: 0.6s ease;
+}
+.StoryGallery .GalleryColumn .StoryCard .blur {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  margin-top: -30px;
+  background: linear-gradient(to top, #e4a292, rgba(228, 162, 146, 0.6) 75%, transparent);
 }
 
 .LeaderBoard {
