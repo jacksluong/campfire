@@ -15,13 +15,16 @@ interface State {
 class StoryGallery extends Component<Props, State> {
 
   taken = false;
+  resizeThrottle = false;
 
   constructor(props) {
     super(props);
     this.state = { storyList: [], renderedStories: 0 };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    window.addEventListener("resize", this.processResize);
+  }
 
   shouldComponentUpdate(newProps) {
     return newProps.storyList.length !== this.state.storyList.length;
@@ -29,6 +32,14 @@ class StoryGallery extends Component<Props, State> {
 
   componentDidUpdate() {
     this.setState({ storyList: this.props.storyList });
+  }
+
+  processResize = () => {
+    if (!this.resizeThrottle) {
+      this.resizeThrottle = true;
+      this.forceUpdate();
+      setTimeout(() => this.resizeThrottle = false, 75);
+    }
   }
 
   getNextStory = (): Story | boolean => {
