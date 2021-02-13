@@ -10,18 +10,6 @@ class StoryText extends Component<Props, {}> {
     this.state = {};
   }
 
-  componentDidMount() {
-    window.addEventListener('resize', this.setStoryTextWidth);
-  }
-
-  componentDidUpdate() {
-    this.setStoryTextWidth();
-  }
-
-  setStoryTextWidth = (): void => {
-    document.getElementById("storyText").style.width = (Math.max(window.innerWidth, 920) - 300 - 20 - 30 - 30) + "px"; // sidebar + sidebar padding + storytext margin + storytext padding
-  }
-
   render() {
     return (
       <div className="StoryText container" id="storyText">

@@ -4,6 +4,7 @@
   &.container {
     display: flex;
     flex-direction: row;
+    max-width: 100vw;
     min-height: 650px;
     height: 100vh;
 
@@ -137,6 +138,7 @@
       flex-direction: column;
       align-items: center;
       min-width: 600px;
+      padding: 0px 15px;
 
       background-color: u.$ink;
     }
@@ -149,7 +151,10 @@
 
     .StoryText {
       &.container {
-        @include u.flex-fixed-size(150px);
+        @include u.flex-fixed-size(175px);
+        margin: 15px;
+        width: 100%;
+        box-sizing: border-box;
 
         overflow-y: scroll;
         background-color: u.$darkink;
