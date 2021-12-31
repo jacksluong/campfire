@@ -1,5 +1,5 @@
 # Campfire
-### Jacky Luong, Tony Cui, Brandon Lei
+### brought to you by Jacky Luong, Tony Cui, Brandon Lei
 
 Imagine this: you're playing Hot Potato, but when you have the potato, you have to spit out some words onto a cumulative story that you and the others in the game are creating. The potato itself won't blow up, but there's only so much burn you can take! Sound intriguing? Well, behold Campfire! Campfire is a web-based multiplayer game where people can come together, whether friends or strangers (as we support both public and private games) to tell stories not *to* one another, but *with* one another. Everyone takes turns adding onto an overall story, and afterwards, you can visit the gallery to see all the tales that have been told in Campfire. 
 
