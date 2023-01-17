@@ -9,6 +9,9 @@
   },
   "author": "johanc",
   "license": "MIT",
+  "engines": {
+    "node" : ">=16.0.0 <17.0.0"
+  },
   "devDependencies": {
     "@types/reach__router": "^1.3.6",
     "@types/webpack": "^4.41.26",
